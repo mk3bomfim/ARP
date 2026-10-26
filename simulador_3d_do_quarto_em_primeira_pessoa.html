@@ -1,0 +1,1843 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quarto 3D Realista - Primeira Pessoa</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #0f172a;
+            font-family: 'Inter', sans-serif;
+            user-select: none;
+        }
+        canvas {
+            display: block;
+            width: 100vw;
+            height: 100vh;
+        }
+        #crosshair {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 8px;
+            height: 8px;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 20;
+            transition: transform 0.15s ease, background-color 0.15s ease;
+        }
+        .crosshair-dot {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.85);
+            box-shadow: 0 0 4px rgba(0,0,0,0.8);
+        }
+        .crosshair-active {
+            transform: translate(-50%, -50%) scale(1.8) !important;
+        }
+        .crosshair-active .crosshair-dot {
+            background-color: #38bdf8;
+            box-shadow: 0 0 8px #38bdf8;
+        }
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.78);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Mira Central -->
+    <div id="crosshair">
+        <div class="crosshair-dot"></div>
+    </div>
+
+    <!-- Tooltip de Interação -->
+    <div id="interaction-prompt" class="fixed top-[54%] left-1/2 -translate-x-1/2 pointer-events-none z-20 hidden">
+        <div class="glass-panel px-3.5 py-1.5 rounded-lg text-white text-xs sm:text-sm font-medium flex items-center gap-2 shadow-xl">
+            <span class="bg-sky-500 text-slate-950 font-bold px-1.5 py-0.5 rounded text-xs">CLIQUE / F</span>
+            <span id="interaction-text">Interagir</span>
+        </div>
+    </div>
+
+    <!-- Barra Superior: Ângulos das 4 Fotos Reais -->
+    <div class="fixed top-3 left-1/2 -translate-x-1/2 z-30 flex flex-wrap justify-center gap-1.5 sm:gap-2 px-2 w-full max-w-2xl pointer-events-auto">
+        <button onclick="setPhotoCamera(1)" class="glass-panel hover:bg-slate-800/90 active:scale-95 text-white text-xs px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 shadow">
+            <span class="bg-amber-500/20 text-amber-300 border border-amber-400/30 px-1.5 rounded font-bold">1</span>
+            <span>Foto 1: Guarda-Roupa</span>
+        </button>
+        <button onclick="setPhotoCamera(2)" class="glass-panel hover:bg-slate-800/90 active:scale-95 text-white text-xs px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 shadow">
+            <span class="bg-sky-500/20 text-sky-300 border border-sky-400/30 px-1.5 rounded font-bold">2</span>
+            <span>Foto 2: PC & Escrivaninha</span>
+        </button>
+        <button onclick="setPhotoCamera(3)" class="glass-panel hover:bg-slate-800/90 active:scale-95 text-white text-xs px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 shadow">
+            <span class="bg-rose-500/20 text-rose-300 border border-rose-400/30 px-1.5 rounded font-bold">3</span>
+            <span>Foto 3: Cama & Headset</span>
+        </button>
+        <button onclick="setPhotoCamera(4)" class="glass-panel hover:bg-slate-800/90 active:scale-95 text-white text-xs px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 shadow">
+            <span class="bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 px-1.5 rounded font-bold">4</span>
+            <span>Foto 4: Estante & Cadeira</span>
+        </button>
+    </div>
+
+    <!-- HUD de Controles no Canto Inferior Esquerdo -->
+    <div class="fixed bottom-3 left-3 z-20 glass-panel p-3 rounded-xl text-slate-200 text-xs space-y-1.5 hidden sm:block max-w-xs pointer-events-none">
+        <div class="font-semibold text-white flex items-center justify-between border-b border-white/10 pb-1 mb-1">
+            <span>Controles First-Person</span>
+            <span id="light-status" class="text-[10px] bg-emerald-500/20 text-emerald-300 px-1.5 py-0.5 rounded">Luz Acesa</span>
+        </div>
+        <div class="grid grid-cols-2 gap-x-3 gap-y-1 text-[11px]">
+            <div><kbd class="bg-slate-700 px-1.5 py-0.5 rounded text-white font-mono">WASD</kbd> Andar</div>
+            <div><kbd class="bg-slate-700 px-1.5 py-0.5 rounded text-white font-mono">Mouse</kbd> Olhar 360°</div>
+            <div><kbd class="bg-slate-700 px-1.5 py-0.5 rounded text-white font-mono">Q / E</kbd> Inclinar (Lean)</div>
+            <div><kbd class="bg-slate-700 px-1.5 py-0.5 rounded text-white font-mono">C / Ctrl</kbd> Agachar</div>
+            <div><kbd class="bg-slate-700 px-1.5 py-0.5 rounded text-white font-mono">Espaço</kbd> Pular</div>
+            <div><kbd class="bg-slate-700 px-1.5 py-0.5 rounded text-white font-mono">L</kbd> Luz / Modo RGB</div>
+            <div class="col-span-2"><kbd class="bg-slate-700 px-1.5 py-0.5 rounded text-white font-mono">1 - 4</kbd> Câmeras idênticas às fotos</div>
+        </div>
+    </div>
+
+    <!-- Controles Touch Mobile -->
+    <div id="mobile-controls" class="fixed bottom-3 inset-x-3 z-30 flex justify-between items-end sm:hidden pointer-events-none">
+        <div class="grid grid-cols-3 gap-1.5 pointer-events-auto glass-panel p-2 rounded-xl">
+            <button id="btn-q" class="bg-slate-700/80 active:bg-sky-500 text-white font-bold w-10 h-10 rounded-lg text-xs">Q</button>
+            <button id="btn-w" class="bg-slate-700/80 active:bg-sky-500 text-white font-bold w-10 h-10 rounded-lg text-xs">▲</button>
+            <button id="btn-e" class="bg-slate-700/80 active:bg-sky-500 text-white font-bold w-10 h-10 rounded-lg text-xs">E</button>
+            <button id="btn-a" class="bg-slate-700/80 active:bg-sky-500 text-white font-bold w-10 h-10 rounded-lg text-xs">◀</button>
+            <button id="btn-s" class="bg-slate-700/80 active:bg-sky-500 text-white font-bold w-10 h-10 rounded-lg text-xs">▼</button>
+            <button id="btn-d" class="bg-slate-700/80 active:bg-sky-500 text-white font-bold w-10 h-10 rounded-lg text-xs">▶</button>
+        </div>
+        <div class="flex flex-col gap-1.5 pointer-events-auto">
+            <button onclick="toggleRoomLight()" class="glass-panel active:bg-sky-500 text-white px-3 py-2 rounded-lg text-xs font-semibold">💡 Luz / RGB</button>
+            <button onclick="triggerInteraction()" class="glass-panel active:bg-sky-500 text-white px-3 py-2 rounded-lg text-xs font-semibold">🖐️ Interagir</button>
+        </div>
+    </div>
+
+    <!-- Overlay Inicial para Capturar Mouse (Pointer Lock) -->
+    <div id="blocker" class="fixed inset-0 z-40 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="glass-panel max-w-md w-full p-6 rounded-2xl text-center space-y-4 shadow-2xl border border-white/15">
+            <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-sky-500/20 text-sky-400 border border-sky-400/30 text-2xl">
+                🎮
+            </div>
+            <h1 class="text-xl font-bold text-white">Seu Quarto 3D em Primeira Pessoa</h1>
+            <p class="text-slate-300 text-xs sm:text-sm leading-relaxed">
+                Réplica fiel em escala real com guarda-roupa, jaqueta puffer e toalha vermelha, estante com coleção de latas e pinha, escrivaninha com PS4, copo metálico, PC RGB, cadeira gamer e cama.
+            </p>
+            <div class="bg-slate-900/80 rounded-xl p-3 text-left text-xs text-slate-300 space-y-1 border border-white/5">
+                <div>• <b>Clique na tela</b> para ativar a visão em 1ª pessoa com o mouse</div>
+                <div>• Use <b>W, A, S, D</b> para caminhar e <b>Q / E</b> para inclinar a cabeça</div>
+                <div>• Pressione <b>1, 2, 3 ou 4</b> para ir direto aos ângulos das 4 fotos</div>
+                <div>• Clique na <b>gaveta</b>, <b>porta do armário</b>, <b>monitor</b>, <b>cadeira</b> ou pressione <b>L</b> para o modo noturno RGB</div>
+            </div>
+            <button id="start-btn" class="w-full py-3 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-sm transition shadow-lg shadow-sky-500/25">
+                Entrar no Quarto (1ª Pessoa)
+            </button>
+        </div>
+    </div>
+
+    <!-- Notificação Toast -->
+    <div id="toast" class="fixed bottom-4 right-4 z-30 glass-panel px-4 py-2 rounded-xl text-white text-xs font-medium opacity-0 transition-opacity duration-300 pointer-events-none">
+        Ação realizada
+    </div>
+
+    <script>
+        // ============================================================================
+        // VARIÁVEIS GLOBAIS E ESTADO DO PLAYER
+        // ============================================================================
+        let scene, camera, renderer, raycaster;
+        let moveForward = false, moveBackward = false, moveLeft = false, moveRight = false;
+        let leanLeft = false, leanRight = false, isCrouching = false;
+        let isPointerLocked = false;
+        let isDraggingLook = false, prevMouseX = 0, prevMouseY = 0;
+
+        // Estado físico do jogador (Primeira Pessoa)
+        const player = {
+            pos: new THREE.Vector3(-0.3, 1.48, 0.9),
+            vel: new THREE.Vector3(),
+            yaw: -0.25,
+            pitch: -0.08,
+            leanAmount: 0,
+            height: 1.48,
+            crouchHeight: 0.95,
+            currentHeight: 1.48,
+            onGround: true,
+            sitting: false
+        };
+
+        // Objetos interativos e animáveis
+        const interactables = [];
+        const colliders = [];
+        let wardrobeRightDoorPivot = null;
+        let deskDrawerMesh = null;
+        let monitorScreenMat = null;
+        let youtubeTextures = [];
+        let currentYoutubeChannel = 0;
+        let ceilingLight, ceilingBulbMat, ambientLight, monitorGlowLight, pcRgbLight, keyboardRgbMat;
+        let roomLightOn = true;
+        let rgbLeds = [];
+        let clockMinuteHand, clockHourHand;
+
+        // ============================================================================
+        // GERADORES DE TEXTURAS PROCEDURAIS (Fidelidade às fotos)
+        // ============================================================================
+        function createPlasterWallTexture() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 512;
+            canvas.height = 512;
+            const ctx = canvas.getContext('2d');
+
+            ctx.fillStyle = '#e8e8e5';
+            ctx.fillRect(0, 0, 512, 512);
+
+            // Manchas sutis de reboco e textura de parede branca real
+            for (let i = 0; i < 1600; i++) {
+                const x = Math.random() * 512;
+                const y = Math.random() * 512;
+                const r = Math.random() * 14 + 2;
+                const v = 222 + Math.floor(Math.random() * 22);
+                ctx.fillStyle = `rgba(${v},${v},${v - 2},0.16)`;
+                ctx.beginPath();
+                ctx.arc(x, y, r, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            // Pequenas imperfeições perto da parte inferior (como na parede da cama)
+            for (let i = 0; i < 35; i++) {
+                ctx.fillStyle = 'rgba(160, 155, 148, 0.25)';
+                ctx.fillRect(Math.random() * 512, 300 + Math.random() * 190, Math.random() * 12 + 2, Math.random() * 8 + 2);
+            }
+
+            const tex = new THREE.CanvasTexture(canvas);
+            tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+            return tex;
+        }
+
+        function createWoodTexture(baseColor = '#7d5638', grainColor = '#593a22', horizontal = true) {
+            const canvas = document.createElement('canvas');
+            canvas.width = 512;
+            canvas.height = 512;
+            const ctx = canvas.getContext('2d');
+
+            ctx.fillStyle = baseColor;
+            ctx.fillRect(0, 0, 512, 512);
+
+            ctx.strokeStyle = grainColor;
+            for (let i = 0; i < 240; i++) {
+                ctx.globalAlpha = Math.random() * 0.22 + 0.04;
+                ctx.lineWidth = Math.random() * 4 + 1;
+                ctx.beginPath();
+                if (horizontal) {
+                    const y = Math.random() * 512;
+                    ctx.moveTo(0, y);
+                    ctx.bezierCurveTo(170, y + (Math.random() - 0.5) * 14, 340, y + (Math.random() - 0.5) * 14, 512, y);
+                } else {
+                    const x = Math.random() * 512;
+                    ctx.moveTo(x, 0);
+                    ctx.bezierCurveTo(x + (Math.random() - 0.5) * 14, 170, x + (Math.random() - 0.5) * 14, 340, x, 512);
+                }
+                ctx.stroke();
+            }
+            const tex = new THREE.CanvasTexture(canvas);
+            tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+            return tex;
+        }
+
+        function createPolkaDotTexture() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 256;
+            canvas.height = 256;
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = '#6c7270';
+            ctx.fillRect(0, 0, 256, 256);
+
+            ctx.fillStyle = '#e5e7eb';
+            const step = 24;
+            for (let y = 0; y < 256; y += step) {
+                for (let x = 0; x < 256; x += step) {
+                    const offsetX = (y / step) % 2 === 0 ? 0 : step / 2;
+                    ctx.beginPath();
+                    ctx.arc(x + offsetX, y + 8, 5.2, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+            const tex = new THREE.CanvasTexture(canvas);
+            tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+            tex.repeat.set(2, 1.5);
+            return tex;
+        }
+
+        function createPinkYellowBlanketTexture() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 256;
+            canvas.height = 256;
+            const ctx = canvas.getContext('2d');
+
+            ctx.fillStyle = '#d62872';
+            ctx.fillRect(0, 0, 256, 256);
+
+            // Manchas suaves rosa claro e amarelo (idêntico à coberta da foto 3)
+            const grad = ctx.createRadialGradient(175, 160, 12, 175, 160, 85);
+            grad.addColorStop(0, '#eab308');
+            grad.addColorStop(0.55, '#facc15');
+            grad.addColorStop(0.75, '#f9a8d4');
+            grad.addColorStop(1, 'rgba(214, 40, 114, 0)');
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, 0, 256, 256);
+
+            ctx.fillStyle = 'rgba(244, 114, 182, 0.65)';
+            ctx.beginPath();
+            ctx.arc(95, 90, 58, 0, Math.PI * 2);
+            ctx.fill();
+
+            return new THREE.CanvasTexture(canvas);
+        }
+
+        function createMousepadTexture() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 256;
+            canvas.height = 256;
+            const ctx = canvas.getContext('2d');
+
+            ctx.fillStyle = '#141518';
+            ctx.fillRect(0, 0, 256, 256);
+
+            // Borda sutil avermelhada/preta e brasão dourado à direita (como na foto 2)
+            ctx.strokeStyle = '#7f1d1d';
+            ctx.lineWidth = 5;
+            ctx.strokeRect(2, 2, 252, 252);
+
+            ctx.fillStyle = '#cbb26a';
+            ctx.beginPath();
+            ctx.moveTo(150, 80);
+            ctx.lineTo(225, 110);
+            ctx.lineTo(210, 210);
+            ctx.lineTo(135, 195);
+            ctx.closePath();
+            ctx.fill();
+
+            ctx.fillStyle = '#141518';
+            ctx.beginPath();
+            ctx.arc(178, 150, 26, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.fillStyle = '#cbb26a';
+            ctx.fillRect(165, 138, 28, 22);
+
+            return new THREE.CanvasTexture(canvas);
+        }
+
+        function createYouTubeScreenTexture(variant = 0) {
+            const canvas = document.createElement('canvas');
+            canvas.width = 512;
+            canvas.height = 340;
+            const ctx = canvas.getContext('2d');
+
+            if (variant === 2) {
+                // Tela desligada
+                ctx.fillStyle = '#090b10';
+                ctx.fillRect(0, 0, 512, 340);
+                return new THREE.CanvasTexture(canvas);
+            }
+
+            // Topo do navegador + YouTube Dark Mode (fiel à foto 2)
+            ctx.fillStyle = '#1e222d';
+            ctx.fillRect(0, 0, 512, 36);
+            // Abas do navegador
+            ctx.fillStyle = '#2d3343';
+            ctx.fillRect(12, 6, 95, 16);
+            ctx.fillRect(112, 6, 95, 16);
+            // Barra de endereço
+            ctx.fillStyle = '#13161f';
+            ctx.fillRect(55, 23, 380, 10);
+
+            // Fundo YouTube Dark
+            ctx.fillStyle = '#0f131a';
+            ctx.fillRect(0, 36, 512, 304);
+
+            // Sidebar esquerda
+            ctx.fillStyle = '#131822';
+            ctx.fillRect(0, 36, 82, 304);
+            for (let i = 0; i < 9; i++) {
+                ctx.fillStyle = i === 0 ? '#ef4444' : '#64748b';
+                ctx.fillRect(10, 52 + i * 24, 10, 8);
+                ctx.fillStyle = '#94a3b8';
+                ctx.fillRect(26, 53 + i * 24, 42, 6);
+            }
+
+            // Linha superior de vídeos (4 cards como na foto 2)
+            const thumbColors = variant === 0
+                ? ['#cbd5e1', '#94a3b8', '#7dd3fc', '#0284c7']
+                : ['#a855f7', '#22c55e', '#f97316', '#eab308'];
+
+            for (let i = 0; i < 4; i++) {
+                const x = 96 + i * 98;
+                ctx.fillStyle = thumbColors[i];
+                ctx.fillRect(x, 62, 88, 56);
+
+                // Detalhe interno da thumbnail
+                ctx.fillStyle = '#1e293b';
+                ctx.beginPath();
+                ctx.arc(x + 44, 90, 14, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Linhas de título abaixo
+                ctx.fillStyle = '#e2e8f0';
+                ctx.fillRect(x, 124, 78, 6);
+                ctx.fillStyle = '#64748b';
+                ctx.fillRect(x, 134, 56, 5);
+            }
+
+            // Card grande em destaque na parte inferior central (com texto amarelo/verde e pessoa de camisa azul como na foto 2)
+            ctx.fillStyle = '#1e293b';
+            ctx.fillRect(110, 178, 175, 102);
+
+            // Fundo colorido da thumbnail grande
+            const g = ctx.createLinearGradient(110, 178, 285, 280);
+            g.addColorStop(0, '#0f172a');
+            g.addColorStop(0.6, '#0369a1');
+            g.addColorStop(1, '#38bdf8');
+            ctx.fillStyle = g;
+            ctx.fillRect(114, 182, 167, 94);
+
+            // Personagem de camisa azul claro à direita da thumb
+            ctx.fillStyle = '#38bdf8';
+            ctx.fillRect(212, 232, 54, 44);
+            ctx.fillStyle = '#f1c27d';
+            ctx.beginPath();
+            ctx.arc(238, 215, 17, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Texto em destaque na thumb ("GEMINI / IA...")
+            ctx.fillStyle = '#f8fafc';
+            ctx.fillRect(122, 195, 76, 12);
+            ctx.fillStyle = '#a3e635';
+            ctx.fillRect(122, 211, 84, 14);
+            // Setinha vermelha típica de YouTube
+            ctx.fillStyle = '#ef4444';
+            ctx.beginPath();
+            ctx.moveTo(125, 255);
+            ctx.lineTo(155, 240);
+            ctx.lineTo(148, 268);
+            ctx.closePath();
+            ctx.fill();
+
+            // Textos ao lado direito da thumb grande
+            ctx.fillStyle = '#f1f5f9';
+            ctx.fillRect(298, 188, 165, 9);
+            ctx.fillStyle = '#94a3b8';
+            ctx.fillRect(298, 205, 130, 6);
+            ctx.fillRect(298, 217, 145, 6);
+            ctx.fillRect(298, 235, 110, 6);
+
+            // Barra de tarefas do Windows na base
+            ctx.fillStyle = '#090d16';
+            ctx.fillRect(0, 322, 512, 18);
+            ctx.fillStyle = '#38bdf8';
+            ctx.fillRect(220, 325, 12, 12);
+            ctx.fillStyle = '#ef4444';
+            ctx.fillRect(238, 325, 12, 12);
+            ctx.fillStyle = '#eab308';
+            ctx.fillRect(256, 325, 12, 12);
+
+            return new THREE.CanvasTexture(canvas);
+        }
+
+        function createClockTexture() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 256;
+            canvas.height = 256;
+            const ctx = canvas.getContext('2d');
+
+            ctx.fillStyle = '#f1f5f9';
+            ctx.fillRect(0, 0, 256, 256);
+
+            ctx.fillStyle = '#1e293b';
+            ctx.font = 'bold 28px Inter, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+
+            const nums = [
+                [12, 128, 36], [1, 182, 44], [2, 214, 80], [3, 220, 128],
+                [4, 214, 178], [5, 182, 212], [6, 128, 220], [7, 74, 212],
+                [8, 42, 178], [9, 36, 128], [10, 42, 80], [11, 74, 44]
+            ];
+            nums.forEach(([n, x, y]) => ctx.fillText(n.toString(), x, y));
+
+            return new THREE.CanvasTexture(canvas);
+        }
+
+        // ============================================================================
+        // INICIALIZAÇÃO DA CENA E DO QUARTO COMPLETO
+        // ============================================================================
+        function init() {
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x11151c);
+
+            camera = new THREE.PerspectiveCamera(68, window.innerWidth / window.innerHeight, 0.05, 30);
+            camera.rotation.order = 'YXZ';
+
+            renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            document.body.appendChild(renderer.domElement);
+
+            raycaster = new THREE.Raycaster();
+
+            setupLights();
+            buildRoomArchitecture();
+            buildWardrobeArea();       // Foto 1: Guarda-roupa com jaqueta puffer, toalha vermelha, agasalho azul
+            buildModularShelving();    // Foto 4: Estante branca, nichos pretos, coleção de latas, pinha, jatos
+            buildWindowAndDeskArea();  // Foto 2: Janela veneziana, escrivaninha, PS4, copo, PC RGB, cadeira gamer
+            buildBedArea();            // Foto 3: Cama azul marinho, travesseiro poá, coberta rosa/amarela, headset
+
+            setupControls();
+            window.addEventListener('resize', onWindowResize);
+
+            // Começa olhando para uma visão geral do quarto
+            setPhotoCamera(4, false);
+            animate();
+        }
+
+        function setupLights() {
+            ambientLight = new THREE.AmbientLight(0xfefce8, 0.68);
+            scene.add(ambientLight);
+
+            // Luz principal do teto (lâmpada fria/neutra típica das fotos)
+            ceilingLight = new THREE.PointLight(0xfffbeb, 0.92, 9, 1.4);
+            ceilingLight.position.set(0, 2.55, 0.1);
+            ceilingLight.castShadow = true;
+            ceilingLight.shadow.mapSize.width = 1024;
+            ceilingLight.shadow.mapSize.height = 1024;
+            ceilingLight.shadow.bias = -0.002;
+            scene.add(ceilingLight);
+
+            // Plafon no teto
+            const plafon = new THREE.Mesh(
+                new THREE.CylinderGeometry(0.14, 0.14, 0.04, 24),
+                new THREE.MeshBasicMaterial({ color: 0xffffff })
+            );
+            plafon.position.set(0, 2.68, 0.1);
+            scene.add(plafon);
+
+            // Luz emitida pelo monitor
+            monitorGlowLight = new THREE.PointLight(0x38bdf8, 0.45, 2.2);
+            monitorGlowLight.position.set(0.38, 1.05, -1.35);
+            scene.add(monitorGlowLight);
+
+            // Luz RGB do gabinete embaixo da mesa
+            pcRgbLight = new THREE.PointLight(0xd946ef, 0.55, 1.6);
+            pcRgbLight.position.set(0.55, 0.25, -1.45);
+            scene.add(pcRgbLight);
+        }
+
+        // ============================================================================
+        // ARQUITETURA DO QUARTO (Paredes, Piso, Batente da Porta)
+        // ============================================================================
+        function buildRoomArchitecture() {
+            const wallTex = createPlasterWallTexture();
+            const wallMat = new THREE.MeshStandardMaterial({
+                map: wallTex,
+                roughness: 0.92,
+                metalness: 0.02
+            });
+
+            // Dimensões internas do quarto: Largura X = 4.2m (-2.1 a 2.1), Profundidade Z = 3.6m (-1.8 a 1.8), Altura Y = 2.7m
+            const roomGroup = new THREE.Group();
+
+            // Piso cerâmico neutro claro com rejunte
+            const floorCanvas = document.createElement('canvas');
+            floorCanvas.width = 256; floorCanvas.height = 256;
+            const fctx = floorCanvas.getContext('2d');
+            fctx.fillStyle = '#cbbfa8';
+            fctx.fillRect(0, 0, 256, 256);
+            fctx.strokeStyle = '#9ca3af';
+            fctx.lineWidth = 4;
+            fctx.strokeRect(0, 0, 256, 256);
+            const floorTex = new THREE.CanvasTexture(floorCanvas);
+            floorTex.wrapS = floorTex.wrapT = THREE.RepeatWrapping;
+            floorTex.repeat.set(8, 8);
+
+            const floor = new THREE.Mesh(
+                new THREE.PlaneGeometry(4.2, 3.6),
+                new THREE.MeshStandardMaterial({ map: floorTex, roughness: 0.65 })
+            );
+            floor.rotation.x = -Math.PI / 2;
+            floor.receiveShadow = true;
+            roomGroup.add(floor);
+
+            // Teto
+            const ceiling = new THREE.Mesh(
+                new THREE.PlaneGeometry(4.2, 3.6),
+                new THREE.MeshStandardMaterial({ color: 0xf1f5f9, roughness: 0.95 })
+            );
+            ceiling.rotation.x = Math.PI / 2;
+            ceiling.position.y = 2.7;
+            roomGroup.add(ceiling);
+
+            // Parede Fundo (Norte, Z = -1.8) -> Janela e Escrivaninha
+            const backWall = new THREE.Mesh(new THREE.PlaneGeometry(4.2, 2.7), wallMat);
+            backWall.position.set(0, 1.35, -1.8);
+            backWall.receiveShadow = true;
+            roomGroup.add(backWall);
+
+            // Parede Esquerda (Oeste, X = -2.1) -> Porta, Guarda-roupa e Estante
+            const leftWall = new THREE.Mesh(new THREE.PlaneGeometry(3.6, 2.7), wallMat);
+            leftWall.rotation.y = Math.PI / 2;
+            leftWall.position.set(-2.1, 1.35, 0);
+            leftWall.receiveShadow = true;
+            roomGroup.add(leftWall);
+
+            // Parede Direita (Leste, X = 2.1) -> Cabeceira/Lateral da Cama
+            const rightWall = new THREE.Mesh(new THREE.PlaneGeometry(3.6, 2.7), wallMat);
+            rightWall.rotation.y = -Math.PI / 2;
+            rightWall.position.set(2.1, 1.35, 0);
+            rightWall.receiveShadow = true;
+            roomGroup.add(rightWall);
+
+            // Parede Frontal (Sul, Z = 1.8)
+            const frontWall = new THREE.Mesh(new THREE.PlaneGeometry(4.2, 2.7), wallMat);
+            frontWall.rotation.y = Math.PI;
+            frontWall.position.set(0, 1.35, 1.8);
+            roomGroup.add(frontWall);
+
+            // Batente de madeira escura da porta à esquerda do guarda-roupa (visível na Foto 1)
+            const doorFrameMat = new THREE.MeshStandardMaterial({ color: 0x3e2723, roughness: 0.6 });
+            const doorTrim = new THREE.Mesh(new THREE.BoxGeometry(0.06, 2.15, 0.12), doorFrameMat);
+            doorTrim.position.set(-2.07, 1.075, 1.55);
+            roomGroup.add(doorTrim);
+
+            // Pilar/relevo sutil de alvenaria entre a porta e o guarda-roupa (visível na Foto 1)
+            const wallPillar = new THREE.Mesh(new THREE.BoxGeometry(0.05, 2.7, 0.18), wallMat);
+            wallPillar.position.set(-2.08, 1.35, 1.32);
+            roomGroup.add(wallPillar);
+
+            // Fio fino azul/escuro descendo verticalmente na parede perto da janela (visível na Foto 4)
+            const wallWire = new THREE.Mesh(
+                new THREE.CylinderGeometry(0.004, 0.004, 2.1, 6),
+                new THREE.MeshBasicMaterial({ color: 0x3b82f6 })
+            );
+            wallWire.position.set(-0.62, 1.55, -1.79);
+            roomGroup.add(wallWire);
+
+            scene.add(roomGroup);
+        }
+
+        // ============================================================================
+        // FOTO 1: GUARDA-ROUPA DE MADEIRA + JAQUETA PUFFER + TOALHA VERMELHA
+        // ============================================================================
+        function buildWardrobeArea() {
+            const wardrobeGroup = new THREE.Group();
+            // Posicionado na parede esquerda (X = -2.1), na metade mais próxima da entrada
+            wardrobeGroup.position.set(-1.78, 0, 0.58);
+
+            const woodTex = createWoodTexture('#7c583c', '#543822', true);
+            const woodMat = new THREE.MeshStandardMaterial({ map: woodTex, roughness: 0.72 });
+            const innerWoodMat = new THREE.MeshStandardMaterial({ color: 0x8d6e53, roughness: 0.85 });
+            const edgeTrimMat = new THREE.MeshStandardMaterial({ color: 0xa67c52, roughness: 0.65 });
+
+            // Dimensões do guarda-roupa: Profundidade X = 0.56m, Altura Y = 1.92m, Largura Z = 1.08m
+            // Lateral esquerda (voltada para a porta do quarto, Z+)
+            const sideLeft = new THREE.Mesh(new THREE.BoxGeometry(0.56, 1.92, 0.025), woodMat);
+            sideLeft.position.set(0, 0.96, 0.525);
+            sideLeft.castShadow = true;
+            wardrobeGroup.add(sideLeft);
+
+            // Lateral direita (Z-)
+            const sideRight = new THREE.Mesh(new THREE.BoxGeometry(0.56, 1.92, 0.025), woodMat);
+            sideRight.position.set(0, 0.96, -0.525);
+            wardrobeGroup.add(sideRight);
+
+            // Topo, Base e Fundo
+            const topBoard = new THREE.Mesh(new THREE.BoxGeometry(0.56, 0.025, 1.08), woodMat);
+            topBoard.position.set(0, 1.91, 0);
+            wardrobeGroup.add(topBoard);
+
+            const bottomBoard = new THREE.Mesh(new THREE.BoxGeometry(0.56, 0.04, 1.08), woodMat);
+            bottomBoard.position.set(0, 0.02, 0);
+            wardrobeGroup.add(bottomBoard);
+
+            const backBoard = new THREE.Mesh(new THREE.BoxGeometry(0.02, 1.92, 1.08), innerWoodMat);
+            backBoard.position.set(-0.27, 0.96, 0);
+            wardrobeGroup.add(backBoard);
+
+            // Divisória central e prateleira interna (visível na Foto 1)
+            const centerDivider = new THREE.Mesh(new THREE.BoxGeometry(0.52, 1.88, 0.02), innerWoodMat);
+            centerDivider.position.set(0, 0.96, 0.02);
+            wardrobeGroup.add(centerDivider);
+
+            const innerShelf = new THREE.Mesh(new THREE.BoxGeometry(0.50, 0.02, 0.52), innerWoodMat);
+            innerShelf.position.set(0, 1.38, -0.25);
+            wardrobeGroup.add(innerShelf);
+
+            // Roupa cinza dobrada na prateleira interna direita (visível na Foto 1)
+            const foldedGreyCloth = new THREE.Mesh(
+                new THREE.BoxGeometry(0.24, 0.08, 0.22),
+                new THREE.MeshStandardMaterial({ color: 0x9ca3af, roughness: 0.9 })
+            );
+            foldedGreyCloth.position.set(0.04, 1.43, -0.24);
+            wardrobeGroup.add(foldedGreyCloth);
+
+            // Cabides pretos no interior direito
+            const hangerMat = new THREE.MeshStandardMaterial({ color: 0x18181b, roughness: 0.5 });
+            for (let i = 0; i < 3; i++) {
+                const hanger = new THREE.Mesh(new THREE.TorusGeometry(0.07, 0.008, 6, 12), hangerMat);
+                hanger.position.set(0.05 + i * 0.04, 1.26, -0.32 - i * 0.04);
+                wardrobeGroup.add(hanger);
+            }
+
+            // PORTA ESQUERDA FECHADA (com puxador bege claro, exatamente como na Foto 1)
+            const leftDoor = new THREE.Mesh(new THREE.BoxGeometry(0.025, 1.88, 0.51), woodMat);
+            leftDoor.position.set(0.28, 0.96, 0.27);
+            leftDoor.castShadow = true;
+            wardrobeGroup.add(leftDoor);
+
+            // Puxador bege/creme da porta esquerda
+            const handleMat = new THREE.MeshStandardMaterial({ color: 0xe7d8b1, roughness: 0.4 });
+            const leftHandle = new THREE.Mesh(new THREE.BoxGeometry(0.025, 0.21, 0.025), handleMat);
+            leftHandle.position.set(0.305, 0.96, 0.055);
+            wardrobeGroup.add(leftHandle);
+
+            // PORTA CENTRAL/DIREITA ABERTA A 90 GRAUS COM ROUPAS E TOALHA VERMELHA PENDURADAS!
+            wardrobeRightDoorPivot = new THREE.Group();
+            wardrobeRightDoorPivot.position.set(0.28, 0.96, 0.0); // Dobradiça central
+            wardrobeGroup.add(wardrobeRightDoorPivot);
+
+            const openCenterDoor = new THREE.Mesh(new THREE.BoxGeometry(0.48, 1.88, 0.025), woodMat);
+            openCenterDoor.position.set(0.24, 0, -0.02);
+            openCenterDoor.castShadow = true;
+            wardrobeRightDoorPivot.add(openCenterDoor);
+
+            // Porta da extrema direita aberta (com puxador bege na ponta direita, como na Foto 1)
+            const farRightOpenDoor = new THREE.Mesh(new THREE.BoxGeometry(0.46, 1.88, 0.025), woodMat);
+            farRightOpenDoor.position.set(0.48, 0.96, -0.525);
+            wardrobeGroup.add(farRightOpenDoor);
+
+            const rightHandle = new THREE.Mesh(new THREE.BoxGeometry(0.025, 0.21, 0.025), handleMat);
+            rightHandle.position.set(0.70, 0.96, -0.525);
+            wardrobeGroup.add(rightHandle);
+
+            // 1. Agasalho Azul / Calça com listras brancas pendurado na porta aberta
+            const blueTracksuit = new THREE.Mesh(
+                new THREE.CylinderGeometry(0.07, 0.09, 1.35, 12),
+                new THREE.MeshStandardMaterial({ color: 0x2b547e, roughness: 0.85 })
+            );
+            blueTracksuit.position.set(0.18, 0.12, 0.03);
+            wardrobeRightDoorPivot.add(blueTracksuit);
+
+            const darkBlueBottom = new THREE.Mesh(
+                new THREE.CylinderGeometry(0.075, 0.08, 0.75, 12),
+                new THREE.MeshStandardMaterial({ color: 0x172554, roughness: 0.88 })
+            );
+            darkBlueBottom.position.set(0.19, -0.28, 0.035);
+            wardrobeRightDoorPivot.add(darkBlueBottom);
+
+            // 2. JAQUETA PUFFER PRETA (Gominhos acolchoados horizontais idênticos à Foto 1 e 4)
+            const jacketGroup = new THREE.Group();
+            jacketGroup.position.set(0.36, -0.14, 0.06);
+            const pufferMat = new THREE.MeshStandardMaterial({
+                color: 0x141619,
+                roughness: 0.42,
+                metalness: 0.08
+            });
+
+            for (let i = 0; i < 11; i++) {
+                const puffRing = new THREE.Mesh(
+                    new THREE.CylinderGeometry(0.19 - Math.abs(i - 5) * 0.008, 0.195 - Math.abs(i - 5) * 0.008, 0.078, 16),
+                    pufferMat
+                );
+                puffRing.scale.set(1.15, 1, 0.72);
+                puffRing.position.y = 0.36 - i * 0.078;
+                puffRing.castShadow = true;
+                jacketGroup.add(puffRing);
+            }
+            // Manga da jaqueta puffer caída ao lado
+            for (let i = 0; i < 8; i++) {
+                const sleeveRing = new THREE.Mesh(
+                    new THREE.CylinderGeometry(0.085, 0.09, 0.07, 12),
+                    pufferMat
+                );
+                sleeveRing.position.set(0.06, 0.25 - i * 0.068, 0.09);
+                sleeveRing.rotation.z = -0.15;
+                jacketGroup.add(sleeveRing);
+            }
+            wardrobeRightDoorPivot.add(jacketGroup);
+
+            // 3. TOALHA VERMELHA / VINHO pendurada no topo da porta cobrindo o ombro da jaqueta
+            const towelMat = new THREE.MeshStandardMaterial({
+                color: 0xb91c3c,
+                roughness: 0.92,
+                side: THREE.DoubleSide
+            });
+            const redTowelTop = new THREE.Mesh(new THREE.BoxGeometry(0.42, 0.06, 0.26), towelMat);
+            redTowelTop.position.set(0.28, 0.94, 0.04);
+            redTowelTop.rotation.z = -0.12;
+            wardrobeRightDoorPivot.add(redTowelTop);
+
+            const redTowelDrape = new THREE.Mesh(new THREE.CylinderGeometry(0.11, 0.18, 0.78, 14), towelMat);
+            redTowelDrape.scale.set(1.25, 1, 0.55);
+            redTowelDrape.position.set(0.36, 0.58, 0.08);
+            redTowelDrape.rotation.z = -0.28;
+            wardrobeRightDoorPivot.add(redTowelDrape);
+
+            // Sacola/bolsa marrom no topo do guarda-roupa (visível na Foto 1)
+            const topBag = new THREE.Mesh(
+                new THREE.BoxGeometry(0.42, 0.16, 0.44),
+                new THREE.MeshStandardMaterial({ color: 0x6d4c41, roughness: 0.55 })
+            );
+            topBag.position.set(0.02, 2.0, 0.26);
+            wardrobeGroup.add(topBag);
+
+            // Alças de mochila preta no chão à esquerda do guarda-roupa (visível no canto inferior da Foto 1)
+            const strapMat = new THREE.MeshStandardMaterial({ color: 0x111827, roughness: 0.8 });
+            const strap = new THREE.Mesh(new THREE.TorusGeometry(0.13, 0.022, 8, 20), strapMat);
+            strap.position.set(0.18, 0.14, 0.66);
+            strap.rotation.y = Math.PI / 2;
+            wardrobeGroup.add(strap);
+
+            registerInteractable(openCenterDoor, 'Guardar/Abrir Porta com Jaqueta Puffer', () => {
+                const targetRot = wardrobeRightDoorPivot.rotation.y === 0 ? 0.55 : 0;
+                wardrobeRightDoorPivot.rotation.y = targetRot;
+                showToast(targetRot ? 'Porta do guarda-roupa entreaberta' : 'Porta na posição original da foto');
+            });
+
+            scene.add(wardrobeGroup);
+            // Colisor do guarda-roupa
+            colliders.push({ minX: -2.1, maxX: -1.15, minZ: -0.05, maxZ: 1.18 });
+        }
+
+        // ============================================================================
+        // FOTO 4: ESTANTE MODULAR, ROUPAS, PERFUMES, PINHA, CAÇAS E COLEÇÃO DE LATAS
+        // ============================================================================
+        function buildModularShelving() {
+            const shelfSystem = new THREE.Group();
+            // Fica ao lado direito do guarda-roupa, ainda na parede esquerda (X = -2.1), indo até perto da janela
+            shelfSystem.position.set(-1.78, 0, -0.78);
+
+            const woodMat = new THREE.MeshStandardMaterial({
+                map: createWoodTexture('#8c6d53', '#5c4430', true),
+                roughness: 0.75
+            });
+            const blackMat = new THREE.MeshStandardMaterial({ color: 0x18181b, roughness: 0.8 });
+            const whiteMat = new THREE.MeshStandardMaterial({ color: 0xe2e8f0, roughness: 0.65 });
+
+            // 1. BANCADA / RACK BAIXO DE MADEIRA (Base para a estante e pilhas de roupas)
+            const lowBenchTop = new THREE.Mesh(new THREE.BoxGeometry(0.48, 0.04, 1.38), woodMat);
+            lowBenchTop.position.set(0, 0.46, 0);
+            shelfSystem.add(lowBenchTop);
+
+            const leg1 = new THREE.Mesh(new THREE.BoxGeometry(0.46, 0.46, 0.04), woodMat);
+            leg1.position.set(0, 0.23, 0.66);
+            shelfSystem.add(leg1);
+
+            const leg2 = new THREE.Mesh(new THREE.BoxGeometry(0.46, 0.46, 0.04), woodMat);
+            leg2.position.set(0, 0.23, 0.05);
+            shelfSystem.add(leg2);
+
+            const leg3 = new THREE.Mesh(new THREE.BoxGeometry(0.46, 0.46, 0.04), woodMat);
+            leg3.position.set(0, 0.23, -0.66);
+            shelfSystem.add(leg3);
+
+            // Caixa de papelão e tênis embaixo da bancada (visíveis na parte inferior da Foto 4)
+            const cardboardBox = new THREE.Mesh(
+                new THREE.BoxGeometry(0.36, 0.25, 0.42),
+                new THREE.MeshStandardMaterial({ color: 0xa67c52, roughness: 0.85 })
+            );
+            cardboardBox.position.set(0.03, 0.125, 0.36);
+            shelfSystem.add(cardboardBox);
+
+            // Tênis preto e branco embaixo da estante
+            const sneaker = new THREE.Mesh(
+                new THREE.BoxGeometry(0.24, 0.11, 0.12),
+                new THREE.MeshStandardMaterial({ color: 0xf8fafc, roughness: 0.7 })
+            );
+            sneaker.position.set(0.08, 0.06, -0.18);
+            sneaker.rotation.y = 0.35;
+            shelfSystem.add(sneaker);
+
+            // 2. NICHO PRETO ESQUERDO (Com roupas dentro e frascos de desodorante/creme no topo)
+            const leftBlackCube = new THREE.Mesh(new THREE.BoxGeometry(0.38, 0.52, 0.46), blackMat);
+            leftBlackCube.position.set(-0.02, 0.74, 0.44);
+            shelfSystem.add(leftBlackCube);
+
+            // Interior oco simulado com roupas dobradas/acumuladas na frente
+            const clothesColors = [0x111827, 0x1e3a8a, 0xf8fafc, 0x374151, 0x172554];
+            for (let i = 0; i < 9; i++) {
+                const cloth = new THREE.Mesh(
+                    new THREE.SphereGeometry(0.09 + (i % 3) * 0.02, 10, 8),
+                    new THREE.MeshStandardMaterial({ color: clothesColors[i % clothesColors.length], roughness: 0.92 })
+                );
+                cloth.scale.set(1.1, 0.55, 1.3);
+                cloth.position.set(0.14 + (i % 2) * 0.06, 0.53 + (i % 3) * 0.06, 0.48 - i * 0.08);
+                shelfSystem.add(cloth);
+            }
+
+            // Frascos coloridos em cima do nicho preto esquerdo (Foto 4: pote roxo, garrafa branca alta, tubo vermelho, etc.)
+            const toiletries = [
+                { color: 0x0d9488, r: 0.025, h: 0.14, z: 0.62 },
+                { color: 0xef4444, r: 0.022, h: 0.12, z: 0.56 },
+                { color: 0x18181b, r: 0.026, h: 0.13, z: 0.49 },
+                { color: 0x9333ea, r: 0.036, h: 0.15, z: 0.41 }, // Frasco roxo
+                { color: 0xf8fafc, r: 0.042, h: 0.24, z: 0.31 }, // Garrafa branca alta com tampa azul
+                { color: 0xf97316, r: 0.022, h: 0.11, z: 0.24 }
+            ];
+            toiletries.forEach(item => {
+                const bottle = new THREE.Mesh(
+                    new THREE.CylinderGeometry(item.r, item.r, item.h, 12),
+                    new THREE.MeshStandardMaterial({ color: item.color, roughness: 0.35 })
+                );
+                bottle.position.set(0.02, 1.0 + item.h / 2, item.z);
+                shelfSystem.add(bottle);
+            });
+
+            // 3. ESTANTE BRANCA ALTA CENTRAL (4 prateleiras - Foto 4)
+            const whiteShelfGroup = new THREE.Group();
+            whiteShelfGroup.position.set(-0.02, 0.48, -0.02);
+
+            const wsLeft = new THREE.Mesh(new THREE.BoxGeometry(0.34, 1.28, 0.022), whiteMat);
+            wsLeft.position.set(0, 0.64, 0.24);
+            whiteShelfGroup.add(wsLeft);
+
+            const wsRight = new THREE.Mesh(new THREE.BoxGeometry(0.34, 1.28, 0.022), whiteMat);
+            wsRight.position.set(0, 0.64, -0.24);
+            whiteShelfGroup.add(wsRight);
+
+            // 4 divisórias horizontais da estante branca
+            [0.32, 0.64, 0.96, 1.28].forEach(yPos => {
+                const board = new THREE.Mesh(new THREE.BoxGeometry(0.34, 0.022, 0.50), whiteMat);
+                board.position.set(0, yPos, 0);
+                whiteShelfGroup.add(board);
+            });
+
+            // ITENS NA ESTANTE BRANCA (Idênticos à Foto 4):
+            // Topo da estante (y = 1.29): 3 Miniaturas de Caças/Aviões cinzas em pedestais!
+            for (let i = 0; i < 3; i++) {
+                const jetGroup = new THREE.Group();
+                jetGroup.position.set(0.02, 1.35, 0.16 - i * 0.16);
+                const jetMat = new THREE.MeshStandardMaterial({ color: 0x64748b, roughness: 0.5 });
+                const fuselage = new THREE.Mesh(new THREE.ConeGeometry(0.022, 0.16, 8), jetMat);
+                fuselage.rotation.z = -Math.PI / 2;
+                const wings = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.006, 0.13), jetMat);
+                const stand = new THREE.Mesh(new THREE.CylinderGeometry(0.005, 0.02, 0.06, 8), blackMat);
+                stand.position.y = -0.03;
+                jetGroup.add(fuselage, wings, stand);
+                whiteShelfGroup.add(jetGroup);
+            }
+
+            // Prateleira Superior (y = 0.97): Taça/Pote Amarelo (Brasil) + PINHA NATURAL + Desodorante Preto + Pote
+            const yellowCup = new THREE.Mesh(
+                new THREE.CylinderGeometry(0.055, 0.045, 0.16, 14),
+                new THREE.MeshStandardMaterial({ color: 0xeab308, roughness: 0.4 })
+            );
+            yellowCup.position.set(0.02, 1.05, 0.14);
+            whiteShelfGroup.add(yellowCup);
+
+            // Pinha (Pinecone marrom) no centro da prateleira superior
+            const pinecone = new THREE.Mesh(
+                new THREE.ConeGeometry(0.048, 0.12, 10),
+                new THREE.MeshStandardMaterial({ color: 0x4a3222, roughness: 0.95 })
+            );
+            pinecone.position.set(0.03, 1.03, 0.01);
+            whiteShelfGroup.add(pinecone);
+
+            const blackDeo = new THREE.Mesh(
+                new THREE.CylinderGeometry(0.025, 0.025, 0.14, 12),
+                blackMat
+            );
+            blackDeo.position.set(0.03, 1.04, -0.08);
+            whiteShelfGroup.add(blackDeo);
+
+            // Prateleira do Meio (y = 0.65): Estojos empilhados + Perfumes azuis
+            const whiteCase = new THREE.Mesh(new THREE.BoxGeometry(0.11, 0.04, 0.14), whiteMat);
+            whiteCase.position.set(0.03, 0.71, 0.14);
+            whiteShelfGroup.add(whiteCase);
+
+            const bluePerfume = new THREE.Mesh(
+                new THREE.BoxGeometry(0.06, 0.11, 0.07),
+                new THREE.MeshStandardMaterial({ color: 0x1e3a8a, roughness: 0.2, metalness: 0.3 })
+            );
+            bluePerfume.position.set(0.04, 0.71, 0.0);
+            whiteShelfGroup.add(bluePerfume);
+
+            // Prateleira Inferior (y = 0.33): 2 Potes plásticos transparentes com tampa vermelha empilhados!
+            for (let i = 0; i < 2; i++) {
+                const container = new THREE.Mesh(
+                    new THREE.BoxGeometry(0.11, 0.085, 0.11),
+                    new THREE.MeshStandardMaterial({ color: 0xe2e8f0, transparent: true, opacity: 0.78 })
+                );
+                container.position.set(0.03, 0.38 + i * 0.10, 0.15);
+                const redLid = new THREE.Mesh(
+                    new THREE.BoxGeometry(0.115, 0.018, 0.115),
+                    new THREE.MeshStandardMaterial({ color: 0xdc2626 })
+                );
+                redLid.position.set(0.03, 0.425 + i * 0.10, 0.15);
+                whiteShelfGroup.add(container, redLid);
+            }
+
+            shelfSystem.add(whiteShelfGroup);
+
+            // 4. NICHO PRETO DIREITO + PIRÂMIDE DE LATAS DE ENERGÉTICO/REFRIGERANTE (Foto 4)
+            const rightBlackCube = new THREE.Mesh(new THREE.BoxGeometry(0.36, 0.56, 0.38), blackMat);
+            rightBlackCube.position.set(-0.02, 0.76, -0.46);
+            shelfSystem.add(rightBlackCube);
+
+            // Pirâmide de Latas (Monster Mango, Pipeline Punch, Pepsi Black, Red Bull, etc.)
+            const canColors = [
+                // Fileira 1 (Base - 5 latas)
+                { y: 1.11, z: -0.31, c: 0xf59e0b },
+                { y: 1.11, z: -0.37, c: 0xf97316 },
+                { y: 1.11, z: -0.43, c: 0xec4899 },
+                { y: 1.11, z: -0.49, c: 0x18181b }, // Pepsi Black
+                { y: 1.11, z: -0.55, c: 0xeab308 },
+                // Fileira 2 (Meio - 4 latas)
+                { y: 1.25, z: -0.33, c: 0xef4444 },
+                { y: 1.25, z: -0.39, c: 0xf472b6 },
+                { y: 1.25, z: -0.45, c: 0x27272a },
+                { y: 1.25, z: -0.51, c: 0xe2e8f0 },
+                // Fileira 3 (3 latas)
+                { y: 1.39, z: -0.34, c: 0xdc2626 },
+                { y: 1.39, z: -0.40, c: 0x1e293b },
+                { y: 1.39, z: -0.46, c: 0x2563eb }, // Red Bull
+                // Topo (1 lata prateada alta)
+                { y: 1.53, z: -0.34, c: 0xcbd5e1 }
+            ];
+
+            canColors.forEach(can => {
+                const canMesh = new THREE.Mesh(
+                    new THREE.CylinderGeometry(0.027, 0.027, 0.135, 14),
+                    new THREE.MeshStandardMaterial({ color: can.c, roughness: 0.3, metalness: 0.65 })
+                );
+                canMesh.position.set(0.04, can.y, can.z);
+                shelfSystem.add(canMesh);
+            });
+
+            registerInteractable(whiteShelfGroup, 'Inspecionar Estante (Coleção de Latas, Pinha e Caças)', () => {
+                setPhotoCamera(4);
+                showToast('Estante: 3 caças no topo, pinha, perfumes e pirâmide de latas!');
+            });
+
+            scene.add(shelfSystem);
+            colliders.push({ minX: -2.1, maxX: -1.35, minZ: -1.55, maxZ: -0.05 });
+        }
+
+        // ============================================================================
+        // FOTO 2 & 4: JANELA VENEZIANA, ESCRIVANINHA, PS4, COPO, PC GAMER E CADEIRA
+        // ============================================================================
+        function buildWindowAndDeskArea() {
+            // 1. JANELA VENEZIANA MARROM ESCURA (4 folhas na parede do fundo, atrás do monitor)
+            const windowGroup = new THREE.Group();
+            windowGroup.position.set(0.32, 1.58, -1.76);
+
+            const shutterMat = new THREE.MeshStandardMaterial({ color: 0x3b2d26, roughness: 0.65 });
+            const screenGlassMat = new THREE.MeshStandardMaterial({ color: 0x292524, roughness: 0.4, metalness: 0.2 });
+
+            // Moldura externa da janela
+            const outerFrame = new THREE.Mesh(new THREE.BoxGeometry(1.78, 1.08, 0.06), shutterMat);
+            windowGroup.add(outerFrame);
+
+            // 4 painéis da janela (2 laterais com grade/vidro, 2 centrais com palhetas horizontais)
+            for (let i = 0; i < 4; i++) {
+                const px = -0.64 + i * 0.427;
+                const panel = new THREE.Mesh(new THREE.BoxGeometry(0.40, 0.98, 0.075), screenGlassMat);
+                panel.position.set(px, 0, 0.01);
+                windowGroup.add(panel);
+
+                // Venezianas/frestas horizontais
+                const slatsCount = (i === 1 || i === 2) ? 7 : 12;
+                for (let s = 0; s < slatsCount; s++) {
+                    const slat = new THREE.Mesh(
+                        new THREE.BoxGeometry(0.36, (i === 1 || i === 2) ? 0.045 : 0.015, 0.085),
+                        shutterMat
+                    );
+                    slat.position.set(px, -0.40 + s * (0.82 / (slatsCount - 1)), 0.015);
+                    windowGroup.add(slat);
+                }
+            }
+            scene.add(windowGroup);
+
+            // 2. ESCRIVANINHA DE MADEIRA CLÁSSICA COM GAVETA CENTRAL
+            const deskGroup = new THREE.Group();
+            deskGroup.position.set(0.28, 0, -1.36);
+
+            const deskWoodTex = createWoodTexture('#8b5a2b', '#5c3a1b', true);
+            const deskMat = new THREE.MeshStandardMaterial({ map: deskWoodTex, roughness: 0.62 });
+
+            // Tampo da mesa (Largura 1.24m, Profundidade 0.66m, Altura 0.76m)
+            const deskTop = new THREE.Mesh(new THREE.BoxGeometry(1.24, 0.035, 0.66), deskMat);
+            deskTop.position.set(0, 0.76, 0);
+            deskTop.castShadow = true;
+            deskTop.receiveShadow = true;
+            deskGroup.add(deskTop);
+
+            // Saia/estrutura frontal e pernas
+            const deskApron = new THREE.Mesh(new THREE.BoxGeometry(1.16, 0.13, 0.58), deskMat);
+            deskApron.position.set(0, 0.68, 0);
+            deskGroup.add(deskApron);
+
+            // Gaveta central interativa com puxador redondo de madeira
+            const drawerGroup = new THREE.Group();
+            drawerGroup.position.set(0, 0.68, 0.295);
+            const drawerFront = new THREE.Mesh(
+                new THREE.BoxGeometry(0.52, 0.105, 0.025),
+                new THREE.MeshStandardMaterial({ map: createWoodTexture('#9c6b3b', '#6e4720', true), roughness: 0.6 })
+            );
+            const drawerKnob = new THREE.Mesh(new THREE.SphereGeometry(0.022, 14, 14), deskMat);
+            drawerKnob.position.set(0, 0, 0.025);
+            drawerGroup.add(drawerFront, drawerKnob);
+            deskGroup.add(drawerGroup);
+            deskDrawerMesh = drawerGroup;
+
+            registerInteractable(drawerFront, 'Abrir / Fechar Gaveta da Escrivaninha', () => {
+                deskDrawerMesh.position.z = deskDrawerMesh.position.z > 0.32 ? 0.295 : 0.44;
+                showToast(deskDrawerMesh.position.z > 0.32 ? 'Gaveta aberta' : 'Gaveta fechada');
+            });
+
+            // 4 pernas de madeira da escrivaninha
+            [[-0.55, -0.26], [0.55, -0.26], [-0.55, 0.26], [0.55, 0.26]].forEach(([lx, lz]) => {
+                const leg = new THREE.Mesh(new THREE.BoxGeometry(0.055, 0.75, 0.055), deskMat);
+                leg.position.set(lx, 0.375, lz);
+                leg.castShadow = true;
+                deskGroup.add(leg);
+            });
+
+            // 3. PS4 SLIM + CONTROLE + CAIXA PRETA + COPO DE ALUMÍNIO (Lado esquerdo da mesa - Foto 2)
+            const ps4Mat = new THREE.MeshStandardMaterial({ color: 0x18181b, roughness: 0.45 });
+            const ps4Bottom = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.032, 0.30), ps4Mat);
+            ps4Bottom.position.set(-0.42, 0.795, 0.05);
+            const ps4Top = new THREE.Mesh(new THREE.BoxGeometry(0.27, 0.03, 0.29), ps4Mat);
+            ps4Top.position.set(-0.42, 0.83, 0.05);
+            deskGroup.add(ps4Bottom, ps4Top);
+
+            // Copo de alumínio escovado em cima do PS4 (idêntico à Foto 2 e 4!)
+            const aluminumCup = new THREE.Mesh(
+                new THREE.CylinderGeometry(0.044, 0.035, 0.145, 24),
+                new THREE.MeshStandardMaterial({ color: 0xd1d5db, roughness: 0.25, metalness: 0.85 })
+            );
+            aluminumCup.position.set(-0.41, 0.915, 0.08);
+            aluminumCup.castShadow = true;
+            deskGroup.add(aluminumCup);
+
+            // Caixa preta alta de perfume/produto atrás do copo em cima do PS4
+            const blackBoxOnPs4 = new THREE.Mesh(
+                new THREE.BoxGeometry(0.065, 0.16, 0.065),
+                new THREE.MeshStandardMaterial({ color: 0x1e293b, roughness: 0.5 })
+            );
+            blackBoxOnPs4.position.set(-0.49, 0.92, -0.02);
+            deskGroup.add(blackBoxOnPs4);
+
+            // Controle DualShock preto à esquerda do PS4
+            const ds4Controller = new THREE.Mesh(
+                new THREE.BoxGeometry(0.14, 0.045, 0.10),
+                new THREE.MeshStandardMaterial({ color: 0x27272a, roughness: 0.4 })
+            );
+            ds4Controller.position.set(-0.55, 0.86, 0.05);
+            ds4Controller.rotation.y = 0.4;
+            deskGroup.add(ds4Controller);
+
+            // Caixa de papelão e folhas brancas entre a cadeira e a mesa à esquerda (visível na Foto 4)
+            const sidePaper = new THREE.Mesh(
+                new THREE.BoxGeometry(0.26, 0.01, 0.22),
+                new THREE.MeshStandardMaterial({ color: 0xf8fafc })
+            );
+            sidePaper.position.set(-0.72, 0.75, -0.05);
+            sidePaper.rotation.y = 0.15;
+            deskGroup.add(sidePaper);
+
+            // 4. MICROFONE CONDENSADOR NO TRIPÉ (Centro-esquerda da mesa - Foto 2)
+            const micGroup = new THREE.Group();
+            micGroup.position.set(-0.22, 0.78, -0.04);
+            const micStandMat = new THREE.MeshStandardMaterial({ color: 0x111827, roughness: 0.4 });
+            // 3 perninhas do tripé
+            for (let i = 0; i < 3; i++) {
+                const leg = new THREE.Mesh(new THREE.CylinderGeometry(0.004, 0.004, 0.13, 6), micStandMat);
+                const angle = (i * Math.PI * 2) / 3;
+                leg.position.set(Math.cos(angle) * 0.04, 0.04, Math.sin(angle) * 0.04);
+                leg.rotation.z = Math.cos(angle) * 0.65;
+                leg.rotation.x = -Math.sin(angle) * 0.65;
+                micGroup.add(leg);
+            }
+            const micBody = new THREE.Mesh(
+                new THREE.CylinderGeometry(0.032, 0.028, 0.13, 16),
+                new THREE.MeshStandardMaterial({ color: 0x1f2937, roughness: 0.3, metalness: 0.5 })
+            );
+            micBody.position.set(0, 0.15, 0.02);
+            micBody.rotation.x = 0.45;
+            micGroup.add(micBody);
+            deskGroup.add(micGroup);
+
+            // 5. MONITOR COM YOUTUBE + CARTEIRA MARROM NA BASE (Centro da mesa - Foto 2)
+            const monitorGroup = new THREE.Group();
+            monitorGroup.position.set(0.02, 0.78, -0.08);
+
+            const standBase = new THREE.Mesh(new THREE.CylinderGeometry(0.11, 0.12, 0.015, 24), ps4Mat);
+            standBase.position.y = 0.008;
+            const standNeck = new THREE.Mesh(new THREE.BoxGeometry(0.045, 0.14, 0.035), ps4Mat);
+            standNeck.position.set(0, 0.07, -0.02);
+            const monitorFrame = new THREE.Mesh(new THREE.BoxGeometry(0.50, 0.36, 0.03), ps4Mat);
+            monitorFrame.position.set(0, 0.28, 0);
+            monitorFrame.castShadow = true;
+
+            youtubeTextures = [
+                createYouTubeScreenTexture(0),
+                createYouTubeScreenTexture(1),
+                createYouTubeScreenTexture(2)
+            ];
+            monitorScreenMat = new THREE.MeshBasicMaterial({ map: youtubeTextures[0] });
+            const monitorScreen = new THREE.Mesh(new THREE.PlaneGeometry(0.46, 0.31), monitorScreenMat);
+            monitorScreen.position.set(0, 0.28, 0.016);
+
+            // Carteira de couro marrom apoiada na base do monitor (detalhe exato da Foto 2!)
+            const brownWallet = new THREE.Mesh(
+                new THREE.BoxGeometry(0.11, 0.018, 0.085),
+                new THREE.MeshStandardMaterial({ color: 0x6d4c41, roughness: 0.7 })
+            );
+            brownWallet.position.set(0.04, 0.022, 0.04);
+            brownWallet.rotation.y = -0.18;
+
+            monitorGroup.add(standBase, standNeck, monitorFrame, monitorScreen, brownWallet);
+            deskGroup.add(monitorGroup);
+
+            registerInteractable(monitorFrame, 'Trocar Vídeo do YouTube / Ligar-Desligar Monitor', () => {
+                currentYoutubeChannel = (currentYoutubeChannel + 1) % youtubeTextures.length;
+                monitorScreenMat.map = youtubeTextures[currentYoutubeChannel];
+                monitorScreenMat.needsUpdate = true;
+                monitorGlowLight.intensity = currentYoutubeChannel === 2 ? 0 : 0.45;
+                showToast(currentYoutubeChannel === 2 ? 'Monitor desligado' : 'Vídeo do YouTube alterado');
+            });
+
+            // 6. TECLADO GAMER MECÂNICO COM BARRA RGB COLORIDA (Foto 2)
+            const kbGroup = new THREE.Group();
+            kbGroup.position.set(-0.08, 0.79, 0.18);
+
+            const kbBase = new THREE.Mesh(new THREE.BoxGeometry(0.44, 0.022, 0.145), ps4Mat);
+            kbGroup.add(kbBase);
+
+            // Faixa de luz RGB arco-íris na frente do teclado
+            const rgbCanvas = document.createElement('canvas');
+            rgbCanvas.width = 256; rgbCanvas.height = 32;
+            const rctx = rgbCanvas.getContext('2d');
+            const rgbGrad = rctx.createLinearGradient(0, 0, 256, 0);
+            rgbGrad.addColorStop(0, '#22c55e');
+            rgbGrad.addColorStop(0.25, '#ef4444');
+            rgbGrad.addColorStop(0.5, '#a855f7');
+            rgbGrad.addColorStop(0.75, '#06b6d4');
+            rgbGrad.addColorStop(1, '#3b82f6');
+            rctx.fillStyle = rgbGrad;
+            rctx.fillRect(0, 0, 256, 32);
+            const rgbTex = new THREE.CanvasTexture(rgbCanvas);
+
+            keyboardRgbMat = new THREE.MeshBasicMaterial({ map: rgbTex });
+            const kbGlowStrip = new THREE.Mesh(new THREE.BoxGeometry(0.435, 0.012, 0.148), keyboardRgbMat);
+            kbGlowStrip.position.y = -0.004;
+            kbGroup.add(kbGlowStrip);
+
+            // Fileiras de teclas
+            for (let r = 0; r < 5; r++) {
+                const keyRow = new THREE.Mesh(
+                    new THREE.BoxGeometry(0.41, 0.012, 0.018),
+                    new THREE.MeshStandardMaterial({ color: 0x111827, roughness: 0.5 })
+                );
+                keyRow.position.set(0, 0.015, -0.05 + r * 0.025);
+                kbGroup.add(keyRow);
+            }
+            deskGroup.add(kbGroup);
+
+            // 7. MOUSEPAD PRETO/DOURADO + MOUSE RGB ROXO + CONTROLE XBOX + RELÓGIO DESPERTADOR (Direita da mesa - Foto 2)
+            const mousepad = new THREE.Mesh(
+                new THREE.BoxGeometry(0.28, 0.005, 0.23),
+                new THREE.MeshStandardMaterial({ map: createMousepadTexture(), roughness: 0.85 })
+            );
+            mousepad.position.set(0.32, 0.78, 0.14);
+            deskGroup.add(mousepad);
+
+            // Mouse Gamer com LED roxo/rosa
+            const mouseGroup = new THREE.Group();
+            mouseGroup.position.set(0.23, 0.795, 0.16);
+            const mouseBody = new THREE.Mesh(
+                new THREE.SphereGeometry(0.036, 16, 12),
+                new THREE.MeshStandardMaterial({ color: 0x18181b, roughness: 0.35 })
+            );
+            mouseBody.scale.set(0.85, 0.55, 1.45);
+            const mouseLed = new THREE.Mesh(
+                new THREE.TorusGeometry(0.031, 0.004, 8, 20),
+                new THREE.MeshBasicMaterial({ color: 0xd946ef })
+            );
+            mouseLed.rotation.x = Math.PI / 2;
+            mouseLed.scale.set(0.85, 1.4, 1);
+            mouseLed.position.y = -0.006;
+            mouseGroup.add(mouseBody, mouseLed);
+            deskGroup.add(mouseGroup);
+
+            // Controle Xbox/PC preto atrás do mouse (com botões coloridos X Y A B - Foto 2)
+            const xboxPad = new THREE.Group();
+            xboxPad.position.set(0.36, 0.81, 0.02);
+            const padBody = new THREE.Mesh(new THREE.BoxGeometry(0.145, 0.042, 0.095), ps4Mat);
+            xboxPad.add(padBody);
+            const btnColors = [[0x22c55e, 0.04, 0.01], [0xef4444, 0.052, 0], [0x3b82f6, 0.028, 0], [0xeab308, 0.04, -0.01]];
+            btnColors.forEach(([c, bx, bz]) => {
+                const b = new THREE.Mesh(new THREE.SphereGeometry(0.006, 8, 8), new THREE.MeshBasicMaterial({ color: c }));
+                b.position.set(bx, 0.022, bz);
+                xboxPad.add(b);
+            });
+            deskGroup.add(xboxPad);
+
+            // Relógio Despertador Quadrado Cinza/Preto no canto direito traseiro (Foto 2)
+            const clockGroup = new THREE.Group();
+            clockGroup.position.set(0.41, 0.86, -0.10);
+            clockGroup.rotation.y = -0.22;
+            const clockCase = new THREE.Mesh(
+                new THREE.BoxGeometry(0.115, 0.115, 0.048),
+                new THREE.MeshStandardMaterial({ color: 0x475569, roughness: 0.5 })
+            );
+            const clockFace = new THREE.Mesh(
+                new THREE.PlaneGeometry(0.095, 0.095),
+                new THREE.MeshBasicMaterial({ map: createClockTexture() })
+            );
+            clockFace.position.z = 0.025;
+            clockGroup.add(clockCase, clockFace);
+            deskGroup.add(clockGroup);
+
+            // 8. GABINETE PC GAMER COM COOLER RGB EMBAIXO DA MESA (Foto 2)
+            const pcCaseGroup = new THREE.Group();
+            pcCaseGroup.position.set(0.24, 0.21, -0.05);
+            const pcTower = new THREE.Mesh(new THREE.BoxGeometry(0.21, 0.42, 0.40), ps4Mat);
+            pcCaseGroup.add(pcTower);
+
+            const rgbFan = new THREE.Mesh(
+                new THREE.RingGeometry(0.025, 0.068, 24),
+                new THREE.MeshBasicMaterial({ color: 0xec4899, side: THREE.DoubleSide })
+            );
+            rgbFan.position.set(-0.02, -0.04, 0.202);
+            pcCaseGroup.add(rgbFan);
+            rgbLeds.push(rgbFan);
+            deskGroup.add(pcCaseGroup);
+
+            scene.add(deskGroup);
+            colliders.push({ minX: -0.45, maxX: 0.95, minZ: -1.8, maxZ: -0.92 });
+
+            // 9. CADEIRA GAMER PRETA E VERMELHA COM TRAVESSEIRO BEGE GRANDE (Foto 4 e canto da Foto 2)
+            const chairGroup = new THREE.Group();
+            chairGroup.position.set(-0.56, 0, -0.66);
+            chairGroup.rotation.y = 0.42; // Levemente virada como na Foto 4
+
+            const chairBlackMat = new THREE.MeshStandardMaterial({ color: 0x18181b, roughness: 0.55 });
+            const chairRedMat = new THREE.MeshStandardMaterial({ color: 0xdc2626, roughness: 0.5 });
+
+            // Base estrela 5 pontas e pistão
+            const chairCylinder = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 0.36, 12), chairBlackMat);
+            chairCylinder.position.y = 0.20;
+            chairGroup.add(chairCylinder);
+
+            for (let i = 0; i < 5; i++) {
+                const leg = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.025, 0.035), chairBlackMat);
+                leg.position.y = 0.04;
+                leg.rotation.y = (i * Math.PI * 2) / 5;
+                chairGroup.add(leg);
+            }
+
+            // Assento preto com faixas vermelhas
+            const seat = new THREE.Mesh(new THREE.BoxGeometry(0.50, 0.08, 0.50), chairBlackMat);
+            seat.position.y = 0.40;
+            chairGroup.add(seat);
+
+            const redStripeL = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.085, 0.48), chairRedMat);
+            redStripeL.position.set(-0.18, 0.40, 0);
+            const redStripeR = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.085, 0.48), chairRedMat);
+            redStripeR.position.set(0.18, 0.40, 0);
+            chairGroup.add(redStripeL, redStripeR);
+
+            // Encosto alto gamer
+            const backrest = new THREE.Mesh(new THREE.BoxGeometry(0.48, 0.82, 0.09), chairBlackMat);
+            backrest.position.set(0, 0.82, -0.22);
+            backrest.rotation.x = -0.10;
+            chairGroup.add(backrest);
+
+            // Braços laterais com borda vermelha (idênticos à Foto 4)
+            [-0.27, 0.27].forEach(ax => {
+                const armPost = new THREE.Mesh(new THREE.BoxGeometry(0.03, 0.22, 0.04), chairBlackMat);
+                armPost.position.set(ax, 0.50, 0);
+                const armPad = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.035, 0.26), chairBlackMat);
+                armPad.position.set(ax, 0.61, 0.02);
+                const armRedTrim = new THREE.Mesh(new THREE.BoxGeometry(0.085, 0.018, 0.265), chairRedMat);
+                armRedTrim.position.set(ax, 0.595, 0.02);
+                chairGroup.add(armPost, armPad, armRedTrim);
+            });
+
+            // TRAVESSEIRO BEGE/CARAMELO GRANDE APOIADO VERTICALMENTE NA CADEIRA (Destaque da Foto 4 e Foto 2)
+            const chairPillow = new THREE.Mesh(
+                new THREE.SphereGeometry(0.32, 20, 18),
+                new THREE.MeshStandardMaterial({ color: 0xd4a373, roughness: 0.88 })
+            );
+            chairPillow.scale.set(0.88, 1.18, 0.42);
+            chairPillow.position.set(0, 0.78, -0.07);
+            chairPillow.rotation.x = -0.12;
+            chairPillow.castShadow = true;
+            chairGroup.add(chairPillow);
+
+            registerInteractable(chairPillow, 'Sentar na Cadeira Gamer em frente ao PC', () => {
+                player.pos.set(0.15, 1.18, -0.58);
+                player.yaw = 0.0;
+                player.pitch = -0.12;
+                showToast('Sentado na cadeira gamer em frente ao PC');
+            });
+
+            scene.add(chairGroup);
+            colliders.push({ minX: -0.92, maxX: -0.22, minZ: -0.98, maxZ: -0.32 });
+        }
+
+        // ============================================================================
+        // FOTO 3: CAMA DE SOLTEIRO AZUL MARINHO, TRAVESSEIROS, COBERTAS E HEADSET
+        // ============================================================================
+        function buildBedArea() {
+            const bedGroup = new THREE.Group();
+            // Posicionada encostada na parede direita (X = 2.1), começando logo ao lado da escrivaninha
+            bedGroup.position.set(1.52, 0, -0.12);
+
+            // Colchão e base cobertos pelo lençol felpudo azul-marinho escuro (Foto 3 e canto da Foto 2)
+            const navyBlanketMat = new THREE.MeshStandardMaterial({
+                color: 0x0b192c,
+                roughness: 0.95
+            });
+            const mattress = new THREE.Mesh(new THREE.BoxGeometry(1.08, 0.46, 1.96), navyBlanketMat);
+            mattress.position.set(0, 0.23, 0);
+            mattress.castShadow = true;
+            mattress.receiveShadow = true;
+            bedGroup.add(mattress);
+
+            // 1. TRAVESSEIRO CINZA COM BOLINHAS BRANCAS (Poá) encostado na parede na cabeceira (Foto 3)
+            const polkaPillow = new THREE.Mesh(
+                new THREE.SphereGeometry(0.32, 20, 16),
+                new THREE.MeshStandardMaterial({ map: createPolkaDotTexture(), roughness: 0.85 })
+            );
+            polkaPillow.scale.set(0.42, 0.72, 1.15);
+            polkaPillow.position.set(0.32, 0.64, 0.56);
+            polkaPillow.rotation.z = 0.28;
+            polkaPillow.castShadow = true;
+            bedGroup.add(polkaPillow);
+
+            // 2. TRAVESSEIRO BRANCO GRANDE NA FRENTE DO DE BOLINHAS (com etiqueta branca na ponta - Foto 3)
+            const whitePillow = new THREE.Mesh(
+                new THREE.SphereGeometry(0.31, 20, 16),
+                new THREE.MeshStandardMaterial({ color: 0xf1f5f9, roughness: 0.82 })
+            );
+            whitePillow.scale.set(0.95, 0.42, 1.05);
+            whitePillow.position.set(-0.04, 0.55, 0.56);
+            whitePillow.rotation.z = -0.08;
+            whitePillow.castShadow = true;
+            bedGroup.add(whitePillow);
+
+            // Etiqueta no canto do travesseiro branco (visível na Foto 3!)
+            const pillowTag = new THREE.Mesh(
+                new THREE.PlaneGeometry(0.06, 0.04),
+                new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide })
+            );
+            pillowTag.position.set(-0.28, 0.48, 0.32);
+            pillowTag.rotation.x = Math.PI / 3;
+            bedGroup.add(pillowTag);
+
+            // 3. ALMOFADA MARROM ACOLCHOADA ENCOSTADA NA PAREDE (Centro da cama - Foto 3)
+            const brownQuiltedPillow = new THREE.Mesh(
+                new THREE.SphereGeometry(0.30, 18, 14),
+                new THREE.MeshStandardMaterial({ color: 0x8d7762, roughness: 0.88 })
+            );
+            brownQuiltedPillow.scale.set(0.55, 0.52, 1.12);
+            brownQuiltedPillow.position.set(0.24, 0.57, -0.08);
+            brownQuiltedPillow.rotation.z = 0.22;
+            bedGroup.add(brownQuiltedPillow);
+
+            // 4. COBERTA ROSA E AMARELA NO CENTRO DA CAMA (Foto 3)
+            const pinkBlanketMat = new THREE.MeshStandardMaterial({
+                map: createPinkYellowBlanketTexture(),
+                roughness: 0.9
+            });
+            for (let i = 0; i < 6; i++) {
+                const fold = new THREE.Mesh(new THREE.SphereGeometry(0.18, 14, 12), pinkBlanketMat);
+                fold.scale.set(1.2, 0.35, 0.95);
+                fold.position.set(-0.08 + (i % 2) * 0.14, 0.49 + (i % 3) * 0.02, -0.05 - i * 0.07);
+                fold.rotation.y = i * 0.5;
+                bedGroup.add(fold);
+            }
+
+            // 5. COBERTA BRANCA/CINZA CLARA ENROLADA NA PONTA ESQUERDA DA CAMA (Perto da escrivaninha - Foto 3 e 2)
+            const whiteBlanketMat = new THREE.MeshStandardMaterial({ color: 0xe2e8f0, roughness: 0.92 });
+            for (let i = 0; i < 6; i++) {
+                const fold = new THREE.Mesh(new THREE.SphereGeometry(0.19, 14, 12), whiteBlanketMat);
+                fold.scale.set(1.15, 0.42, 0.95);
+                fold.position.set(-0.05 + (i % 2) * 0.12, 0.50 + (i % 2) * 0.03, -0.52 - i * 0.06);
+                bedGroup.add(fold);
+            }
+
+            // 6. HEADSET GAMER PRETO COM FIO E DETALHE DE LED AZUL/ROXO EM CIMA DA COBERTA (Foto 3)
+            const headsetGroup = new THREE.Group();
+            headsetGroup.position.set(-0.08, 0.59, -0.26);
+            headsetGroup.rotation.set(0.35, 0.4, -0.2);
+
+            const hsMat = new THREE.MeshStandardMaterial({ color: 0x111827, roughness: 0.4 });
+            const headband = new THREE.Mesh(new THREE.TorusGeometry(0.095, 0.015, 10, 24, Math.PI), hsMat);
+            const earCupL = new THREE.Mesh(new THREE.CylinderGeometry(0.048, 0.048, 0.038, 16), hsMat);
+            earCupL.rotation.z = Math.PI / 2;
+            earCupL.position.set(-0.095, -0.01, 0);
+
+            const earCupR = new THREE.Mesh(new THREE.CylinderGeometry(0.048, 0.048, 0.038, 16), hsMat);
+            earCupR.rotation.z = Math.PI / 2;
+            earCupR.position.set(0.095, -0.01, 0);
+
+            // Brilho LED roxo/azul na concha do headset (exatamente como na Foto 3!)
+            const earGlow = new THREE.Mesh(
+                new THREE.RingGeometry(0.022, 0.035, 16),
+                new THREE.MeshBasicMaterial({ color: 0x818cf8, side: THREE.DoubleSide })
+            );
+            earGlow.rotation.y = Math.PI / 2;
+            earGlow.position.set(-0.116, -0.01, 0);
+
+            headsetGroup.add(headband, earCupL, earCupR, earGlow);
+            bedGroup.add(headsetGroup);
+
+            registerInteractable(headband, 'Inspecionar Cama & Headset Gamer', () => {
+                setPhotoCamera(3);
+                showToast('Visualizando a cama e o headset no ângulo da Foto 3');
+            });
+
+            scene.add(bedGroup);
+            colliders.push({ minX: 0.92, maxX: 2.1, minZ: -1.15, maxZ: 0.92 });
+        }
+
+        // ============================================================================
+        // SISTEMA DE INTERAÇÃO E PRESETS DAS 4 FOTOS REAIS
+        // ============================================================================
+        function registerInteractable(mesh, label, callback) {
+            mesh.userData.interactLabel = label;
+            mesh.userData.onInteract = callback;
+            interactables.push(mesh);
+        }
+
+        function setPhotoCamera(photoIndex, showNotification = true) {
+            player.leanAmount = 0;
+            isCrouching = false;
+
+            if (photoIndex === 1) {
+                // Foto 1: Olhando para o guarda-roupa com a jaqueta puffer preta e toalha vermelha
+                player.pos.set(-0.38, 1.48, 0.88);
+                player.yaw = 1.32;
+                player.pitch = -0.04;
+                if (showNotification) showToast('Câmera 1: Ângulo idêntico à Foto 1 (Guarda-Roupa)');
+            } else if (photoIndex === 2) {
+                // Foto 2: Em frente à escrivaninha olhando para o monitor YouTube, PS4 e janela
+                player.pos.set(0.18, 1.34, -0.35);
+                player.yaw = -0.04;
+                player.pitch = -0.18;
+                if (showNotification) showToast('Câmera 2: Ângulo idêntico à Foto 2 (PC & Escrivaninha)');
+            } else if (photoIndex === 3) {
+                // Foto 3: Olhando para a cama, travesseiro de bolinhas, coberta rosa e headset
+                player.pos.set(0.42, 1.32, -0.05);
+                player.yaw = -1.48;
+                player.pitch = -0.28;
+                if (showNotification) showToast('Câmera 3: Ângulo idêntico à Foto 3 (Cama & Headset)');
+            } else if (photoIndex === 4) {
+                // Foto 4: Olhando para a estante branca, latas, cadeira com travesseiro bege e canto do PC
+                player.pos.set(0.15, 1.44, 0.38);
+                player.yaw = 0.72;
+                player.pitch = -0.10;
+                if (showNotification) showToast('Câmera 4: Ângulo idêntico à Foto 4 (Estante & Cadeira Gamer)');
+            }
+        }
+
+        function toggleRoomLight() {
+            roomLightOn = !roomLightOn;
+            ceilingLight.intensity = roomLightOn ? 0.92 : 0.04;
+            ambientLight.intensity = roomLightOn ? 0.68 : 0.14;
+            monitorGlowLight.intensity = roomLightOn ? 0.45 : 0.85;
+            pcRgbLight.intensity = roomLightOn ? 0.55 : 1.1;
+
+            const statusEl = document.getElementById('light-status');
+            if (roomLightOn) {
+                statusEl.textContent = 'Luz Acesa';
+                statusEl.className = 'text-[10px] bg-emerald-500/20 text-emerald-300 px-1.5 py-0.5 rounded';
+                showToast('Luz do teto acesa (Iluminação original das fotos)');
+            } else {
+                statusEl.textContent = 'Modo RGB Noturno';
+                statusEl.className = 'text-[10px] bg-purple-500/20 text-purple-300 px-1.5 py-0.5 rounded';
+                showToast('Modo Noturno: Destaque no teclado RGB, PC e Monitor!');
+            }
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.style.opacity = '1';
+            clearTimeout(toast.hideTimeout);
+            toast.hideTimeout = setTimeout(() => {
+                toast.style.opacity = '0';
+            }, 2600);
+        }
+
+        // ============================================================================
+        // CONTROLES DE PRIMEIRA PESSOA (PointerLock + Teclado + Touch)
+        // ============================================================================
+        function setupControls() {
+            const blocker = document.getElementById('blocker');
+            const startBtn = document.getElementById('start-btn');
+
+            startBtn.addEventListener('click', () => {
+                blocker.classList.add('hidden');
+                if (renderer.domElement.requestPointerLock) {
+                    renderer.domElement.requestPointerLock();
+                }
+            });
+
+            document.addEventListener('pointerlockchange', () => {
+                isPointerLocked = (document.pointerLockElement === renderer.domElement);
+            });
+
+            // Clique no canvas para travar o mouse ou interagir
+            renderer.domElement.addEventListener('mousedown', (e) => {
+                if (!isPointerLocked && blocker.classList.contains('hidden')) {
+                    isDraggingLook = true;
+                    prevMouseX = e.clientX;
+                    prevMouseY = e.clientY;
+                }
+                if (e.button === 0) {
+                    triggerInteraction();
+                }
+            });
+
+            window.addEventListener('mouseup', () => {
+                isDraggingLook = false;
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                if (isPointerLocked) {
+                    player.yaw -= e.movementX * 0.0022;
+                    player.pitch -= e.movementY * 0.0022;
+                    player.pitch = Math.max(-Math.PI / 2.1, Math.min(Math.PI / 2.1, player.pitch));
+                } else if (isDraggingLook) {
+                    const dx = e.clientX - prevMouseX;
+                    const dy = e.clientY - prevMouseY;
+                    prevMouseX = e.clientX;
+                    prevMouseY = e.clientY;
+                    player.yaw -= dx * 0.004;
+                    player.pitch -= dy * 0.004;
+                    player.pitch = Math.max(-Math.PI / 2.1, Math.min(Math.PI / 2.1, player.pitch));
+                }
+            });
+
+            // Suporte a Toque para olhar ao redor no celular
+            renderer.domElement.addEventListener('touchstart', (e) => {
+                if (e.touches.length === 1) {
+                    isDraggingLook = true;
+                    prevMouseX = e.touches[0].clientX;
+                    prevMouseY = e.touches[0].clientY;
+                }
+            }, { passive: true });
+
+            renderer.domElement.addEventListener('touchmove', (e) => {
+                if (isDraggingLook && e.touches.length === 1) {
+                    const dx = e.touches[0].clientX - prevMouseX;
+                    const dy = e.touches[0].clientY - prevMouseY;
+                    prevMouseX = e.touches[0].clientX;
+                    prevMouseY = e.touches[0].clientY;
+                    player.yaw -= dx * 0.005;
+                    player.pitch -= dy * 0.005;
+                    player.pitch = Math.max(-Math.PI / 2.1, Math.min(Math.PI / 2.1, player.pitch));
+                }
+            }, { passive: true });
+
+            renderer.domElement.addEventListener('touchend', () => {
+                isDraggingLook = false;
+            });
+
+            // Teclado
+            document.addEventListener('keydown', (e) => {
+                switch (e.code) {
+                    case 'KeyW': case 'ArrowUp': moveForward = true; break;
+                    case 'KeyS': case 'ArrowDown': moveBackward = true; break;
+                    case 'KeyA': case 'ArrowLeft': moveLeft = true; break;
+                    case 'KeyD': case 'ArrowRight': moveRight = true; break;
+                    case 'KeyQ': leanLeft = true; break;
+                    case 'KeyE': leanRight = true; break;
+                    case 'KeyC': case 'ControlLeft': isCrouching = true; break;
+                    case 'KeyL': toggleRoomLight(); break;
+                    case 'KeyF': triggerInteraction(); break;
+                    case 'Space':
+                        if (player.onGround) {
+                            player.vel.y = 3.8;
+                            player.onGround = false;
+                        }
+                        break;
+                    case 'Digit1': setPhotoCamera(1); break;
+                    case 'Digit2': setPhotoCamera(2); break;
+                    case 'Digit3': setPhotoCamera(3); break;
+                    case 'Digit4': setPhotoCamera(4); break;
+                }
+            });
+
+            document.addEventListener('keyup', (e) => {
+                switch (e.code) {
+                    case 'KeyW': case 'ArrowUp': moveForward = false; break;
+                    case 'KeyS': case 'ArrowDown': moveBackward = false; break;
+                    case 'KeyA': case 'ArrowLeft': moveLeft = false; break;
+                    case 'KeyD': case 'ArrowRight': moveRight = false; break;
+                    case 'KeyQ': leanLeft = false; break;
+                    case 'KeyE': leanRight = false; break;
+                    case 'KeyC': case 'ControlLeft': isCrouching = false; break;
+                }
+            });
+
+            // Botões mobile
+            const bindMobileBtn = (id, onDown, onUp) => {
+                const el = document.getElementById(id);
+                if (!el) return;
+                el.addEventListener('touchstart', (e) => { e.preventDefault(); onDown(); });
+                el.addEventListener('touchend', (e) => { e.preventDefault(); onUp(); });
+                el.addEventListener('mousedown', onDown);
+                el.addEventListener('mouseup', onUp);
+            };
+            bindMobileBtn('btn-w', () => moveForward = true, () => moveForward = false);
+            bindMobileBtn('btn-s', () => moveBackward = true, () => moveBackward = false);
+            bindMobileBtn('btn-a', () => moveLeft = true, () => moveLeft = false);
+            bindMobileBtn('btn-d', () => moveRight = true, () => moveRight = false);
+            bindMobileBtn('btn-q', () => leanLeft = true, () => leanLeft = false);
+            bindMobileBtn('btn-e', () => leanRight = true, () => leanRight = false);
+        }
+
+        function triggerInteraction() {
+            raycaster.setFromCamera(new THREE.Vector2(0, 0), camera);
+            const hits = raycaster.intersectObjects(interactables, true);
+            if (hits.length > 0 && hits[0].distance < 2.6) {
+                let obj = hits[0].object;
+                while (obj && !obj.userData.onInteract) {
+                    obj = obj.parent;
+                }
+                if (obj && obj.userData.onInteract) {
+                    obj.userData.onInteract();
+                }
+            }
+        }
+
+        // Verifica colisão com paredes e móveis para manter o player dentro do quarto
+        function canMoveTo(nx, nz) {
+            const margin = 0.24;
+            if (nx < -2.1 + margin || nx > 2.1 - margin || nz < -1.8 + margin || nz > 1.8 - margin) {
+                return false;
+            }
+            for (const c of colliders) {
+                if (nx > c.minX - 0.15 && nx < c.maxX + 0.15 && nz > c.minZ - 0.15 && nz < c.maxZ + 0.15) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        // ============================================================================
+        // LOOP DE ATUALIZAÇÃO FÍSICA E RENDERIZAÇÃO
+        // ============================================================================
+        let prevTime = performance.now();
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            const time = performance.now();
+            const dt = Math.min((time - prevTime) / 1000, 0.1);
+            prevTime = time;
+
+            // Movimento WASD relativo ao ângulo yaw da câmera
+            const speed = isCrouching ? 1.35 : 2.35;
+            const forward = new THREE.Vector3(-Math.sin(player.yaw), 0, -Math.cos(player.yaw));
+            const right = new THREE.Vector3(Math.cos(player.yaw), 0, -Math.sin(player.yaw));
+
+            const moveVec = new THREE.Vector3();
+            if (moveForward) moveVec.add(forward);
+            if (moveBackward) moveVec.sub(forward);
+            if (moveRight) moveVec.add(right);
+            if (moveLeft) moveVec.sub(right);
+
+            if (moveVec.lengthSq() > 0) {
+                moveVec.normalize().multiplyScalar(speed * dt);
+                const nextX = player.pos.x + moveVec.x;
+                const nextZ = player.pos.z + moveVec.z;
+
+                if (canMoveTo(nextX, player.pos.z)) player.pos.x = nextX;
+                if (canMoveTo(player.pos.x, nextZ)) player.pos.z = nextZ;
+            }
+
+            // Gravidade e Pulo
+            if (!player.onGround) {
+                player.vel.y -= 9.8 * dt;
+                player.pos.y += player.vel.y * dt;
+                const targetFloorHeight = isCrouching ? player.crouchHeight : player.height;
+                if (player.pos.y <= targetFloorHeight) {
+                    player.pos.y = targetFloorHeight;
+                    player.vel.y = 0;
+                    player.onGround = true;
+                }
+            } else {
+                const targetH = isCrouching ? player.crouchHeight : player.height;
+                player.currentHeight += (targetH - player.currentHeight) * 10 * dt;
+                player.pos.y = player.currentHeight;
+            }
+
+            // Inclinação Tática (Lean Q / E)
+            const targetLean = (leanLeft ? 1 : 0) - (leanRight ? 1 : 0);
+            player.leanAmount += (targetLean - player.leanAmount) * 10 * dt;
+
+            // Aplica posição e rotação na câmera (com deslocamento lateral de Lean)
+            const leanOffset = right.clone().multiplyScalar(-player.leanAmount * 0.22);
+            camera.position.copy(player.pos).add(leanOffset);
+            camera.rotation.y = player.yaw;
+            camera.rotation.x = player.pitch;
+            camera.rotation.z = player.leanAmount * 0.18;
+
+            // Animação sutil do cooler RGB do PC embaixo da escrivaninha
+            const hue = (time * 0.00025) % 1;
+            pcRgbLight.color.setHSL(hue, 0.85, 0.55);
+            rgbLeds.forEach(led => {
+                led.rotation.z += dt * 4;
+                led.material.color.setHSL(hue, 0.9, 0.6);
+            });
+
+            // Raycaster para destacar objetos interativos na mira
+            raycaster.setFromCamera(new THREE.Vector2(0, 0), camera);
+            const hits = raycaster.intersectObjects(interactables, true);
+            const crosshair = document.getElementById('crosshair');
+            const promptEl = document.getElementById('interaction-prompt');
+            const promptText = document.getElementById('interaction-text');
+
+            if (hits.length > 0 && hits[0].distance < 2.6) {
+                let obj = hits[0].object;
+                while (obj && !obj.userData.interactLabel) {
+                    obj = obj.parent;
+                }
+                if (obj && obj.userData.interactLabel) {
+                    crosshair.classList.add('crosshair-active');
+                    promptText.textContent = obj.userData.interactLabel;
+                    promptEl.classList.remove('hidden');
+                } else {
+                    crosshair.classList.remove('crosshair-active');
+                    promptEl.classList.add('hidden');
+                }
+            } else {
+                crosshair.classList.remove('crosshair-active');
+                promptEl.classList.add('hidden');
+            }
+
+            renderer.render(scene, camera);
+        }
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        window.onload = init;
+    </script>
+</body>
+</html>

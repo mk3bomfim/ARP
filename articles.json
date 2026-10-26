@@ -1,0 +1,12 @@
+[
+  {
+    "title": "Da Matemática ao Objeto Real",
+    "subtitle": "Como construir uma mesa biônica orgânica usando código e engenharia computacional",
+    "author": "Rafael Sant’Anna Motta",
+    "url": "artigo-da-matematica-ao-objeto-real.html",
+    "image": "media/mesa-bionica/mesa-bionica-pontos.png",
+    "alt": "Visualização pontilhada de uma mesa orgânica com tampo oval e pernas ramificadas",
+    "category": "Engenharia computacional",
+    "tags": ["design paramétrico", "PicoGK", "geometria implícita", "fabricação aditiva"]
+  }
+]

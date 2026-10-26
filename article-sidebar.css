@@ -1,0 +1,51 @@
+::selection{background:#f2f200;color:#0000f2}
+/* Shared ARP article sidebar — visual language from the landing page's blue rail */
+.layout{grid-template-columns:minmax(0,760px) 240px;gap:54px}
+.arp-sidebar{position:sticky;top:88px;align-self:start;min-width:0;background:#0000f2;color:#d6d4cc;padding:18px 16px 20px;overflow:hidden;isolation:isolate}
+.arp-sidebar:before{content:"";position:absolute;inset:0;z-index:-1;background-image:linear-gradient(rgba(255,255,255,.065) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.065) 1px,transparent 1px);background-size:18px 18px;mask-image:linear-gradient(#000,transparent 85%)}
+.arp-side-brand{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-bottom:15px;border-bottom:1px solid rgba(255,255,255,.28)}
+.arp-side-brand img{width:122px;height:auto;filter:brightness(0) invert(1)}
+.arp-side-code,.arp-side-label{font:9px 'IBM Plex Mono',monospace;letter-spacing:.12em;text-transform:uppercase}
+.arp-side-links{display:grid;gap:0;margin:10px 0 18px}
+.arp-side-links a{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.18);color:inherit;font:10px 'IBM Plex Mono',monospace;letter-spacing:.09em;text-decoration:none;text-transform:uppercase;opacity:.78;transition:opacity .2s,padding .2s}
+.arp-side-links a:hover{opacity:1;padding-left:4px}
+.arp-side-progress{display:grid;grid-template-columns:28px 1fr;gap:12px;align-items:stretch;margin:18px 0 20px}
+.arp-side-scale{position:relative;height:116px;border-right:1px solid rgba(255,255,255,.25)}
+.arp-side-tick{position:absolute;right:0;width:7px;border-top:1px solid rgba(255,255,255,.45)}
+.arp-side-tick.major{width:13px;border-color:rgba(255,255,255,.75)}
+.arp-side-pointer{position:absolute;left:0;right:-1px;height:2px;background:#f2f200;box-shadow:0 0 12px rgba(242,242,0,.5);top:0;transition:top .12s linear}
+.arp-side-pointer:before{content:attr(data-percent);position:absolute;left:0;top:-8px;transform:translateX(-100%);padding-right:5px;color:#f2f200;font:8px 'IBM Plex Mono',monospace}
+.arp-side-caption{display:flex;flex-direction:column;justify-content:space-between;font:8px 'IBM Plex Mono',monospace;letter-spacing:.1em;opacity:.6}
+.arp-side-chapters{border-top:1px solid rgba(255,255,255,.28);padding-top:12px}
+.arp-side-chapters .arp-side-label{display:block;margin:0 0 9px;opacity:.62}
+.arp-side-chapters a{display:block;position:relative;padding:7px 0 7px 12px;color:inherit;font:10px/1.35 'IBM Plex Mono',monospace;text-decoration:none;opacity:.68;transition:opacity .2s,color .2s}
+.arp-side-chapters a:before{content:"";position:absolute;left:0;top:13px;width:4px;height:4px;border:1px solid currentColor;border-radius:50%}
+.arp-side-chapters a:hover,.arp-side-chapters a[aria-current="location"]{opacity:1;color:#f2f200}
+.arp-side-chapters a[aria-current="location"]:before{background:#f2f200;border-color:#f2f200}
+@media(max-width:800px){.layout{grid-template-columns:1fr;gap:22px}.arp-sidebar{position:relative;top:auto;grid-row:1;display:grid;grid-template-columns:1fr 1fr;gap:0 18px;padding:16px}.arp-side-brand{grid-column:1/-1}.arp-side-links{grid-column:1/-1;grid-template-columns:repeat(3,1fr);gap:12px;margin:8px 0}.arp-side-links a{font-size:8px}.arp-side-progress{display:none}.arp-side-chapters{grid-column:1/-1}.arp-side-chapters>div:last-child{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:12px}.arp-side-chapters a{font-size:9px}}
+
+/* Monochrome site palette for editorial images; logos are excluded. */
+img:not([src*="logo" i]){filter:grayscale(1) contrast(1.08)}
+.heroimg,.figure,.entry-img{position:relative;isolation:isolate;overflow:hidden}
+.heroimg:after,.figure:after,.entry-img:after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:#0000f2;mix-blend-mode:color;opacity:1;transition:background-color .28s ease}
+.heroimg:hover:after,.figure:hover:after,.entry-img:hover:after{background:#f2f200}
+.heroimg img:not([src*="logo" i]),.figure img:not([src*="logo" i]),.entry-img img:not([src*="logo" i]){position:relative;z-index:0}
+.heroimg figcaption,.figure figcaption{position:relative;z-index:2}
+/* Image framing: centered image boxes, editorial crop, and restrained motion. */
+.heroimg{width:min(100%,700px);margin:46px auto 0;padding:0;background:transparent;border:1px solid rgba(0,0,242,.3);box-shadow:0 22px 56px rgba(0,0,242,.13)}
+.heroimg img{display:block;width:100%;height:auto;aspect-ratio:1/1;max-height:none;object-fit:cover;object-position:center;transform:scale(1.42);animation:arp-image-enter .95s cubic-bezier(.16,1,.3,1);transition:transform .65s cubic-bezier(.16,1,.3,1)}
+.heroimg:hover img{transform:scale(1.48)}
+.heroimg:before{content:"";position:absolute;z-index:2;inset:10px;border:1px solid rgba(0,0,242,.24);pointer-events:none}
+.heroimg figcaption{padding:12px 14px;background:var(--paper)}
+.figure{margin:36px 0;padding:9px;background:rgba(255,255,255,.55);border:1px solid rgba(0,0,242,.28);box-shadow:0 12px 34px rgba(0,0,242,.09)}
+.figure img{display:block;width:100%;height:auto;object-fit:contain;animation:arp-image-enter .9s cubic-bezier(.16,1,.3,1);transition:transform .55s cubic-bezier(.16,1,.3,1)}
+.figure:hover img{transform:scale(1.025)}
+.entry-img{border-bottom:1px solid rgba(0,0,242,.22)}
+.entry-img img{object-fit:cover;transform:scale(1.2);animation:arp-image-enter .85s cubic-bezier(.16,1,.3,1);transition:transform .6s cubic-bezier(.16,1,.3,1)}
+.entry:hover .entry-img img{transform:scale(1.3)}
+@keyframes arp-image-enter{from{opacity:.25;clip-path:inset(14%)}to{opacity:1;clip-path:inset(0)}}
+.heroimg:hover img{animation:arp-image-float 4.5s ease-in-out infinite alternate}
+@keyframes arp-image-float{to{transform:scale(1.4) translateY(-5px)}}
+@media(max-width:600px){.heroimg{width:min(100%,520px)}.heroimg img{transform:scale(1.24)}.heroimg:hover img{transform:scale(1.3)}.heroimg:hover img{animation:arp-image-float-mobile 4.5s ease-in-out infinite alternate}.figure{padding:6px}}
+@keyframes arp-image-float-mobile{to{transform:scale(1.3) translateY(-3px)}}
+@media(prefers-reduced-motion:reduce){.heroimg img,.figure img,.entry-img img{animation:none!important;transition:none!important;transform:none!important}}
