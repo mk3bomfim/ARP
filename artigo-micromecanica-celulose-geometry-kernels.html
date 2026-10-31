@@ -22,7 +22,7 @@
 <h1>Micromecânica da Celulose e Geometry Kernels</h1>
 <p class="subtitle">Modelagem implícita volumétrica, campos de distância assinado (SDF) e otimização topológica para materiais anisotrópicos.</p>
 <div class="byline">Investigação técnica por <strong>Advanced Research Projects</strong></div>
-<div class="meta"><span>Publicado em Outubro de 2026</span><span>Tempo estimado: 12 min</span><span>Dataset: simulacao_micromecanica_densificacao.csv</span></div>
+<div class="meta"><span>GEOMETRIA IMPLÍCITA</span><span>MICROMECÂNICA</span><span>ANISOTROPIA</span></div>
 <figure class="heroimg"><img src="media/geometry-kernels/micromecanica-densificacao.png" alt="Curva de simulação micromecânica da densificação celular de madeira comparando densidade versus módulo de elasticidade e tração"><figcaption>Simulação numérica constitutiva da compactação celular. À medida que a espessura relativa diminui e os vazios fecham, o módulo elástico salta de 8,3 GPa para 63,9 GPa.</figcaption></figure>
 </section>
 
@@ -89,7 +89,7 @@
 
 <figure class="figure"><img src="media/geometry-kernels/carbono-vs-circularidade.png" alt="Matriz comparando pegada de carbono versus circularidade e reciclabilidade de materiais de engenharia"><figcaption>Matriz de sustentabilidade e circularidade. Materiais celulósicos combinam pontuação máxima de circularidade com pegada líquida negativa de carbono.</figcaption></figure>
 
-<p>Os dados processados na simulação numérica documentada em [simulacao_micromecanica_densificacao.csv](file:///C:/Users/amadeus/Documents/Advanced%20Research%20Projects/pesquisa_celulose_e_geometry_kernels/dados/simulacao_micromecanica_densificacao.csv) demonstram três fases distintas:</p>
+<p>A simulação numérica micromecânica demonstra três fases distintas:</p>
 <ul>
 <li><strong>Fase 1 (0% a 30% de deformação transversal):</strong> Flexão elástica das paredes celulares finas. A densidade sobe moderadamente de 0,34 para 0,49 g/cm³, com módulo atingindo 16,5 GPa.</li>
 <li><strong>Fase 2 (30% a 65% de deformação):</strong> Colapso plástico progressivo dos canais tubulares. As faces opostas dos lúmens entram em contato inicial mecânico.</li>
@@ -98,7 +98,7 @@
 
 <h2 id="anisotropia">O desafio da anisotropia fibrilar</h2>
 <p>Os kernels de geometria implícita contemporâneos assumem materiais perfeitamente homogêneos e isotrópicos (como titânio sinterizado a laser ou polímeros de cura UV). A madeira, entretanto, possui anisotropia ortotrópica severa: a resistência na direção axial ($L$) é até vinte vezes superior à resistência transversal ($R$ e $T$).</p>
-<p>A fronteira algorítmica explorada no script <code>geometry_kernel_prototype.py</code> consiste em desacoplar o campo de geometria externa do campo vetorial de orientação de material. Um tensor de orientação $\vec{v}(x,y,z)$ é mapeado em cada voxel, permitindo que as nervuras bionicamente geradas pelo algoritmo sigam estritamente o alinhamento das linhas de tensão principal calculadas por análise de elementos finitos (FEA).</p>
+<p>A fronteira algorítmica explorada no modelo computacional do laboratório consiste em desacoplar o campo de geometria externa do campo vetorial de orientação de material. Um tensor de orientação $\vec{v}(x,y,z)$ é mapeado em cada voxel, permitindo que as nervuras bionicamente geradas pelo algoritmo sigam estritamente o alinhamento das linhas de tensão principal calculadas por análise de elementos finitos (FEA).</p>
 
 <h2 id="estruturas">Superfícies mínimas periódicas: Gyroid e Schwarz P</h2>
 <p>Ao sintetizar peças estruturais que exigem rigidez torsional e leveza, o motor implícito gera preenchimentos volumétricos por superfícies mínimas triplamente periódicas (TPMS). A equação do <strong>Gyroid</strong>:</p>
@@ -115,7 +115,6 @@
 <li>Gibson, L. J. &amp; Ashby, M. F. <em>Cellular Solids: Structure and Properties</em>. Cambridge University Press (2nd ed., 1997).</li>
 <li>PicoGK: Compact Open-Source Computational Engineering Kernel by LEAP 71 (2024).</li>
 <li>Perlin, K. <em>Improving Noise</em>. ACM Transactions on Graphics (TOG) 21(3), 681–686 (2002).</li>
-<li>Scripts locais: [geometry_kernel_prototype.py](file:///C:/Users/amadeus/Documents/Advanced%20Research%20Projects/pesquisa_celulose_e_geometry_kernels/scripts/geometry_kernel_prototype.py) e [micromecanica_celulose_simulacao.py](file:///C:/Users/amadeus/Documents/Advanced%20Research%20Projects/pesquisa_celulose_e_geometry_kernels/scripts/micromecanica_celulose_simulacao.py).</li>
 </ul>
 </article>
 <aside data-arp-sidebar data-code="ARP / 05"></aside>
