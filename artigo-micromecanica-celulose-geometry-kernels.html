@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#d6d4cc">
+<meta name="description" content="Modelagem implícita volumétrica, campos de distância assinado (SDF) e otimização topológica celular para compósitos celulósicos anisotrópicos.">
+<title>Micromecânica da Celulose e Geometry Kernels — Advanced Research Projects</title>
+<link rel="icon" type="image/png" href="arp-favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#d6d4cc;--ink:#0000f2;--blue:#0000f2;--line:rgba(0,0,242,.24);--muted:rgba(0,0,242,.68);--mono:'IBM Plex Mono',monospace;--sans:Inter,Arial,sans-serif}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.7}a{color:inherit}header{position:sticky;top:0;z-index:5;background:rgba(214,212,204,.94);border-bottom:1px solid var(--line);backdrop-filter:blur(12px)}.nav{max-width:1180px;margin:auto;padding:16px 28px;display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{font:600 11px var(--mono);letter-spacing:.14em;text-transform:uppercase;text-decoration:none}.nav a.back{font:500 10px var(--mono);letter-spacing:.1em;text-transform:uppercase;text-decoration:none}.wrap{max-width:1180px;margin:auto;padding:0 28px}.hero{padding:76px 0 42px;border-bottom:1px solid var(--line)}.eyebrow,.meta,.kicker{font:500 10px var(--mono);letter-spacing:.13em;text-transform:uppercase}.eyebrow{display:flex;gap:12px;align-items:center}.eyebrow:before{content:"";width:30px;border-top:1px solid}.hero h1{font-size:clamp(3rem,8vw,7.5rem);font-weight:400;letter-spacing:-.075em;line-height:.94;max-width:1000px;margin:32px 0 20px}.subtitle{font-size:clamp(1.2rem,2.5vw,2rem);font-weight:300;letter-spacing:-.035em;max-width:850px;line-height:1.3;margin:0 0 26px}.byline{font-size:13px}.byline a{font-weight:600;text-decoration-thickness:1px;text-underline-offset:3px}.meta{display:flex;gap:18px;margin-top:30px;color:var(--muted)}.heroimg{margin:46px 0 0;position:relative;background:#fff;overflow:hidden}.heroimg img{display:block;width:100%;max-height:650px;object-fit:contain}.heroimg figcaption,.figure figcaption{padding:10px 14px;font:10px var(--mono);letter-spacing:.04em;color:var(--muted)}.layout{display:grid;grid-template-columns:minmax(0,760px) 220px;gap:80px;padding:64px 0 100px}.article{font-size:17px}.article p{margin:0 0 1.35em}.article h2{font-size:clamp(1.8rem,4vw,2.7rem);letter-spacing:-.055em;font-weight:400;line-height:1.08;margin:2.3em 0 .65em}.article h3{font-size:1.2rem;letter-spacing:-.03em;margin:1.7em 0 .45em}.article strong{font-weight:600}.article a{text-underline-offset:3px}.lede{font-size:1.25rem;font-weight:300;line-height:1.55}.figure{margin:34px 0;background:rgba(255,255,255,.62)}.figure img{display:block;width:100%;height:auto}.note{border-left:2px solid var(--ink);padding:14px 20px;margin:28px 0;background:rgba(0,0,242,.045);font-size:14px}.pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:28px 0}.pillar{padding:18px;border:1px solid var(--line);font-size:14px}.pillar .kicker{display:block;margin-bottom:14px}.callout{margin:40px 0;padding:24px;background:var(--blue);color:var(--paper)}.callout .kicker{opacity:.7}.callout p{font-size:1.25rem;margin:12px 0 0;line-height:1.5}.data-table{width:100%;border-collapse:collapse;margin:28px 0;font-size:13px;font-family:var(--mono)}.data-table th,.data-table td{padding:10px 12px;border:1px solid var(--line);text-align:left}.data-table th{background:rgba(0,0,242,.08);font-weight:600}footer{border-top:1px solid var(--line);padding:28px 0 42px;font:10px var(--mono);letter-spacing:.1em;text-transform:uppercase;display:flex;justify-content:space-between;gap:20px}@media(max-width:800px){.layout{grid-template-columns:1fr;gap:20px;padding-top:38px}.pillars{grid-template-columns:1fr}.hero{padding-top:52px}.article{font-size:16px}}@media(max-width:520px){.wrap,.nav{padding-left:18px;padding-right:18px}.hero h1{font-size:3.4rem}.meta{flex-direction:column;gap:4px}footer{flex-direction:column}}
+</style>
+<link rel="stylesheet" href="article-sidebar.css">
+</head>
+<body>
+<header><nav class="nav"><a class="brand" href="index.html">Advanced Research Projects</a><a class="back" href="index.html#artigos">← Todos os artigos</a></nav></header>
+<main class="wrap">
+<section class="hero">
+<div class="eyebrow">Artigo 05 <span>//</span> Engenharia Computacional</div>
+<h1>Micromecânica da Celulose e Geometry Kernels</h1>
+<p class="subtitle">Modelagem implícita volumétrica, campos de distância assinado (SDF) e otimização topológica para materiais anisotrópicos.</p>
+<div class="byline">Investigação técnica por <strong>Advanced Research Projects</strong></div>
+<div class="meta"><span>Publicado em Outubro de 2026</span><span>Tempo estimado: 12 min</span><span>Dataset: simulacao_micromecanica_densificacao.csv</span></div>
+<figure class="heroimg"><img src="media/geometry-kernels/micromecanica-densificacao.png" alt="Curva de simulação micromecânica da densificação celular de madeira comparando densidade versus módulo de elasticidade e tração"><figcaption>Simulação numérica constitutiva da compactação celular. À medida que a espessura relativa diminui e os vazios fecham, o módulo elástico salta de 8,3 GPa para 63,9 GPa.</figcaption></figure>
+</section>
+
+<div class="layout">
+<article class="article">
+<p class="lede">A engenharia computacional contemporânea enfrenta um estrangulamento conceitual: sistemas clássicos de CAD baseados em representação de fronteira (B-Rep) foram projetados para formas prismáticas industriais do século XX — planos, cilindros e ranhuras usinadas em metais isotrópicos. Quando confrontados com microestruturas porosas complexas, superfícies mínimas e materiais celulares anisotrópicos como a celulose densificada, os modelos de B-Rep colapsam sob arquivos gigantescos e falhas topológicas de malha.</p>
+
+<h2 id="computacional">A convergência entre geometria implícita e física</h2>
+<p>Para desbloquear a fabricação aditiva e a usinagem adaptativa de materiais biomiméticos de alta performance, a engenharia está migrando para <strong>kernels de geometria implícita volumétrica</strong>. Em vez de descrever um objeto por milhões de triângulos de casca externa, o sólido é definido como um campo escalar contínuo tridimensional através de uma função de distância assinada (<em>Signed Distance Field - SDF</em>):</p>
+<p>$$f(x, y, z) = d$$</p>
+<p>Onde $d &lt; 0$ define o interior do material sólido, $d = 0$ determina a fronteira exata da superfície física e $d &gt; 0$ representa o espaço vazio circundante. Esse paradigma elimina completamente problemas de "furos em malhas", arestas desconectadas ou erros numéricos de união booleana.</p>
+
+<div class="pillars">
+<div class="pillar"><span class="kicker">PicoGK / Leap71</span><strong>Voxelização Compacta</strong>Motor implícito de código aberto operando em grade de voxels de ponto flutuante.</div>
+<div class="pillar"><span class="kicker">Modelagem TPMS</span><strong>Gyroid &amp; Schwarz P</strong>Superfícies mínimas periódicas com máxima rigidez mecânica por unidade de massa.</div>
+<div class="pillar"><span class="kicker">Gibson-Ashby Não-Linear</span><strong>$\phi \to 0,98$</strong>Fechamento progressivo dos lúmens com tração atingindo 520,5 MPa na simulação.</div>
+</div>
+
+<h2 id="kernels">B-Rep tradicional versus Voxel/SDF</h2>
+<p>O teste de estresse conduzido nos protótipos de código em <code>pesquisa_celulose_e_geometry_kernels/</code> demonstrou a disparidade de performance computacional entre os dois paradigmas:</p>
+
+<table class="data-table">
+<thead>
+<tr>
+<th>Critério de Engenharia</th>
+<th>B-Rep Clássico (STEP / IGES)</th>
+<th>Geometria Implícita (PicoGK / SDF)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Representação Matemática</td>
+<td>Superfícies NURBS + Topologia de borda</td>
+<td>Função de Distância Escalar / Voxels</td>
+</tr>
+<tr>
+<td>Estruturas Celulares (&gt;100k poros)</td>
+<td>Inviável (estouro de RAM e travamento)</td>
+<td>Tempo de cálculo linear e determinístico</td>
+</tr>
+<tr>
+<td>Operações Booleanas (União / Corte)</td>
+<td>Frágeis (falhas de tolerância milimétrica)</td>
+<td>Infalíveis ($min(d_1, d_2)$ analítico)</td>
+</tr>
+<tr>
+<td>Gradiente de Densidade Funcional</td>
+<td>Requer remodelagem manual de cascas</td>
+<td>Modulação contínua do campo de offset</td>
+</tr>
+<tr>
+<td>Tamanho de Arquivo do Modelo</td>
+<td>Centenas de Megabytes em malha (.stl)</td>
+<td>Algoritmo procedural enxuto em código C#/Python</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="micromecanica">O modelo constitutivo da parede celular</h2>
+<p>Para prever o comportamento mecânico da celulose durante o colapso físico de prensagem, o laboratório implementou um modelo micromecânico de elementos celulares baseado nas equações modificadas de Gibson-Ashby para espumas fechadas em regime de grandes deformações:</p>
+
+<p>$$E = E_s \left( C_1 \phi^2 + C_2 \phi \right)$$</p>
+<p>Onde $\phi = \rho / \rho_s$ é a fração de sólidos relativos, $E_s \approx 65\ \text{GPa}$ é o módulo intrínseco da parede celular sólida desprovida de vazios, e $C_1, C_2$ são constantes geométricas de arqueamento e compressão axial dos lúmens.</p>
+
+<figure class="figure"><img src="media/geometry-kernels/carbono-vs-circularidade.png" alt="Matriz comparando pegada de carbono versus circularidade e reciclabilidade de materiais de engenharia"><figcaption>Matriz de sustentabilidade e circularidade. Materiais celulósicos combinam pontuação máxima de circularidade com pegada líquida negativa de carbono.</figcaption></figure>
+
+<p>Os dados processados na simulação numérica documentada em [simulacao_micromecanica_densificacao.csv](file:///C:/Users/amadeus/Documents/Advanced%20Research%20Projects/pesquisa_celulose_e_geometry_kernels/dados/simulacao_micromecanica_densificacao.csv) demonstram três fases distintas:</p>
+<ul>
+<li><strong>Fase 1 (0% a 30% de deformação transversal):</strong> Flexão elástica das paredes celulares finas. A densidade sobe moderadamente de 0,34 para 0,49 g/cm³, com módulo atingindo 16,5 GPa.</li>
+<li><strong>Fase 2 (30% a 65% de deformação):</strong> Colapso plástico progressivo dos canais tubulares. As faces opostas dos lúmens entram em contato inicial mecânico.</li>
+<li><strong>Fase 3 (65% a 80% de deformação):</strong> Densificação compacta. Os vazios são virtualmente extintos ($\phi = 0,98$), e a resposta mecânica aproxima-se da resistência pura das fibrilas cristalinas alinhadas (520,5 MPa).</li>
+</ul>
+
+<h2 id="anisotropia">O desafio da anisotropia fibrilar</h2>
+<p>Os kernels de geometria implícita contemporâneos assumem materiais perfeitamente homogêneos e isotrópicos (como titânio sinterizado a laser ou polímeros de cura UV). A madeira, entretanto, possui anisotropia ortotrópica severa: a resistência na direção axial ($L$) é até vinte vezes superior à resistência transversal ($R$ e $T$).</p>
+<p>A fronteira algorítmica explorada no script <code>geometry_kernel_prototype.py</code> consiste em desacoplar o campo de geometria externa do campo vetorial de orientação de material. Um tensor de orientação $\vec{v}(x,y,z)$ é mapeado em cada voxel, permitindo que as nervuras bionicamente geradas pelo algoritmo sigam estritamente o alinhamento das linhas de tensão principal calculadas por análise de elementos finitos (FEA).</p>
+
+<h2 id="estruturas">Superfícies mínimas periódicas: Gyroid e Schwarz P</h2>
+<p>Ao sintetizar peças estruturais que exigem rigidez torsional e leveza, o motor implícito gera preenchimentos volumétricos por superfícies mínimas triplamente periódicas (TPMS). A equação do <strong>Gyroid</strong>:</p>
+
+<p>$$\sin(kx) \cos(ky) + \sin(ky) \cos(kz) + \sin(kz) \cos(kx) = t$$</p>
+
+<p>Permite modular continuamente o parâmetro $t$ no espaço tridimensional. Onde as tensões mecânicas são críticas, $t$ aumenta localmente, engrossando as paredes de suporte sem gerar descontinuidades de solda ou concentração de tensão em quinas vivas.</p>
+
+<div class="callout"><span class="kicker">Síntese Unificada</span><p>Quando a física constitutiva da parede celular de celulose é codificada diretamente nas regras procedurais de um kernel implícito, a forma não é desenhada manualmente: ela é calculada para suportar a carga exata com o mínimo absoluto de matéria biológica.</p></div>
+
+<h2 id="referencias">Ferramentas de código aberto e bibliografia</h2>
+<p>Os protótipos de código e as simulações deste estudo estão disponíveis nos scripts internos do diretório <code>pesquisa_celulose_e_geometry_kernels/scripts/</code>:</p>
+<ul>
+<li>Gibson, L. J. &amp; Ashby, M. F. <em>Cellular Solids: Structure and Properties</em>. Cambridge University Press (2nd ed., 1997).</li>
+<li>PicoGK: Compact Open-Source Computational Engineering Kernel by LEAP 71 (2024).</li>
+<li>Perlin, K. <em>Improving Noise</em>. ACM Transactions on Graphics (TOG) 21(3), 681–686 (2002).</li>
+<li>Scripts locais: [geometry_kernel_prototype.py](file:///C:/Users/amadeus/Documents/Advanced%20Research%20Projects/pesquisa_celulose_e_geometry_kernels/scripts/geometry_kernel_prototype.py) e [micromecanica_celulose_simulacao.py](file:///C:/Users/amadeus/Documents/Advanced%20Research%20Projects/pesquisa_celulose_e_geometry_kernels/scripts/micromecanica_celulose_simulacao.py).</li>
+</ul>
+</article>
+<aside data-arp-sidebar data-code="ARP / 05"></aside>
+</div>
+<footer><span>ARP // Artigo 05</span><span>Advanced Research Projects · 2026</span></footer>
+</main>
+<script src="article-sidebar.js" defer></script>
+</body>
+</html>

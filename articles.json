@@ -2,11 +2,51 @@
   {
     "title": "Da Matemática ao Objeto Real",
     "subtitle": "Como construir uma mesa biônica orgânica usando código e engenharia computacional",
-    "author": "Rafael Sant’Anna Motta",
+    "author": "Advanced Research Projects",
     "url": "artigo-da-matematica-ao-objeto-real.html",
     "image": "media/mesa-bionica/mesa-bionica-pontos.png",
     "alt": "Visualização pontilhada de uma mesa orgânica com tampo oval e pernas ramificadas",
     "category": "Engenharia computacional",
-    "tags": ["design paramétrico", "PicoGK", "geometria implícita", "fabricação aditiva"]
+    "tags": ["design paramétrico", "PicoGK", "geometria implícita", "fabricação aditiva", "mesa biônica"]
+  },
+  {
+    "title": "A Forja da Superwood Doméstica",
+    "subtitle": "Deslignificação termoquímica e colapso celular para produção em oficina de madeira densificada de até 587 MPa",
+    "author": "Advanced Research Projects",
+    "url": "artigo-superwood-celulose-densificada.html",
+    "image": "media/superwood/comparativo-tracao-especifica.png",
+    "alt": "Gráfico comparativo de resistência à tração específica entre madeira superdensificada caseira, titânio, aço e madeira natural",
+    "category": "Ciência dos materiais",
+    "tags": ["superwood", "celulose densificada", "biomateriais", "deslignificação", "química prática", "alta resistência"]
+  },
+  {
+    "title": "Biocompostos de Alta Performance",
+    "subtitle": "Análise quantitativa de doze sistemas compósitos acoplando curauá, linho e juta a matrizes bio-epóxi e poliuretano de mamona",
+    "author": "Advanced Research Projects",
+    "url": "artigo-biocompostos-fibras-eco-resinas.html",
+    "image": "media/biocompostos/ashby-resistencia-modulo.png",
+    "alt": "Diagrama de Ashby comparativo de resistência específica versus módulo de elasticidade específico de biocompostos",
+    "category": "Compósitos sustentáveis",
+    "tags": ["biocompostos", "fibras vegetais", "eco-resinas", "curauá", "linho", "matrizes bio-baseadas", "NFRP"]
+  },
+  {
+    "title": "Geopolímeros de Solo: Cerâmica a Frio",
+    "subtitle": "Ativação alcalina de metacaulim e terra in-situ para síntese de matrizes minerais estruturais com cura em temperatura ambiente",
+    "author": "Advanced Research Projects",
+    "url": "artigo-geopolimeros-solo-ceramica-a-frio.html",
+    "image": "media/geopolimeros/custo-vs-resistencia-compressao.png",
+    "alt": "Gráfico de dispersão entre custo por metro cúbico e resistência à compressão de materiais de solo versus convencionais",
+    "category": "Geopolímeros e solo",
+    "tags": ["geopolímeros", "ativação alcalina", "metacaulim", "solo in-situ", "cerâmica a frio", "construção sustentável"]
+  },
+  {
+    "title": "Micromecânica da Celulose e Geometry Kernels",
+    "subtitle": "Modelagem implícita volumétrica, campos de distância assinado (SDF) e otimização topológica para materiais anisotrópicos",
+    "author": "Advanced Research Projects",
+    "url": "artigo-micromecanica-celulose-geometry-kernels.html",
+    "image": "media/geometry-kernels/micromecanica-densificacao.png",
+    "alt": "Curva de simulação micromecânica da densificação celular de madeira comparando densidade versus módulo de elasticidade",
+    "category": "Engenharia computacional",
+    "tags": ["geometria implícita", "PicoGK", "micromecânica", "anisotropia", "SDF", "TPMS", "Gyroid"]
   }
 ]

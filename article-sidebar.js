@@ -4,9 +4,10 @@
  if(!side||!article)return;
  const headings=[...article.querySelectorAll('h2[id]')];
  const ticks=Array.from({length:21},(_,i)=>`<i class="arp-side-tick ${i%2===0?'major':''}" style="top:${i*5}%"></i>`).join('');
+ const code=side.getAttribute('data-code')||'ARP / 01';
  side.className='arp-sidebar';
  side.setAttribute('aria-label','Navegação do site e do artigo');
- side.innerHTML=`<div class="arp-side-brand"><a href="index.html" aria-label="Advanced Research Projects — página inicial"><img src="arp-logo-branco-transparente.png" alt="Advanced Research Projects"></a><span class="arp-side-code">ARP / 01</span></div>
+ side.innerHTML=`<div class="arp-side-brand"><a href="index.html" aria-label="Advanced Research Projects — página inicial"><img src="arp-logo-branco-transparente.png" alt="Advanced Research Projects"></a><span class="arp-side-code">${code}</span></div>
  <nav class="arp-side-links" aria-label="Navegação do site"><a href="index.html#hero">Início <span>↗</span></a><a href="index.html#vision">Projeto <span>↗</span></a><a href="index.html#artigos">Artigos <span>↗</span></a></nav>
  <div class="arp-side-progress" aria-label="Progresso de leitura"><div class="arp-side-scale">${ticks}<b class="arp-side-pointer" data-percent="000%"></b></div><div class="arp-side-caption"><span>LEITURA</span><span>INÍCIO</span><span>FIM</span></div></div>
  <div class="arp-side-chapters"><span class="arp-side-label">Índice do artigo</span><div>${headings.map(h=>`<a href="#${encodeURIComponent(h.id)}">${h.textContent.trim()}</a>`).join('')}</div></div>`;
