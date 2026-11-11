@@ -409,29 +409,26 @@
   const T = [...rl.querySelectorAll('i')];
   const N = [...rl.querySelectorAll('b')];
   const rb = $('#rb'), pl = $('#pl'), pq = $('#pq'), hl = $('#hl'), hq = $('#hq');
-  const SECS = [['Início', '#hero'], ['Projeto', '#vision'], ['Artigos', '#artigos']];
-
-  const CH = SECS.map(([t, s]) => {
-    const b = document.createElement('button');
-    b.className = 'ch';
-    b.textContent = t;
-    b.onclick = e => {
+  const secBtns = [...document.querySelectorAll('#section-nav .sec-nav-btn')];
+  secBtns.forEach(btn => {
+    btn.onclick = e => {
       e.stopPropagation();
-      $(s).scrollIntoView({ behavior: 'smooth' });
+      const targetSel = btn.getAttribute('data-target');
+      const target = $(targetSel);
+      if (target) target.scrollIntoView({ behavior: 'smooth' });
     };
-    rl.appendChild(b);
-    return b;
   });
 
   function place() {
-    const m = Math.max(1, root.scrollHeight - innerHeight);
+    const secTargets = ['#hero', '#vision', '#artigos'];
     let a = 0;
-    SECS.forEach(([t, s], i) => {
-      const top = $(s).getBoundingClientRect().top + scrollY;
-      CH[i].style.top = Math.min(1, top / m) * 100 + '%';
-      if (top <= scrollY + innerHeight * .4) a = i;
+    secTargets.forEach((sel, i) => {
+      const el = $(sel);
+      if (!el) return;
+      const top = el.getBoundingClientRect().top + scrollY;
+      if (top <= scrollY + innerHeight * .45) a = i;
     });
-    CH.forEach((c, i) => c.classList.toggle('on', i === a));
+    secBtns.forEach((btn, i) => btn.classList.toggle('on', i === a));
   }
 
   const p3 = n => String(Math.round(n)).padStart(3, '0') + '%';
