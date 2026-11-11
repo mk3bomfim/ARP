@@ -220,62 +220,42 @@ body.pp #ruler {
   font-weight: 600;
 }
 
-/* =========================================================================
-   NAVEGAÇÃO RÁPIDA DE SEÇÕES (DOCK FIXO À ESQUERDA)
-   ========================================================================= */
-#section-nav {
-  position: fixed;
-  left: 24px;
-  top: 50%;
+#ruler .ch {
+  position: absolute;
+  right: calc(100% + 8px);
   transform: translateY(-50%);
-  z-index: 65;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  pointer-events: auto;
-}
-
-#section-nav .sec-nav-btn {
-  font: 600 10px 'IBM Plex Mono', monospace;
+  font: 600 9.5px 'IBM Plex Mono', monospace;
   letter-spacing: .12em;
   text-transform: uppercase;
   white-space: nowrap;
-  color: #ffffff;
+  color: #fff;
   background: var(--panel);
   border: 1px solid rgba(255, 255, 255, .3);
-  padding: 7px 12px;
+  padding: 5px 9px;
   cursor: pointer;
   opacity: .75;
-  transition: all .2s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
-  text-align: left;
+  transition: top .4s, opacity .3s, background .3s, color .3s, transform .3s;
 }
 
-#section-nav .sec-nav-btn:hover {
+#ruler .ch:hover {
   opacity: 1;
-  transform: translateX(4px);
+  transform: translate(-4px, -50%);
   border-color: #f2f200;
   color: #f2f200;
 }
 
-#section-nav .sec-nav-btn.on {
+#ruler .ch.on {
   background: #f2f200;
   color: #0000f2;
   font-weight: 700;
   border-color: #f2f200;
   opacity: 1;
-  box-shadow: 0 0 16px rgba(242, 242, 0, 0.65);
-  transform: translateX(4px);
 }
 
-@media(max-width: 900px) {
-  #section-nav {
+@media(max-width: 899px) {
+  #ruler .ch {
     display: none;
   }
-}
-
-#ruler .ch {
-  display: none !important;
 }
 
 #bar {

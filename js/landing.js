@@ -273,6 +273,9 @@
       tableBody.innerHTML = rows.map((a, i) => `
         <tr>
           <td><span class="tbl-code">${esc(a.code || `ARP.${String(i+1).padStart(2,'0')}`)}</span></td>
+          <td style="text-align:center">
+            <a class="tbl-action-btn" href="${esc(a.url)}">Acessar ↗</a>
+          </td>
           <td>
             <div class="tbl-date-time">
               <span class="tbl-date">${esc(a.dateFormatted || a.date || '2026')}</span>
@@ -286,9 +289,6 @@
           </td>
           <td><span class="tbl-category">${esc(a.category || 'Artigo')}</span></td>
           <td><span class="tbl-spec">${esc(a.highlight || a.status || 'Concluído')}</span></td>
-          <td style="text-align:center">
-            <a class="tbl-action-btn" href="${esc(a.url)}">Acessar ↗</a>
-          </td>
         </tr>
       `).join('');
     }
@@ -409,26 +409,32 @@
   const T = [...rl.querySelectorAll('i')];
   const N = [...rl.querySelectorAll('b')];
   const rb = $('#rb'), pl = $('#pl'), pq = $('#pq'), hl = $('#hl'), hq = $('#hq');
-  const secBtns = [...document.querySelectorAll('#section-nav .sec-nav-btn')];
-  secBtns.forEach(btn => {
-    btn.onclick = e => {
+  const SECS = [['Início', '#hero'], ['Projeto', '#vision'], ['Artigos', '#artigos']];
+
+  const CH = SECS.map(([t, s]) => {
+    const b = document.createElement('button');
+    b.className = 'ch';
+    b.textContent = t;
+    b.onclick = e => {
       e.stopPropagation();
-      const targetSel = btn.getAttribute('data-target');
-      const target = $(targetSel);
+      const target = $(s);
       if (target) target.scrollIntoView({ behavior: 'smooth' });
     };
+    rl.appendChild(b);
+    return b;
   });
 
   function place() {
-    const secTargets = ['#hero', '#vision', '#artigos'];
+    const m = Math.max(1, root.scrollHeight - innerHeight);
     let a = 0;
-    secTargets.forEach((sel, i) => {
-      const el = $(sel);
+    SECS.forEach(([t, s], i) => {
+      const el = $(s);
       if (!el) return;
       const top = el.getBoundingClientRect().top + scrollY;
-      if (top <= scrollY + innerHeight * .45) a = i;
+      CH[i].style.top = Math.min(1, top / m) * 100 + '%';
+      if (top <= scrollY + innerHeight * .4) a = i;
     });
-    secBtns.forEach((btn, i) => btn.classList.toggle('on', i === a));
+    CH.forEach((c, i) => c.classList.toggle('on', i === a));
   }
 
   const p3 = n => String(Math.round(n)).padStart(3, '0') + '%';
