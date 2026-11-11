@@ -1,0 +1,928 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#d6d4cc">
+<meta name="description" content="Engenharia bioquímica, termoconversão, bioprocessos larvais e modelagem estrutural 3D de 12 tecnologias de regeneração e biotransformação de resíduos no solo.">
+<title>Biotecnologia de Resíduos e Regeneração do Solo — Advanced Research Projects</title>
+<link rel="icon" type="image/png" href="arp-favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper: #d6d4cc;
+  --ink: #0000f2;
+  --blue: #0000f2;
+  --yellow: #f2f200;
+  --line: rgba(0,0,242,.24);
+  --muted: rgba(0,0,242,.68);
+  --mono: 'IBM Plex Mono', monospace;
+  --sans: Inter, Arial, sans-serif;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  line-height: 1.7;
+}
+a { color: inherit; }
+header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(214,212,204,.94);
+  border-bottom: 1px solid var(--line);
+  backdrop-filter: blur(12px);
+}
+.nav {
+  max-width: 1180px;
+  margin: auto;
+  padding: 16px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+.brand {
+  font: 600 11px var(--mono);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+.nav a.back {
+  font: 500 10px var(--mono);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+.wrap {
+  max-width: 1180px;
+  margin: auto;
+  padding: 0 28px;
+}
+.hero {
+  padding: 76px 0 42px;
+  border-bottom: 1px solid var(--line);
+}
+.eyebrow, .meta, .kicker {
+  font: 500 10px var(--mono);
+  letter-spacing: .13em;
+  text-transform: uppercase;
+}
+.eyebrow {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.eyebrow:before {
+  content: "";
+  width: 30px;
+  border-top: 1px solid;
+}
+.hero h1 {
+  font-size: clamp(3rem, 7.5vw, 6.8rem);
+  font-weight: 400;
+  letter-spacing: -.07em;
+  line-height: .95;
+  max-width: 1040px;
+  margin: 32px 0 20px;
+}
+.subtitle {
+  font-size: clamp(1.2rem, 2.4vw, 1.95rem);
+  font-weight: 300;
+  letter-spacing: -.035em;
+  max-width: 880px;
+  line-height: 1.32;
+  margin: 0 0 26px;
+}
+.byline { font-size: 13px; }
+.byline strong { font-weight: 600; }
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin-top: 30px;
+  color: var(--muted);
+}
+.heroimg {
+  margin: 46px 0 0;
+  position: relative;
+  background: #fff;
+  border: 1px solid var(--line);
+  overflow: hidden;
+}
+.heroimg img {
+  display: block;
+  width: 100%;
+  max-height: 600px;
+  object-fit: contain;
+}
+.heroimg figcaption, .figure figcaption {
+  padding: 10px 14px;
+  font: 10px var(--mono);
+  letter-spacing: .04em;
+  color: var(--muted);
+  border-top: 1px solid var(--line);
+  background: var(--paper);
+}
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 760px) 220px;
+  gap: 80px;
+  padding: 64px 0 100px;
+}
+.article { font-size: 17px; }
+.article p { margin: 0 0 1.35em; }
+.article h2 {
+  font-size: clamp(1.8rem, 4vw, 2.7rem);
+  letter-spacing: -.055em;
+  font-weight: 400;
+  line-height: 1.08;
+  margin: 2.4em 0 .65em;
+}
+.article h3 {
+  font-size: 1.25rem;
+  letter-spacing: -.03em;
+  margin: 1.8em 0 .45em;
+  color: var(--ink);
+  font-weight: 600;
+}
+.article strong { font-weight: 600; }
+.lede {
+  font-size: 1.25rem;
+  font-weight: 300;
+  line-height: 1.55;
+}
+.figure {
+  margin: 34px 0;
+  background: rgba(255,255,255,.62);
+  border: 1px solid var(--line);
+}
+.figure img { display: block; width: 100%; height: auto; }
+.note {
+  border-left: 2px solid var(--ink);
+  padding: 14px 20px;
+  margin: 28px 0;
+  background: rgba(0,0,242,.045);
+  font-size: 14.5px;
+}
+.pillars {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin: 28px 0;
+}
+.pillar {
+  padding: 18px;
+  border: 1px solid var(--line);
+  font-size: 13.5px;
+  background: rgba(255,255,255,.3);
+}
+.pillar .kicker {
+  display: block;
+  margin-bottom: 12px;
+  color: var(--muted);
+}
+.callout {
+  margin: 40px 0;
+  padding: 24px;
+  background: var(--blue);
+  color: var(--paper);
+}
+.callout .kicker { opacity: .75; color: var(--yellow); }
+.callout p {
+  font-size: 1.22rem;
+  margin: 12px 0 0;
+  line-height: 1.5;
+}
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 28px 0;
+  font-size: 12.5px;
+  font-family: var(--mono);
+}
+.data-table th, .data-table td {
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  text-align: left;
+}
+.data-table th {
+  background: rgba(0,0,242,.08);
+  font-weight: 600;
+}
+
+/* =========================================================================
+   SIMULADOR 3D INTEGRADO NO ARTIGO (ESTÉTICA ARP BLUEPRINT)
+   ========================================================================= */
+.stage-3d-box {
+  margin: 40px 0;
+  border: 1px solid var(--ink);
+  background: #080c16;
+  border-radius: 2px;
+  overflow: hidden;
+  box-shadow: 0 12px 36px rgba(0, 0, 242, 0.12);
+}
+.stage-3d-header {
+  background: #0e1628;
+  border-bottom: 1px solid rgba(0, 0, 242, 0.4);
+  padding: 12px 18px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.stage-3d-header .title-badge {
+  font: 600 10.5px var(--mono);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--yellow);
+}
+.stage-3d-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  background: #070b14;
+  padding: 8px 14px;
+  border-bottom: 1px solid rgba(0, 0, 242, 0.25);
+}
+.tab-btn {
+  font: 500 10px var(--mono);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: #8da2c4;
+  background: #121c32;
+  border: 1px solid rgba(0, 0, 242, 0.3);
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: all .2s ease;
+}
+.tab-btn:hover {
+  background: #1a2744;
+  color: #fff;
+  border-color: #3b82f6;
+}
+.tab-btn.active {
+  background: var(--blue);
+  color: var(--yellow);
+  border-color: var(--yellow);
+  font-weight: 600;
+}
+.viewport-3d {
+  width: 100%;
+  height: 480px;
+  position: relative;
+  background: radial-gradient(circle at 50% 50%, #111a33 0%, #060911 100%);
+}
+#canvas3d-article {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.stage-3d-footer {
+  background: #0e1628;
+  border-top: 1px solid rgba(0, 0, 242, 0.35);
+  padding: 10px 18px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  font: 10px var(--mono);
+  color: #8da2c4;
+}
+.slider-control {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.slider-control input[type="range"] {
+  accent-color: var(--yellow);
+  cursor: pointer;
+}
+.btn-toggle {
+  background: #141f38;
+  border: 1px solid rgba(0, 0, 242, 0.4);
+  color: #d6d4cc;
+  padding: 4px 10px;
+  font: 500 9.5px var(--mono);
+  cursor: pointer;
+  text-transform: uppercase;
+}
+.btn-toggle.active {
+  background: var(--yellow);
+  color: #0000f2;
+  font-weight: 600;
+}
+
+footer {
+  border-top: 1px solid var(--line);
+  padding: 28px 0 42px;
+  font: 10px var(--mono);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+@media(max-width: 800px) {
+  .layout { grid-template-columns: 1fr; gap: 20px; padding-top: 38px; }
+  .pillars { grid-template-columns: 1fr; }
+  .hero { padding-top: 52px; }
+  .article { font-size: 16px; }
+  .viewport-3d { height: 380px; }
+}
+@media(max-width: 520px) {
+  .wrap, .nav { padding-left: 18px; padding-right: 18px; }
+  .hero h1 { font-size: 3.2rem; }
+  .meta { flex-direction: column; gap: 4px; }
+  footer { flex-direction: column; }
+}
+</style>
+<link rel="stylesheet" href="article-sidebar.css">
+<script src="three.min.js"></script>
+<script src="OrbitControls.js"></script>
+</head>
+<body>
+
+<header>
+  <nav class="nav">
+    <a class="brand" href="index.html">Advanced Research Projects</a>
+    <a class="back" href="index.html#artigos">← Todos os artigos</a>
+  </nav>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <div class="eyebrow">Artigo 06 <span>//</span> Ciência dos Solos & Biotecnologia</div>
+    <h1>Biotecnologia de Resíduos e Regeneração do Solo</h1>
+    <p class="subtitle">Análise experimental e modelagem 3D de doze rotas complementares: termoconversão anóxica, biomineralização larval, fermentação acelerada e engenharia de canteiros colinares.</p>
+    <div class="byline">Investigação técnica por <strong>Advanced Research Projects</strong></div>
+    <div class="meta">
+      <span>BIOCARVÃO (BIOCHAR)</span>
+      <span>HÜGELKULTUR</span>
+      <span>MINHOCULTURA</span>
+      <span>BSFL (HERMETIA ILLUCENS)</span>
+      <span>BIODIGESTÃO</span>
+      <span>NO-DIG GARDENING</span>
+    </div>
+
+    <figure class="heroimg">
+      <img src="media/regeneracao-solo/regeneracao-solo-capa.png" alt="Matriz Cinética de Biotransformação de Resíduos e Regeneração Edáfica da ARP">
+      <figcaption>Matriz Cinética dos 12 Métodos: Correlação entre tempo de residência no processo, recalcitrância no perfil e capacidade de troca catiônica (CTC). Dados sintetizados pelo laboratório.</figcaption>
+    </figure>
+  </section>
+
+  <div class="layout">
+    <article class="article">
+      <p class="lede">A degradação física e biológica dos solos agrícolas e periurbanos representa uma crise ecossistêmica de primeira ordem: a perda crônica de matéria orgânica humificada esgota a Capacidade de Troca Catiônica (CTC), destrói a agregação hidromórfica das argilas e converte a adubação química em um ciclo ineficiente de perdas por lixiviação profunda. Em contrapartida, a biomassa residual doméstica, lenhosa e agroflorestal contém os precursores moleculares exatos necessários para a reconstrução estrutural do horizonte superficial da terra.</p>
+
+      <p>Este compêndio documenta a física, a bioquímica e a dinâmica de transferência de nutrientes de <strong>doze metodologias agroecológicas integradas</strong>. Mais do que receitas empíricas, cada processo é analisado como um reator biológico descentralizado, acompanhado de visualizadores tridimensionais interativos em tempo real para inspeção dos cortes anatômicos e estratificações de engenharia edáfica.</p>
+
+      <div class="pillars">
+        <div class="pillar">
+          <span class="kicker">01 // Retenção Hídrica</span>
+          <strong>Efeito Esponja Subterrânea</strong>
+          Madeira decomposta e biochar ativado elevam a retenção de umidade em até 500% contra estiagens severas.
+        </div>
+        <div class="pillar">
+          <span class="kicker">02 // Sequestro Estável</span>
+          <strong>Recalcitrância Aromática</strong>
+          O carbono pirolisado anóxico permanece no perfil por séculos sem mineralização atmosférica.
+        </div>
+        <div class="pillar">
+          <span class="kicker">03 // Imunidade Biológica</span>
+          <strong>Quitina & Indução SAR</strong>
+          Coprodutos larvais ativam respostas de defesa sistêmica vegetal contra fitopatógenos e nematóides.
+        </div>
+      </div>
+
+      <!-- ===================================================================
+           SIMULADOR 3D INTERATIVO INTEGRADO
+           =================================================================== -->
+      <h2 id="simulador-3d">Simulador 3D: Anatomia Estrutural dos Sistemas</h2>
+      <p>Interaja diretamente com a modelagem volumétrica dos principais métodos agroecológicos. Utilize o mouse para orbitar, botão direito para transladar e os controles no rodapé para dissecar as camadas de estratificação orgânica:</p>
+
+      <div class="stage-3d-box">
+        <div class="stage-3d-header">
+          <span class="title-badge" id="viewer-badge">ARP // SIMULADOR DE ENGENHARIA EDÁFICA</span>
+          <span id="viewer-desc" style="font: 10px var(--mono); color: #8da2c4;">Hügelkultur — Corte Transversal Esponja de Lignina</span>
+        </div>
+        
+        <div class="stage-3d-tabs">
+          <button class="tab-btn active" onclick="switch3D('hugel')">01 // Hügelkultur</button>
+          <button class="tab-btn" onclick="switch3D('biochar')">02 // Kon-Tiki Biochar</button>
+          <button class="tab-btn" onclick="switch3D('lasagna')">03 // Lasagna No-Dig</button>
+          <button class="tab-btn" onclick="switch3D('biodigester')">04 // Biodigestor</button>
+          <button class="tab-btn" onclick="switch3D('vermi')">05 // Vermicomposteira</button>
+          <button class="tab-btn" onclick="switch3D('bsfl')">06 // Reator BSFL</button>
+        </div>
+
+        <div class="viewport-3d">
+          <canvas id="canvas3d-article"></canvas>
+        </div>
+
+        <div class="stage-3d-footer">
+          <div class="slider-control" id="explode-container">
+            <span>EXPLOSÃO ESTRATIGRÁFICA:</span>
+            <input type="range" id="explode-range" min="0" max="100" value="0" oninput="handleExplode(this.value)">
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button class="btn-toggle active" id="btn-rot" onclick="toggleRot()">Auto-Girar</button>
+            <button class="btn-toggle" id="btn-wire" onclick="toggleWire()">Wireframe</button>
+            <button class="btn-toggle" onclick="resetCam()">Reset Câmera</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===================================================================
+           CORPO TÉCNICO DO ARTIGO
+           =================================================================== -->
+
+      <h2 id="termoconversao">Eixo I: Termoconversão e Aportes Minerais</h2>
+      <p>A fração lenhosa grossa (troncos caídos, podas lenhosas de árvores e cascas secas) concentra elevados teores de lignina e celulose de degradação lenta. Submetida a processos térmicos controlados, divide-se em duas rotas opostas e complementares: a pirólise anóxica e a oxidação mineral completa.</p>
+
+      <h3>1. Biocarvão (Biochar): Engenharia de Poros e Ativação Biológica</h3>
+      <p>Obtido pelo aquecimento da biomassa seca entre 350 °C e 700 °C na ausência estrita de oxigênio (pirólise lenta), o <strong>biocarvão</strong> reorganiza os anéis aromáticos em uma matriz cristalina grafítica ultrarresistente ao ataque fúngico. Sua área superficial específica varia de <strong>200 a 600 m²/g</strong>.</p>
+      
+      <p>Funcionalmente, a rede porosa desempenha um papel duplo no solo:</p>
+      <ul>
+        <li><strong>Macroporos (> 50 nm):</strong> Servem de refúgio físico permanente ("recife de corais edáfico") para hifas de fungos micorrízicos arbusculares e colônias bacterianas, impedindo sua predação por nematóides ou dessecação superficial.</li>
+        <li><strong>Mesoporos e Microporos (< 50 nm):</strong> Retêm até 5 vezes o próprio peso em água por capilaridade e disponibilizam sítios eletronegativos (-COOH e -OH) que elevam a Capacidade de Troca Catiônica (CTC) em 15% a 35%.</li>
+      </ul>
+
+      <div class="note">
+        <strong>Inoculação Obrigatória (Regra de Ouro):</strong> O biochar recém-pirolisado é quimicamente "ávido" e biologicamente inerte. Se adicionado puro na terra, age como um dreno de fertilidade, sequestrando cátions e nitrogênio da rizosfera. É mandatório ativá-lo misturando 10% a 20% do volume na compostagem ativa ou deixando-o submerso em biofertilizante líquido por 7 a 14 dias antes do uso.
+      </div>
+
+      <h3>2. Cinza de Madeira Pura: Correção Alcalina Imediata</h3>
+      <p>Diferente do biochar, a cinza vegetal é o produto mineral inorgânico da combustão completa (oxidação plena). Com o carbono volatilizado em $CO_2$, restam óxidos e carbonatos altamente reativos:</p>
+      <ul>
+        <li><strong>Potássio ($K_2O$):</strong> 3% a 12% solúvel, fornecendo liberação iônica imediata para floração e frutificação.</li>
+        <li><strong>Cálcio ($CaO$) e Magnésio ($MgO$):</strong> 15% a 35% de $CaO$, neutralizando prontamente o alumínio tóxico ($Al^{3+}$) em solos ácidos.</li>
+      </ul>
+      <p>Apresenta Poder Relativo de Neutralização Total (PRNT) equivalente a 40%–70% do calcário dolomítico, reagindo em dias após a rega. A dose de aplicação deve ser rigorosamente controlada (máximo 50 a 100 g/m²/ano) para não induzir salinização ou bloqueio férrico em culturas sensíveis.</p>
+
+      <h2 id="bioconversao">Eixo II: Bioconversão e Decomposição Orientada</h2>
+      <p>Restos de alimentos, sobras de cozinha, aparas de grama e estercos animais representam fluxos orgânicos úmidos de alta labilidade química que demandam tratamento biológico rigoroso para higienização e humificação.</p>
+
+      <h3>3. Compostagem Termofílica Aeróbica</h3>
+      <p>O processo fundamenta-se na sucessão ecológica de bactérias, actinomicetos e fungos termófilos. A manutenção da temperatura da pilha entre <strong>55 °C e 65 °C</strong> por mais de 72 horas contínuas garante a pasteurização biológica, eliminando sementes de invasoras ruderais e coliformes patogênicos (*Salmonella*, *E. coli*).</p>
+      <p>A taxa estequiométrica ótima é mantida com a relação Carbono/Nitrogênio calibrada entre <strong>25:1 e 30:1</strong> e umidade mantida rigorosamente entre 50% e 60%.</p>
+
+      <h3>4. Vermicompostagem: Fisiologia de Eisenia andrei</h3>
+      <p>A minhocultura acelera a digestão da biomassa vegetal através do trato gastrointestinal das minhocas-vermelhas-da-califórnia. Ao passar pela moela abrasiva e receber secreções carbonatadas das glândulas de Morren, o material é excretado na forma de <strong>coprólitos granulares (húmus de minhoca)</strong> com carga bacteriana enriquecida e teores assimiláveis de nitrogênio nítrico ($NO_3^-$) e fósforo superiores em até 400% ao solo comum.</p>
+
+      <h3>5. Fermentação Bokashi (Consórcio EM)</h3>
+      <p>A técnica japonesa estabelece uma fermentação ácida orientada por Microrganismos Eficientes (EM: bactérias lácticas como *Lactobacillus plantarum*, leveduras *Saccharomyces cerevisiae* e bactérias fototróficas). O pH do balde hermético estabiliza entre <strong>3,5 e 4,5</strong>, permitindo tratar resíduos complexos como carnes, queijos e alimentos cozidos sem gerar odores de putrefação antes da incorporação subterrânea ao solo.</p>
+
+      <h3>6. Larvas de Mosca-Soldado-Negra (BSFL — Hermetia illucens)</h3>
+      <p>As larvas de 4º e 5º ínstar devoram diariamente o dobro do seu próprio peso em resíduos úmidos, reduzindo a massa em 70% a 85% em apenas 12 a 18 dias. Suas pré-pupas maduras realizam automigração em rampas de 35° (fornecendo ração com 42% de proteína bruta para avicultura), enquanto seu substrato excretado (<strong>frass</strong>) fornece quitina residual que estimula a imunidade vegetal natural contra nematoides.</p>
+
+      <h2 id="bioinsumos">Eixo III: Bioinsumos Líquidos e Energia</h2>
+      
+      <h3>7. Biodigestão Anaeróbica e Metanogênese</h3>
+      <p>Em reatores anóxicos herméticos, uma cadeia sintrófica de bactérias hidrolíticas, acidogênicas, acetogênicas e arqueias metanogênicas decompõe dejetos e resíduos fluidos em duas correntes valiosas:</p>
+      <ul>
+        <li><strong>Biogás (60% a 70% $CH_4$):</strong> Fonte energética térmica ou elétrica limpa.</li>
+        <li><strong>Digestato Líquido Mineralizado:</strong> Biofertilizante no qual o nitrogênio foi convertido ao íon amônio ($NH_4^+$), de assimilação vascular imediata pelas raízes após diluição a 1:10.</li>
+      </ul>
+
+      <h3>8. Adubos Líquidos por Maceração Dinâmica</h3>
+      <p>A extração aquosa oxigenada de plantas acumuladoras dinâmicas — notadamente o <strong>confrei (*Symphytum officinale*)</strong> para potássio e alantoína proliferadora celular, e a <strong>urtiga (*Urtica dioica*)</strong> para ferro e nitrogênio livre — viabiliza caldas foliares que corrigem desequilíbrios nutricionais foliares em 48 a 72 horas sob diluição calibrada de 2% a 5%.</p>
+
+      <h2 id="canteiros">Eixo IV: Canteiros Regenerativos e Estruturação Edáfica</h2>
+
+      <h3>9. Mulching (Cobertura Morta)</h3>
+      <p>Uma camada de 5 a 10 cm de palhada recalcitrante interrompe o impacto cinético das gotas de chuva (bloqueando o selamento superficial dos microporos), reduz a evaporação em até 70% e estabiliza a temperatura do horizonte A entre <strong>22 °C e 26 °C</strong> mesmo sob forte radiação solar tropical.</p>
+
+      <h3>10. Hügelkultur: O Canteiro Esponja Decenal</h3>
+      <p>O método de colina permacultural enterra toras de madeira e galhos grossos no fundo de uma vala. Colonizada por fungos lignolíticos, a madeira adquire estrutura esponjosa de alta capilaridade hidrofílica, retendo umidade das chuvas de inverno e abastecendo as raízes das culturas por ascensão capilar durante anos consecutivos de estiagem.</p>
+
+      <h3>11. Adubação Verde e Arados Biológicos</h3>
+      <p>O plantio de leguminosas (feijão-de-porco, crotalária, guandu) associadas a bactérias diazotróficas (*Rhizobium*) injeta no solo até <strong>300 kg de Nitrogênio elementar por hectare</strong> capturado do ar. O corte mecânico deve ser executado rigorosamente no <strong>pico de florescimento (50%)</strong>, momento fisiológico de máximo acúmulo de nutrientes nos tecidos aéreos.</p>
+
+      <h3>12. Lasagna Gardening (Sheet Mulching / No-Dig)</h3>
+      <p>Canteiros construídos sem revolvimento do solo sobre base de papelão pardo abafador de invasoras, intercalando estratos de 10 cm de carbono (palha, folhas secas) e nitrogênio (restos verdes, esterco). Preserva intacta a rede de micélios nativos do terreno e cria um horizonte superficial extremamente fofo e humificado em 90 a 180 dias.</p>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Tecnologia</th>
+            <th>Fase / Agente Principal</th>
+            <th>Tempo de Estabilização</th>
+            <th>Propriedade Edáfica Chave</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Biocarvão</td>
+            <td>Pirólise Anóxica (350–700 °C)</td>
+            <td>1 a 4 h + Ativação 10d</td>
+            <td>Elevação de CTC e permanência secular</td>
+          </tr>
+          <tr>
+            <td>Hügelkultur</td>
+            <td>Fungos Lignolíticos em Toras</td>
+            <td>Montagem 1d (Ativo 15 anos)</td>
+            <td>Reserva hídrica profunda (esponja)</td>
+          </tr>
+          <tr>
+            <td>Vermicompostagem</td>
+            <td>Eisenia andrei / fetida</td>
+            <td>45 a 90 dias</td>
+            <td>Húmus bacteriano e neutralização pH</td>
+          </tr>
+          <tr>
+            <td>Bokashi</td>
+            <td>Fermentação EM Láctica</td>
+            <td>14 a 21 dias</td>
+            <td>Processamento de resíduos cozidos</td>
+          </tr>
+          <tr>
+            <td>Lasagna No-Dig</td>
+            <td>Estratificação laminar aerada</td>
+            <td>Imediato a 120 dias</td>
+            <td>Estrutura física sem enxadão</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2 id="matriz-ciclica">Integração em Ciclo Fechado na Propriedade</h2>
+      <p>A máxima produtividade biológica ocorre pelo acoplamento das saídas de um sistema às entradas de outro: o biocarvão triturado entra na compostagem para reter amônia gasosa; os resíduos cozidos passam pelo Bokashi antes de nutrir os canteiros; e o digestato do biodigestor irriga a adubação verde, fechando completamente o ciclo de nutrientes e carbono na propriedade.</p>
+
+      <div class="callout">
+        <span class="kicker">Diretriz Operacional ARP</span>
+        <p>A fertilidade de um solo não é medida pela quantidade de adubos solúveis despejados na terra, mas pela densidade da sua teia de vida microbiológica e pela estabilidade das suas frações de carbono particulado e recalcitrante.</p>
+      </div>
+
+      <h2 id="referencias">Referências Técnicas e Literatura de Campo</h2>
+      <ul>
+        <li>EMBRAPA HORTALIÇAS. <em>Compostagem: processo biológico de reciclagem de resíduos orgânicos</em>. Brasília, DF: Embrapa, 2021.</li>
+        <li>EMBRAPA MEIO AMBIENTE. <em>Uso de biocarvão como condicionador de solos e substratos agrícolas</em>. Jaguariúna, SP: Embrapa, 2019.</li>
+        <li>EMBRAPA AGROBIOLOGIA. <em>Fixação Biológica de Nitrogênio e Adubação Verde em Sistemas de Produção Agroecológicos</em>. Seropédica, RJ, 2020.</li>
+        <li>CORNELL UNIVERSITY COOPERATIVE EXTENSION. <em>Lasagna Gardening and Sheet Mulching Techniques for Urban Soils</em>. Ithaca, NY, 2022.</li>
+        <li>TRIBUNAL DE JUSTIÇA DE SANTA CATARINA (TJSC). <em>Guia Prático de Permacultura: Implantação de Canteiros Hügelkultur</em>. Florianópolis, SC, 2021.</li>
+      </ul>
+    </article>
+
+    <aside data-arp-sidebar></aside>
+  </div>
+
+  <footer>
+    <span>ARP // Artigo 06</span>
+    <span>Advanced Research Projects · 2026</span>
+  </footer>
+</main>
+
+<script src="article-sidebar.js" defer></script>
+
+<!-- =========================================================================
+     ENGINE THREE.JS DO VISUALIZADOR 3D INTEGRADO NO ARTIGO
+     ========================================================================= -->
+<script>
+let scene, camera, renderer, controls;
+let currentGroup = new THREE.Group();
+let animItems = [];
+let layerItems = [];
+let isRotating = true;
+let isWire = false;
+let currentMode = 'hugel';
+
+function initViewer3D() {
+  const container = document.querySelector('.viewport-3d');
+  const canvas = document.getElementById('canvas3d-article');
+  if (!container || !canvas) return;
+
+  scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x0a0f1d);
+  scene.fog = new THREE.FogExp2(0x0a0f1d, 0.038);
+
+  camera = new THREE.PerspectiveCamera(42, container.clientWidth / container.clientHeight, 0.1, 100);
+  camera.position.set(7, 5.5, 8.5);
+
+  renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setSize(container.clientWidth, container.clientHeight);
+  renderer.shadowMap.enabled = true;
+
+  controls = new THREE.OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
+  controls.dampingFactor = 0.05;
+  controls.maxPolarAngle = Math.PI / 2 - 0.02;
+  controls.minDistance = 3;
+  controls.maxDistance = 20;
+  controls.target.set(0, 1.1, 0);
+
+  // Luzes estilo Blueprint Técnico
+  const ambient = new THREE.AmbientLight(0xffffff, 0.7);
+  scene.add(ambient);
+
+  const keyLight = new THREE.DirectionalLight(0xfffaed, 1.1);
+  keyLight.position.set(8, 12, 7);
+  keyLight.castShadow = true;
+  scene.add(keyLight);
+
+  const blueFill = new THREE.DirectionalLight(0x0000f2, 0.5);
+  blueFill.position.set(-8, 4, -6);
+  scene.add(blueFill);
+
+  // Grid técnico azul
+  const grid = new THREE.GridHelper(18, 18, 0x0000f2, 0x172554);
+  grid.position.y = 0;
+  scene.add(grid);
+
+  scene.add(currentGroup);
+
+  window.addEventListener('resize', onViewerResize);
+  renderLoop();
+
+  switch3D('hugel');
+}
+
+function onViewerResize() {
+  const container = document.querySelector('.viewport-3d');
+  if (!container) return;
+  camera.aspect = container.clientWidth / container.clientHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(container.clientWidth, container.clientHeight);
+}
+
+function clearStage() {
+  while (currentGroup.children.length > 0) {
+    currentGroup.remove(currentGroup.children[0]);
+  }
+  animItems = [];
+  layerItems = [];
+  document.getElementById('explode-range').value = 0;
+}
+
+function switch3D(mode) {
+  currentMode = mode;
+  clearStage();
+
+  document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+  const activeBtn = Array.from(document.querySelectorAll('.tab-btn')).find(b => b.getAttribute('onclick')?.includes(mode));
+  if (activeBtn) activeBtn.classList.add('active');
+
+  const desc = document.getElementById('viewer-desc');
+  const explodeBox = document.getElementById('explode-container');
+
+  if (mode === 'hugel') {
+    desc.textContent = "Hügelkultur — Núcleo de troncos enterrados, aeração profunda e esponja de lignina";
+    explodeBox.style.display = 'flex';
+    buildHugel();
+  } else if (mode === 'biochar') {
+    desc.textContent = "Reator Kon-Tiki — Pirólise de biomassa, cortina de chamas abafadora e quench";
+    explodeBox.style.display = 'none';
+    buildBiochar();
+  } else if (mode === 'lasagna') {
+    desc.textContent = "Lasagna Gardening — Estratificação laminar sobre papelão (No-Dig)";
+    explodeBox.style.display = 'flex';
+    buildLasagna();
+  } else if (mode === 'biodigester') {
+    desc.textContent = "Biodigestor Anaeróbico — Cúpula gasométrica de metano e sifão de biofertilizante";
+    explodeBox.style.display = 'none';
+    buildBiodigester();
+  } else if (mode === 'vermi') {
+    desc.textContent = "Vermicomposteira Vertical — Caixas modulares furadas e migração de minhocas";
+    explodeBox.style.display = 'flex';
+    buildVermi();
+  } else if (mode === 'bsfl') {
+    desc.textContent = "Reator BSFL — Bioconversão de choque e rampa de autocolheita em 35°";
+    explodeBox.style.display = 'none';
+    buildBSFL();
+  }
+}
+
+// 1. MODELO HÜGELKULTUR
+function buildHugel() {
+  const trench = new THREE.Mesh(new THREE.BoxGeometry(6.4, 0.45, 4.2), new THREE.MeshStandardMaterial({ color: 0x1b1510, roughness: 0.95 }));
+  trench.position.y = 0.22;
+  currentGroup.add(trench);
+
+  const logMat = new THREE.MeshStandardMaterial({ color: 0x452e1c, roughness: 0.85 });
+  for (let i = -2; i <= 2; i += 0.9) {
+    const log = new THREE.Mesh(new THREE.CylinderGeometry(0.38, 0.4, 3.8, 16), logMat);
+    log.rotation.x = Math.PI / 2;
+    log.position.set(i * 1.05, 0.65, 0);
+    currentGroup.add(log);
+  }
+
+  const brMat = new THREE.MeshStandardMaterial({ color: 0x6e4726, roughness: 0.9 });
+  for (let j = -1.8; j <= 1.8; j += 0.55) {
+    const br = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.14, 3.6, 10), brMat);
+    br.rotation.x = Math.PI / 2;
+    br.position.set(j * 0.9, 1.25, 0);
+    layerItems.push({ mesh: br, baseY: 1.25, factor: 0.8 });
+    currentGroup.add(br);
+  }
+
+  const greenLayer = new THREE.Mesh(new THREE.BoxGeometry(5.0, 0.35, 3.6), new THREE.MeshStandardMaterial({ color: 0x14532d, roughness: 0.85 }));
+  greenLayer.position.y = 1.6;
+  layerItems.push({ mesh: greenLayer, baseY: 1.6, factor: 1.8 });
+  currentGroup.add(greenLayer);
+
+  const compost = new THREE.Mesh(new THREE.BoxGeometry(4.6, 0.4, 3.3), new THREE.MeshStandardMaterial({ color: 0x18181b, roughness: 0.9 }));
+  compost.position.y = 2.0;
+  layerItems.push({ mesh: compost, baseY: 2.0, factor: 2.8 });
+  currentGroup.add(compost);
+
+  const mulch = new THREE.Mesh(new THREE.BoxGeometry(4.3, 0.2, 3.1), new THREE.MeshStandardMaterial({ color: 0xa16207, roughness: 0.9 }));
+  mulch.position.y = 2.3;
+  layerItems.push({ mesh: mulch, baseY: 2.3, factor: 3.8 });
+  currentGroup.add(mulch);
+
+  // Partículas de umidade (Esponja)
+  const partGeo = new THREE.SphereGeometry(0.04, 8, 8);
+  const partMat = new THREE.MeshBasicMaterial({ color: 0x0000f2 });
+  for (let k = 0; k < 35; k++) {
+    const pt = new THREE.Mesh(partGeo, partMat);
+    pt.position.set((Math.random() - 0.5) * 3.8, 0.4 + Math.random() * 0.8, (Math.random() - 0.5) * 2.8);
+    pt.userData = { vy: 0.006 + Math.random() * 0.008, baseY: pt.position.y };
+    animItems.push(pt);
+    currentGroup.add(pt);
+  }
+}
+
+// 2. MODELO KON-TIKI BIOCHAR
+function buildBiochar() {
+  const coneGeo = new THREE.CylinderGeometry(2.3, 0.4, 2.7, 32, 1, true, 0, Math.PI * 1.5);
+  const steelMat = new THREE.MeshStandardMaterial({ color: 0x223049, metalness: 0.85, roughness: 0.35, side: THREE.DoubleSide });
+  const cone = new THREE.Mesh(coneGeo, steelMat);
+  cone.position.y = 1.35;
+  currentGroup.add(cone);
+
+  const charMesh = new THREE.Mesh(new THREE.CylinderGeometry(0.85, 0.3, 0.8, 16), new THREE.MeshStandardMaterial({ color: 0x050507, roughness: 0.95 }));
+  charMesh.position.y = 0.5;
+  currentGroup.add(charMesh);
+
+  const embers = new THREE.Mesh(new THREE.CylinderGeometry(1.4, 0.85, 0.85, 16), new THREE.MeshStandardMaterial({ color: 0xf59e0b, emissive: 0xd97706, emissiveIntensity: 0.8 }));
+  embers.position.y = 1.25;
+  currentGroup.add(embers);
+
+  const flameMat = new THREE.MeshBasicMaterial({ color: 0xf97316, transparent: true, opacity: 0.65 });
+  for (let f = 0; f < 25; f++) {
+    const flame = new THREE.Mesh(new THREE.ConeGeometry(0.12, 0.6, 6), flameMat);
+    flame.position.set((Math.random() - 0.5) * 1.8, 2.1 + Math.random() * 0.3, (Math.random() - 0.5) * 1.8);
+    flame.userData = { vy: 0.02 + Math.random() * 0.02, baseY: flame.position.y };
+    animItems.push(flame);
+    currentGroup.add(flame);
+  }
+}
+
+// 3. MODELO LASAGNA NO-DIG
+function buildLasagna() {
+  const w = 4.8, d = 3.4;
+  const turf = new THREE.Mesh(new THREE.BoxGeometry(w + 0.8, 0.25, d + 0.8), new THREE.MeshStandardMaterial({ color: 0x14532d, roughness: 0.9 }));
+  turf.position.y = 0.12;
+  currentGroup.add(turf);
+
+  const card = new THREE.Mesh(new THREE.BoxGeometry(w, 0.08, d), new THREE.MeshStandardMaterial({ color: 0x854d0e, roughness: 0.85 }));
+  card.position.y = 0.3;
+  layerItems.push({ mesh: card, baseY: 0.3, factor: 0.5 });
+  currentGroup.add(card);
+
+  const brown1 = new THREE.Mesh(new THREE.BoxGeometry(w, 0.28, d), new THREE.MeshStandardMaterial({ color: 0xa16207, roughness: 0.9 }));
+  brown1.position.y = 0.52;
+  layerItems.push({ mesh: brown1, baseY: 0.52, factor: 1.2 });
+  currentGroup.add(brown1);
+
+  const green1 = new THREE.Mesh(new THREE.BoxGeometry(w, 0.22, d), new THREE.MeshStandardMaterial({ color: 0x166534, roughness: 0.8 }));
+  green1.position.y = 0.8;
+  layerItems.push({ mesh: green1, baseY: 0.8, factor: 2.0 });
+  currentGroup.add(green1);
+
+  const comp = new THREE.Mesh(new THREE.BoxGeometry(w, 0.32, d), new THREE.MeshStandardMaterial({ color: 0x18181b, roughness: 0.9 }));
+  comp.position.y = 1.1;
+  layerItems.push({ mesh: comp, baseY: 1.1, factor: 2.8 });
+  currentGroup.add(comp);
+
+  const mulch = new THREE.Mesh(new THREE.BoxGeometry(w, 0.14, d), new THREE.MeshStandardMaterial({ color: 0xf2f200, roughness: 0.85 }));
+  mulch.position.y = 1.35;
+  layerItems.push({ mesh: mulch, baseY: 1.35, factor: 3.6 });
+  currentGroup.add(mulch);
+}
+
+// 4. MODELO BIODIGESTOR
+function buildBiodigester() {
+  const tank = new THREE.Mesh(new THREE.CylinderGeometry(1.7, 1.7, 2.2, 32), new THREE.MeshStandardMaterial({ color: 0x0000f2, transparent: true, opacity: 0.35, roughness: 0.2 }));
+  tank.position.y = 1.1;
+  currentGroup.add(tank);
+
+  const dome = new THREE.Mesh(new THREE.SphereGeometry(1.75, 32, 16, 0, Math.PI * 2, 0, Math.PI / 2), new THREE.MeshStandardMaterial({ color: 0x38bdf8, metalness: 0.5 }));
+  dome.position.y = 2.2;
+  currentGroup.add(dome);
+
+  const sludge = new THREE.Mesh(new THREE.CylinderGeometry(1.6, 1.6, 1.2, 32), new THREE.MeshStandardMaterial({ color: 0x332211, roughness: 0.95 }));
+  sludge.position.y = 0.6;
+  currentGroup.add(sludge);
+
+  const bubbleGeo = new THREE.SphereGeometry(0.05, 8, 8);
+  const bubbleMat = new THREE.MeshBasicMaterial({ color: 0xf2f200 });
+  for (let b = 0; b < 25; b++) {
+    const bubble = new THREE.Mesh(bubbleGeo, bubbleMat);
+    bubble.position.set((Math.random() - 0.5) * 2.6, 0.4 + Math.random() * 1.4, (Math.random() - 0.5) * 2.6);
+    bubble.userData = { vy: 0.015 + Math.random() * 0.015, minY: 0.4, maxY: 2.1 };
+    animItems.push(bubble);
+    currentGroup.add(bubble);
+  }
+}
+
+// 5. MODELO VERMICOMPOSTEIRA
+function buildVermi() {
+  const boxMat = new THREE.MeshStandardMaterial({ color: 0x1a263e, roughness: 0.6 });
+  const b1 = new THREE.Mesh(new THREE.BoxGeometry(2.5, 0.65, 1.9), boxMat);
+  b1.position.y = 0.45;
+  currentGroup.add(b1);
+
+  const b2 = new THREE.Mesh(new THREE.BoxGeometry(2.5, 0.65, 1.9), boxMat);
+  b2.position.y = 1.2;
+  layerItems.push({ mesh: b2, baseY: 1.2, factor: 1.0 });
+  currentGroup.add(b2);
+
+  const b3 = new THREE.Mesh(new THREE.BoxGeometry(2.5, 0.65, 1.9), boxMat);
+  b3.position.y = 1.95;
+  layerItems.push({ mesh: b3, baseY: 1.95, factor: 2.0 });
+  currentGroup.add(b3);
+
+  const lid = new THREE.Mesh(new THREE.BoxGeometry(2.6, 0.1, 2.0), new THREE.MeshStandardMaterial({ color: 0x0000f2 }));
+  lid.position.y = 2.35;
+  layerItems.push({ mesh: lid, baseY: 2.35, factor: 2.6 });
+  currentGroup.add(lid);
+}
+
+// 6. MODELO REATOR BSFL
+function buildBSFL() {
+  const bin = new THREE.Mesh(new THREE.BoxGeometry(3.5, 0.75, 2.1), new THREE.MeshStandardMaterial({ color: 0x1e293b, roughness: 0.6 }));
+  bin.position.y = 0.55;
+  currentGroup.add(bin);
+
+  const ramp = new THREE.Mesh(new THREE.PlaneGeometry(1.2, 1.9), new THREE.MeshStandardMaterial({ color: 0x64748b, side: THREE.DoubleSide }));
+  ramp.position.set(1.35, 1.1, 0);
+  ramp.rotation.set(0, 0, -Math.PI / 4.5);
+  currentGroup.add(ramp);
+
+  const cup = new THREE.Mesh(new THREE.CylinderGeometry(0.35, 0.25, 0.55, 16), new THREE.MeshStandardMaterial({ color: 0xf2f200 }));
+  cup.position.set(2.2, 0.65, 0);
+  currentGroup.add(cup);
+}
+
+function handleExplode(val) {
+  const factor = val / 100;
+  layerItems.forEach(item => {
+    item.mesh.position.y = item.baseY + (factor * item.factor);
+  });
+}
+
+function toggleRot() {
+  isRotating = !isRotating;
+  document.getElementById('btn-rot').classList.toggle('active', isRotating);
+}
+
+function toggleWire() {
+  isWire = !isWire;
+  document.getElementById('btn-wire').classList.toggle('active', isWire);
+  currentGroup.traverse(child => {
+    if (child.isMesh && child.material) {
+      if (Array.isArray(child.material)) {
+        child.material.forEach(m => m.wireframe = isWire);
+      } else {
+        child.material.wireframe = isWire;
+      }
+    }
+  });
+}
+
+function resetCam() {
+  camera.position.set(7, 5.5, 8.5);
+  controls.target.set(0, 1.1, 0);
+  controls.update();
+}
+
+function renderLoop() {
+  requestAnimationFrame(renderLoop);
+  if (isRotating) {
+    currentGroup.rotation.y += 0.003;
+  }
+  animItems.forEach(p => {
+    if (p.userData.vy) {
+      p.position.y += p.userData.vy;
+      if (p.userData.maxY && p.position.y > p.userData.maxY) p.position.y = p.userData.minY;
+      if (p.userData.baseY && p.position.y > p.userData.baseY + 0.45) p.position.y = p.userData.baseY;
+    }
+  });
+  controls.update();
+  renderer.render(scene, camera);
+}
+
+window.addEventListener('DOMContentLoaded', initViewer3D);
+</script>
+</body>
+</html>

@@ -1,0 +1,400 @@
+::selection {
+  background: #f2f200;
+  color: #0000f2;
+}
+
+/* =========================================================================
+   BARRA DE PROGRESSO DE LEITURA (TOPO)
+   ========================================================================= */
+#read-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: #f2f200;
+  transform: scaleX(0);
+  transform-origin: left;
+  z-index: 100;
+  box-shadow: 0 0 10px rgba(242, 242, 0, 0.6);
+  pointer-events: none;
+}
+
+/* =========================================================================
+   LAYOUT DO ARTIGO & SIDEBAR TÉCNICA ARP
+   ========================================================================= */
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 780px) 250px;
+  gap: 56px;
+  padding: 56px 0 96px;
+}
+
+.arp-sidebar {
+  position: sticky;
+  top: 88px;
+  align-self: start;
+  min-width: 0;
+  background: #0000f2;
+  color: #d6d4cc;
+  padding: 20px 18px 22px;
+  overflow: hidden;
+  isolation: isolate;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 12px 36px -10px rgba(0, 0, 242, 0.35);
+}
+
+.arp-sidebar:before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.065) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.065) 1px, transparent 1px);
+  background-size: 18px 18px;
+  mask-image: linear-gradient(#000, transparent 90%);
+}
+
+.arp-side-brand {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.24);
+}
+
+.arp-side-brand img {
+  width: 110px;
+  height: auto;
+  display: block;
+}
+
+.arp-side-code {
+  font: 600 9px 'IBM Plex Mono', monospace;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.18);
+  padding: 2px 6px;
+  color: #fff;
+}
+
+.arp-side-links {
+  display: grid;
+  gap: 0;
+  margin: 12px 0 18px;
+}
+
+.arp-side-links a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+  color: inherit;
+  font: 500 10px 'IBM Plex Mono', monospace;
+  letter-spacing: .08em;
+  text-decoration: none;
+  text-transform: uppercase;
+  opacity: .8;
+  transition: opacity .2s, padding .2s, color .2s;
+}
+
+.arp-side-links a:hover {
+  opacity: 1;
+  padding-left: 4px;
+  color: #f2f200;
+}
+
+.arp-side-progress {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 12px;
+  align-items: stretch;
+  margin: 16px 0 20px;
+}
+
+.arp-side-scale {
+  position: relative;
+  height: 110px;
+  border-right: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.arp-side-tick {
+  position: absolute;
+  right: 0;
+  width: 6px;
+  border-top: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.arp-side-tick.major {
+  width: 12px;
+  border-color: rgba(255, 255, 255, 0.75);
+}
+
+.arp-side-pointer {
+  position: absolute;
+  left: 0;
+  right: -1px;
+  height: 2px;
+  background: #f2f200;
+  box-shadow: 0 0 10px rgba(242, 242, 0, 0.8);
+  top: 0;
+  transition: top .08s linear;
+}
+
+.arp-side-pointer:before {
+  content: attr(data-percent);
+  position: absolute;
+  left: 0;
+  top: -8px;
+  transform: translateX(-100%);
+  padding-right: 6px;
+  color: #f2f200;
+  font: 600 8px 'IBM Plex Mono', monospace;
+}
+
+.arp-side-caption {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font: 500 8px 'IBM Plex Mono', monospace;
+  letter-spacing: .12em;
+  opacity: .65;
+  text-transform: uppercase;
+}
+
+.arp-side-chapters {
+  border-top: 1px solid rgba(255, 255, 255, 0.24);
+  padding-top: 14px;
+}
+
+.arp-side-chapters .arp-side-label {
+  display: block;
+  margin: 0 0 10px;
+  font: 600 9px 'IBM Plex Mono', monospace;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  opacity: .7;
+}
+
+.arp-side-chapters a {
+  display: block;
+  position: relative;
+  padding: 6px 0 6px 14px;
+  color: inherit;
+  font: 400 10px/1.4 'IBM Plex Mono', monospace;
+  text-decoration: none;
+  opacity: .75;
+  transition: opacity .2s, color .2s;
+}
+
+.arp-side-chapters a:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 12px;
+  width: 4px;
+  height: 4px;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  transition: background .2s, border-color .2s;
+}
+
+.arp-side-chapters a:hover,
+.arp-side-chapters a[aria-current="location"] {
+  opacity: 1;
+  color: #f2f200;
+}
+
+.arp-side-chapters a[aria-current="location"]:before {
+  background: #f2f200;
+  border-color: #f2f200;
+  box-shadow: 0 0 6px rgba(242, 242, 0, 0.8);
+}
+
+/* =========================================================================
+   ENQUADRAMENTO DE IMAGENS E FIGURAS TÉCNICAS (100% FIDELIDADE E DADOS)
+   ========================================================================= */
+.heroimg,
+.figure {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  margin: 36px 0;
+  background: #ffffff;
+  border: 1px solid var(--line);
+  box-shadow: 0 12px 36px -12px rgba(0, 0, 242, 0.12);
+  transition: border-color .25s, box-shadow .25s;
+  overflow: hidden;
+}
+
+.heroimg:hover,
+.figure:hover {
+  border-color: var(--blue);
+  box-shadow: 0 16px 44px -10px rgba(0, 0, 242, 0.18);
+}
+
+.heroimg img,
+.figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 640px;
+  object-fit: contain;
+  margin: 0 auto;
+  background: #ffffff;
+  padding: 14px;
+  transform: none !important;
+  animation: none !important;
+  filter: none !important;
+  cursor: zoom-in;
+  transition: transform .2s ease;
+}
+
+.heroimg img:hover,
+.figure img:hover {
+  transform: scale(1.008) !important;
+}
+
+.heroimg figcaption,
+.figure figcaption {
+  position: relative;
+  z-index: 2;
+  padding: 12px 18px;
+  background: var(--paper);
+  border-top: 1px solid var(--line);
+  font: 400 11px/1.55 'IBM Plex Mono', monospace;
+  color: var(--ink);
+  letter-spacing: .02em;
+}
+
+.heroimg figcaption:before,
+.figure figcaption:before {
+  content: "DADOS // ";
+  font-weight: 600;
+  color: var(--blue);
+}
+
+/* =========================================================================
+   LIGHTBOX TÉCNICA PARA INSPEÇÃO DE DIAGRAMAS
+   ========================================================================= */
+#arp-img-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+#arp-img-lightbox.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.arp-lightbox-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 80, 0.94);
+  backdrop-filter: blur(10px);
+}
+
+.arp-lightbox-dialog {
+  position: relative;
+  z-index: 2;
+  max-width: 95vw;
+  max-height: 92vh;
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  border: 2px solid #f2f200;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.7);
+  padding: 16px;
+  overflow: auto;
+}
+
+.arp-lightbox-close {
+  align-self: flex-end;
+  background: #0000f2;
+  color: #f2f200;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  font: 600 10px 'IBM Plex Mono', monospace;
+  letter-spacing: .08em;
+  padding: 6px 14px;
+  cursor: pointer;
+  margin-bottom: 12px;
+  transition: background .2s;
+}
+
+.arp-lightbox-close:hover {
+  background: #0000cb;
+}
+
+.arp-lightbox-img {
+  max-width: 100%;
+  max-height: 78vh;
+  object-fit: contain;
+  display: block;
+  margin: auto;
+  background: #ffffff;
+}
+
+.arp-lightbox-caption {
+  font: 400 11px/1.5 'IBM Plex Mono', monospace;
+  color: #0000f2;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(0, 0, 242, 0.2);
+}
+
+/* =========================================================================
+   RESPONSIVIDADE DA SIDEBAR
+   ========================================================================= */
+@media(max-width: 860px) {
+  .layout {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    padding: 36px 0 64px;
+  }
+  .arp-sidebar {
+    position: relative;
+    top: auto;
+    grid-row: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 18px;
+    padding: 16px;
+  }
+  .arp-side-brand {
+    grid-column: 1 / -1;
+  }
+  .arp-side-links {
+    grid-column: 1 / -1;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin: 8px 0;
+  }
+  .arp-side-links a {
+    font-size: 9px;
+  }
+  .arp-side-progress {
+    display: none;
+  }
+  .arp-side-chapters {
+    grid-column: 1 / -1;
+  }
+  .arp-side-chapters > div:last-child {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 14px;
+  }
+  .arp-side-chapters a {
+    font-size: 9px;
+  }
+}
