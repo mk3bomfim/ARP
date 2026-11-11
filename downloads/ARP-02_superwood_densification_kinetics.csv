@@ -1,0 +1,13 @@
+trial_id,species,naoh_mol_l,na2so3_mol_l,boiling_hours,hot_press_temp_c,pressure_mpa,initial_density_g_cm3,final_density_g_cm3,tensile_strength_mpa,young_modulus_gpa,thickness_collapse_pct
+SW-01,Pinus elliottii,2.5,0.4,7.0,100,5.0,0.42,1.28,485.4,48.2,74.5
+SW-02,Pinus elliottii,2.5,0.4,7.0,100,4.0,0.41,1.19,412.0,42.1,70.2
+SW-03,Pinus taeda,2.5,0.4,6.5,105,5.0,0.44,1.31,512.8,51.4,76.1
+SW-04,Pinus taeda,3.0,0.5,7.0,105,5.5,0.45,1.36,548.2,54.8,78.2
+SW-05,Eucalyptus grandis,2.5,0.4,8.0,100,5.0,0.54,1.38,520.6,52.3,66.8
+SW-06,Eucalyptus grandis,3.0,0.5,8.5,105,6.0,0.55,1.44,587.0,60.1,71.0
+SW-07,Balsa (Ochroma),2.0,0.3,5.0,95,3.5,0.14,0.92,284.0,29.5,85.2
+SW-08,Balsa (Ochroma),2.5,0.4,6.0,100,4.5,0.15,1.15,395.2,38.7,87.4
+SW-09,Araucaria angustifolia,2.5,0.4,7.5,100,5.0,0.49,1.33,498.0,49.9,73.1
+SW-10,Controle Não-Tratado (Pinus),0.0,0.0,0.0,25,0.0,0.42,0.42,86.5,10.2,0.0
+SW-11,Controle Apenas Prensado,0.0,0.0,0.0,100,5.0,0.42,0.85,165.0,18.4,51.2
+SW-12,Otimizado Forja ARP,2.8,0.45,7.2,102,5.2,0.43,1.35,562.4,56.5,76.8

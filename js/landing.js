@@ -185,7 +185,195 @@
     ]
   }
 ];
-  let data = [...ARTICLES_REGISTRY];
+  let data = [
+  {
+    "id": "ARP-01",
+    "code": "ARP.01",
+    "title": "Da Matemática ao Objeto Real",
+    "subtitle": "Como construir uma mesa biônica orgânica usando código e engenharia computacional",
+    "author": "Advanced Research Projects",
+    "date": "2026-10-14",
+    "dateFormatted": "14 Out 2026",
+    "time": "06:36 BRT",
+    "timestamp": "2026-10-14T06:36:00-03:00",
+    "readTime": "5 min",
+    "words": 779,
+    "status": "STL Exportado // C# PicoGK",
+    "highlight": "Superelipses, SDF e Gyroid TPMS",
+    "url": "articles/artigo-da-matematica-ao-objeto-real.html",
+    "image": "media/mesa-bionica/mesa-bionica-pontos.png",
+    "alt": "Visualização pontilhada de uma mesa orgânica com tampo oval e pernas ramificadas",
+    "category": "Engenharia computacional",
+    "tags": [
+      "design paramétrico",
+      "PicoGK",
+      "geometria implícita",
+      "fabricação aditiva",
+      "mesa biônica"
+    ],
+    "companionDownload": {
+      "file": "downloads/ARP-01_gyroid_tpms_sdf_generator.py",
+      "label": "Python SDF Generator"
+    }
+  },
+  {
+    "id": "ARP-02",
+    "code": "ARP.02",
+    "title": "A Forja da Superwood Doméstica",
+    "subtitle": "Deslignificação termoquímica e colapso celular para produção em oficina de madeira densificada de até 587 MPa",
+    "author": "Advanced Research Projects",
+    "date": "2026-10-30",
+    "dateFormatted": "30 Out 2026",
+    "time": "23:06 BRT",
+    "timestamp": "2026-10-30T23:06:00-03:00",
+    "readTime": "5 min",
+    "words": 836,
+    "status": "Ensaio de Resistência // 587 MPa",
+    "highlight": "Colapso celular térmico e prensagem a quente",
+    "url": "articles/artigo-superwood-celulose-densificada.html",
+    "image": "media/superwood/comparativo-tracao-especifica.png",
+    "alt": "Gráfico comparativo de resistência à tração específica entre madeira superdensificada caseira, titânio, aço e madeira natural",
+    "category": "Ciência dos materiais",
+    "tags": [
+      "superwood",
+      "celulose densificada",
+      "biomateriais",
+      "deslignificação",
+      "química prática",
+      "alta resistência"
+    ],
+    "companionDownload": {
+      "file": "downloads/ARP-02_superwood_densification_kinetics.csv",
+      "label": "Dataset 587 MPa"
+    }
+  },
+  {
+    "id": "ARP-03",
+    "code": "ARP.03",
+    "title": "Biocompostos de Alta Performance",
+    "subtitle": "Análise quantitativa de doze sistemas compósitos acoplando curauá, linho e juta a matrizes bio-epóxi e poliuretano de mamona",
+    "author": "Advanced Research Projects",
+    "date": "2026-10-30",
+    "dateFormatted": "30 Out 2026",
+    "time": "23:15 BRT",
+    "timestamp": "2026-10-30T23:15:00-03:00",
+    "readTime": "6 min",
+    "words": 764,
+    "status": "Diagrama de Ashby // 12 Matrizes",
+    "highlight": "Curauá, linho e juta com matriz vegetal",
+    "url": "articles/artigo-biocompostos-fibras-eco-resinas.html",
+    "image": "media/biocompostos/ashby-resistencia-modulo.png",
+    "alt": "Diagrama de Ashby comparativo de resistência específica versus módulo de elasticidade específico de biocompostos",
+    "category": "Compósitos sustentáveis",
+    "tags": [
+      "biocompostos",
+      "fibras vegetais",
+      "eco-resinas",
+      "curauá",
+      "linho",
+      "matrizes bio-baseadas",
+      "NFRP"
+    ]
+  },
+  {
+    "id": "ARP-04",
+    "code": "ARP.04",
+    "title": "Geopolímeros de Solo: Cerâmica a Frio",
+    "subtitle": "Ativação alcalina de metacaulim e terra in-situ para síntese de matrizes minerais estruturais com cura em temperatura ambiente",
+    "author": "Advanced Research Projects",
+    "date": "2026-10-30",
+    "dateFormatted": "30 Out 2026",
+    "time": "23:22 BRT",
+    "timestamp": "2026-10-30T23:22:00-03:00",
+    "readTime": "6 min",
+    "words": 898,
+    "status": "Cura em Ambiente // Sem Forno",
+    "highlight": "Ativação alcalina com solo in-situ e metacaulim",
+    "url": "articles/artigo-geopolimeros-solo-ceramica-a-frio.html",
+    "image": "media/geopolimeros/custo-vs-resistencia-compressao.png",
+    "alt": "Gráfico de dispersão entre custo por metro cúbico e resistência à compressão de materiais de solo versus convencionais",
+    "category": "Geopolímeros e solo",
+    "tags": [
+      "geopolímeros",
+      "ativação alcalina",
+      "metacaulim",
+      "solo in-situ",
+      "cerâmica a frio",
+      "construção sustentável"
+    ],
+    "companionDownload": {
+      "file": "downloads/ARP-04_soil_geopolymer_alkaline_activation.csv",
+      "label": "Matriz Geopolímeros CSV"
+    }
+  },
+  {
+    "id": "ARP-05",
+    "code": "ARP.05",
+    "title": "Micromecânica da Celulose e Geometry Kernels",
+    "subtitle": "Modelagem implícita volumétrica, campos de distância assinado (SDF) e otimização topológica para materiais anisotrópicos",
+    "author": "Advanced Research Projects",
+    "date": "2026-10-30",
+    "dateFormatted": "30 Out 2026",
+    "time": "23:29 BRT",
+    "timestamp": "2026-10-30T23:29:00-03:00",
+    "readTime": "6 min",
+    "words": 847,
+    "status": "Simulação Volumétrica // PicoGK",
+    "highlight": "SDF, TPMS Gyroid e anisotropia elástica",
+    "url": "articles/artigo-micromecanica-celulose-geometry-kernels.html",
+    "image": "media/geometry-kernels/micromecanica-densificacao.png",
+    "alt": "Curva de simulação micromecânica da densificação celular de madeira comparando densidade versus módulo de elasticidade",
+    "category": "Engenharia computacional",
+    "tags": [
+      "geometria implícita",
+      "PicoGK",
+      "micromecânica",
+      "anisotropia",
+      "SDF",
+      "TPMS",
+      "Gyroid"
+    ],
+    "companionDownload": {
+      "file": "downloads/ARP-05_micromechanics_picogk_anisotropy.py",
+      "label": "Tensor Elasticidade Python"
+    }
+  },
+  {
+    "id": "ARP-06",
+    "code": "ARP.06",
+    "title": "Biotecnologia de Resíduos e Regeneração do Solo",
+    "subtitle": "Análise experimental e modelagem 3D de doze rotas: termoconversão, biomineralização larval, fermentação acelerada e canteiros colinares",
+    "author": "Advanced Research Projects",
+    "date": "2026-11-10",
+    "dateFormatted": "10 Nov 2026",
+    "time": "17:41 BRT",
+    "timestamp": "2026-11-10T17:41:00-03:00",
+    "readTime": "10 min",
+    "words": 1550,
+    "status": "Simulador 3D Interativo // 12 Rotas",
+    "highlight": "Biochar, Hermetia illucens, Hügelkultur e No-Dig",
+    "url": "articles/artigo-regeneracao-solo-biotecnologia-residuos.html",
+    "image": "media/regeneracao-solo/regeneracao-solo-capa.png",
+    "alt": "Matriz Cinética de Biotransformação de Resíduos e Regeneração Edáfica da ARP",
+    "category": "Ciência dos solos & Biotecnologia",
+    "tags": [
+      "biocarvão",
+      "biochar",
+      "hügelkultur",
+      "vermicompostagem",
+      "BSFL",
+      "biodigestão",
+      "lasagna gardening",
+      "agroecologia",
+      "regeneração do solo",
+      "no-dig"
+    ],
+    "companionDownload": {
+      "file": "downloads/ARP-06_biochar_hugel_soil_regeneration.csv",
+      "label": "Cinética Biochar CSV"
+    }
+  }
+];
   let activeCategory = 'all';
   let activeSort = 'date-desc';
   let currentView = 'table';
@@ -316,6 +504,7 @@
             <p>${esc(a.subtitle || '')}</p>
             <div class="entry-tags-row">
               ${(a.tags || []).slice(0, 3).map(t => `<span class="entry-tag-item">${esc(t)}</span>`).join('')}
+              ${a.companionDownload ? `<span class="entry-tag-item" style="background:rgba(0,0,242,0.08);border-color:var(--ink);color:var(--ink);font-weight:600">💾 ${esc(a.companionDownload.label)}</span>` : ''}
             </div>
             <div class="entry-foot">
               <span>${esc(a.author || 'ARP')}</span>
@@ -344,12 +533,30 @@
     });
   }
 
+  let userManuallySetView = false;
   if (btnTable) {
-    btnTable.addEventListener('click', () => setView('table'));
+    btnTable.addEventListener('click', () => {
+      userManuallySetView = true;
+      setView('table');
+    });
   }
   if (btnGrid) {
-    btnGrid.addEventListener('click', () => setView('grid'));
+    btnGrid.addEventListener('click', () => {
+      userManuallySetView = true;
+      setView('grid');
+    });
   }
+
+  window.addEventListener('resize', () => {
+    if (!userManuallySetView) {
+      const prefersGrid = window.innerWidth < 820;
+      if (prefersGrid && currentView !== 'grid') {
+        setView('grid');
+      } else if (!prefersGrid && currentView !== 'table') {
+        setView('table');
+      }
+    }
+  });
 
   catPills.forEach(pill => {
     pill.addEventListener('click', () => {
@@ -361,9 +568,11 @@
   });
 
   // Inicialização síncrona imediata com os 6 artigos (funciona em file:// e http://)
+  // Mobile (< 820px) abre nativamente em Grade para ergonomia de leitura; Desktop abre em Painel
   if (count) count.textContent = `${String(data.length).padStart(2, '0')} ARTIGOS`;
   updateCategoryPillsCount();
-  setView('table');
+  const initialPrefersGrid = window.innerWidth < 820;
+  setView(initialPrefersGrid ? 'grid' : 'table');
   draw();
 
   // Em ambientes com servidor HTTP/HTTPS, sincroniza se houver atualização externa

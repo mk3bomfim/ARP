@@ -304,6 +304,7 @@ No elemento `<tbody id="article-table-body">` de [`src/index.html`](file:///c:/U
 ```html
 <tr>
   <td><span class="tbl-code">ARP.07</span></td>
+  <td style="text-align:center"><a class="tbl-action-btn" href="articles/artigo-novo-exemplo.html">Acessar ↗</a></td>
   <td><div class="tbl-date-time"><span class="tbl-date">11 Nov 2026</span><span class="tbl-time">14:00 BRT</span></div></td>
   <td><span class="tbl-read">⏱ 6 min</span></td>
   <td class="tbl-title-cell">
@@ -312,7 +313,6 @@ No elemento `<tbody id="article-table-body">` de [`src/index.html`](file:///c:/U
   </td>
   <td><span class="tbl-category">Ciência dos materiais</span></td>
   <td><span class="tbl-spec">Destaque técnico da pesquisa</span></td>
-  <td style="text-align:center"><a class="tbl-action-btn" href="articles/artigo-novo-exemplo.html">Acessar ↗</a></td>
 </tr>
 ```
 
@@ -325,6 +325,12 @@ Em [`src/index.html`](file:///c:/Users/amadeus/Documents/Advanced%20Research%20P
 ### Passo 5: Atualizar a Corrente de Navegação (`.article-nav-strip`)
 * No artigo anterior (ex: ARP.06), aponte o card `next` para o seu novo artigo (ARP.07).
 * No seu novo artigo (ARP.07), aponte o card `prev` para ARP.06 e o card `next` para o próximo (ou feche o ciclo com ARP.01).
+
+### Passo 6: Anexar Datasets ou Scripts Complementares (Opcional)
+Se o estudo contiver simulação computacional ou ensaios empíricos:
+1. Salve o script `.py` ou dataset `.csv` em `src/downloads/ARP-07_<nome_do_arquivo>`.
+2. Adicione a linha correspondente na tabela da seção `#downloads` em [`src/index.html`](file:///c:/Users/amadeus/Documents/Advanced%20Research%20Projects/src/index.html).
+3. Adicione o path na lista `CORE_ASSETS` em [`src/sw.js`](file:///c:/Users/amadeus/Documents/Advanced%20Research%20Projects/src/sw.js) para suporte offline via Service Worker.
 
 ---
 
@@ -341,3 +347,4 @@ Antes de enviar ou dar o artigo como pronto:
 - [ ] Não há caminhos de computador local (`C:\`, `colab`, `scripts/`).
 - [ ] O botão do topo volta corretamente ao painel (`../index.html#artigos`).
 - [ ] A navegação sequencial no rodapé leva ao artigo correto.
+

@@ -1,0 +1,7 @@
+system_id,biomass_feedstock,process_route,carbon_sequestration_kg_co2e_per_ton,bsf_bioconversion_pct,water_retention_increase_pct,cation_exchange_meq_100g,soil_organic_matter_gain_pct
+SYS-01,Podas Urbanas & Cavacos,Pirólise Lenta (Biochar 550C),-1850,0.0,68.4,42.5,4.2
+SYS-02,Resíduos de Restaurante / Frutas,Biotecnologia Larval (Hermetia illucens),-420,21.5,35.0,28.0,3.1
+SYS-03,Troncos & Galhos Brutos,Canteiro Hügelkultur Estrutural,-2100,0.0,85.2,48.0,5.8
+SYS-04,Esterco Equino & Palhada,Compostagem Termofílica Acelerada,-380,0.0,42.0,32.5,3.6
+SYS-05,Bagaço de Cana + Metacaulim,Geopolimerização de Solo & Mulching,-920,0.0,28.4,22.0,1.8
+SYS-06,Consórcio Integrado ARP (Biochar + Frass Larval + No-Dig),Rota Regenerativa Quádrupla,-2650,22.8,92.6,56.4,7.4

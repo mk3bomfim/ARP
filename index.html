@@ -3,7 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0000f2">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="ARP">
 <title>Advanced Research Projects</title>
+<link rel="manifest" href="manifest.json">
 <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAE0ElEQVR42u3aWWxUVRzH8e85c28XsLRIF7YGlwCWxQTCUm1r6xJDYlBCwFQKBkss8oAJPigPNWLUBzHB4AM1AgESFi0QgkSRxGhoAVlCICZYVhdQKIVCSlvazpx7jg937i2VhligFez5Jzfz0pm5v8+c8z//mVSkZHxp6MUl6eVlASyABbAAFsACWAALYAEsgAWwABbAAlgAC2ABLIAFsAC9qpyeeBMhQEqB5xlWrcjlxalD8ZRBSgECtGeIOIKKL07y3gc/47qSWEz/PwCEgEhEoJTh4w/H8fKMYWhtkImiw98ZA4sW5nD2bDOr153pMYRu3wJB+PfffZwFZSNQyiCEwBjQ2mAM8cvgeYZPP5nAtKnZxGIaxxH3N4DrSpQyvP3WKBYtzCEW00QiIv6Jmw6PQgiE8FFWVuRSkJeJUqbbEWR3ho/FNG+8PoLyxWNvCi+lCK8bEYyBBFeyaV0+Y0enoZQJn3ffAAThS4ofZulH48IQQgh//0vB9euKkrl7OVbTEDZIaG+W/fq5VG4oIHtoXzyv+xDuOoDjCGIxzbSp2VR8NgnPM0gZfLp+SKUMs0v3sePbP3l13l4uXW7FcXycG/vGkMF92LKpgNRUN/464t4GcBz/xp99eiCrP89Fa4MQ7eG19sPNX3iA73+4QFJihFOnGymes4eWFi/sAQFCLKbJGZnKxrX5JCTI8FS5JwGC8JMnprNhTR6OIzHGDw/geX5De6f8CJu3/oHrSlrbPBxHcOhwPXPL9oU9IFgpjuNvpYK8TFZV5Ibb524iRBL7zlhyN446zzOMGZXG9s2FpKS44c36S17jupKly35h2fKaDme81j7eyVONXKxr5YUpQ1Cq/blSCpTSjM5JIyszmZ27zuM4PtQ9ARCEf/SRFHZsLSI9PalD5w7Cr1xzmvIlR3Gc9oYXlNZ+4zx85ArGQNFTWSilb0KYMH4AQgh2V9fFe8Z/DBCEHzQwmR1bi8ge2rfT8Nu+PseCNw8SiYhw+Plnae1vkao9dWRmJjNh/IBOEQoLsqivj3LocD2uK8Oe0eMAUvph+vdPYPuWIkYO79dp+B931zK7dF94/t9q6Rrjo+7cdZ4xo9PIeSy1A4IQ4Hkw5fnBHD9xjWM1DXe8EuTthjfGkJwcoXJ9AWNGpXUYdILwR45eoeS1vSilw4C3qmA8llIwb/5+9h+8HJ8mdTgoSRmfFlfkkv9kxh1Pi10GCDpwJCLYsCaPyRPT43O7DLu960rO/NrIzJJqmppUOAD9mwqQWts8iudUc/zENVxXhn0jOClcV7JxbT45I1PvaFq8rRWgtWFVxRM898wgotH28ME+rr3YwvTiKuoutYb7vquvH4kIrlyNMmNWFbUXW8LmaYw/WyilSUtL4Kv1+WSkJ93UWLtxBQhWLJ/E9Jey8TxDQoKMDzu03/QrVfz2e1PYJG+ngvH37LlmZs6q5urVKI7T/v3Bdf1bf2jYA2yrLCQzI6lnmmD54rGUlQ6noSGGUoZoVNPW5l+NTYrSsp84cKi+0+Ouq2WMPyNcqG2h5sQ1CguyaGqK0Xzdo7lZ0dysaGiIkv5gIkMG9+Gb7/7q+u8V9h8l7Y+iFsACWAALYAEsgAWwABbAAlgAC2ABLIAFsAAWwAJYAAvQe+pvClhWhzn4mUoAAAAASUVORK5CYII=">
 <link rel="apple-touch-icon" href="data:image/png;base64,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">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -209,6 +214,75 @@
 
   <p id="article-empty" class="article-empty" hidden>Nenhum artigo corresponde à busca e filtros selecionados.</p>
  </section>
+
+ <!-- Repository of 3D Models, Scripts & Datasets -->
+ <section id="downloads" class="sec pp" style="border-top:1px solid var(--line);padding-top:48px;padding-bottom:64px">
+  <div class="wrap" style="display:block">
+   <div style="margin-bottom:24px">
+    <div class="mono" style="font-size:11px;font-weight:600;letter-spacing:.15em;color:var(--ink);opacity:.75;margin-bottom:6px">[ REPOSITÓRIO TÉCNICO // DADOS & MODELOS COMPUTACIONAIS ]</div>
+    <h2 style="font-size:clamp(1.5rem, 3vw, 2.2rem);font-weight:600;letter-spacing:-.02em;color:var(--ink);margin:0 0 8px 0">Companion Scripts, Tensores & Datasets Experimentais</h2>
+    <p style="margin:0;max-width:44rem;opacity:.8;font-size:14px;line-height:1.6">Arquivos abertos de simulação geométrica, matrizes de elasticidade e tabelas cinéticas citadas nas publicações, prontos para reprodução laboratorial e prototipagem digital.</p>
+   </div>
+
+   <div class="telemetry-table-wrap">
+    <table class="telemetry-table">
+     <thead>
+      <tr>
+       <th style="width:75px">Código</th>
+       <th style="width:110px;text-align:center">Ação</th>
+       <th style="width:130px">Formato</th>
+       <th>Arquivo & Descrição Técnica</th>
+       <th style="width:200px">Escopo Operacional</th>
+       <th style="width:120px">Licença</th>
+      </tr>
+     </thead>
+     <tbody>
+      <tr>
+       <td><span class="tbl-code">ARP.01</span></td>
+       <td style="text-align:center"><a class="tbl-action-btn" href="downloads/ARP-01_gyroid_tpms_sdf_generator.py" download>Baixar ↓</a></td>
+       <td><span class="tbl-category">Python (.py)</span></td>
+       <td><strong>ARP-01_gyroid_tpms_sdf_generator.py</strong><div class="tbl-sub">Amostragem volumétrica contínua e cálculo SDF de superfícies Gyroid TPMS com controle de porosidade</div></td>
+       <td><span class="tbl-spec">NumPy // Voxel Grid // STL</span></td>
+       <td class="mono" style="font-size:11px;opacity:.7">MIT / Open Source</td>
+      </tr>
+      <tr>
+       <td><span class="tbl-code">ARP.02</span></td>
+       <td style="text-align:center"><a class="tbl-action-btn" href="downloads/ARP-02_superwood_densification_kinetics.csv" download>Baixar ↓</a></td>
+       <td><span class="tbl-category">Dataset (.csv)</span></td>
+       <td><strong>ARP-02_superwood_densification_kinetics.csv</strong><div class="tbl-sub">24 corpos de prova com dados de deslignificação térmica, pressão, espessura colapsada e ensaio de tração (587 MPa)</div></td>
+       <td><span class="tbl-spec">Ensaios Mecânicos // Pinus & Eucalyptus</span></td>
+       <td class="mono" style="font-size:11px;opacity:.7">CC BY 4.0</td>
+      </tr>
+      <tr>
+       <td><span class="tbl-code">ARP.04</span></td>
+       <td style="text-align:center"><a class="tbl-action-btn" href="downloads/ARP-04_soil_geopolymer_alkaline_activation.csv" download>Baixar ↓</a></td>
+       <td><span class="tbl-category">Dataset (.csv)</span></td>
+       <td><strong>ARP-04_soil_geopolymer_alkaline_activation.csv</strong><div class="tbl-sub">Matriz experimental de ativação alcalina de metacaulim com solos in-situ, relação molar SiO2/Na2O e resistência 7d/28d</div></td>
+       <td><span class="tbl-spec">Geopolímeros // Cura em Temperatura Ambiente</span></td>
+       <td class="mono" style="font-size:11px;opacity:.7">CC BY 4.0</td>
+      </tr>
+      <tr>
+       <td><span class="tbl-code">ARP.05</span></td>
+       <td style="text-align:center"><a class="tbl-action-btn" href="downloads/ARP-05_micromechanics_picogk_anisotropy.py" download>Baixar ↓</a></td>
+       <td><span class="tbl-category">Python (.py)</span></td>
+       <td><strong>ARP-05_micromechanics_picogk_anisotropy.py</strong><div class="tbl-sub">Calculador analítico do tensor constitutivo de rigidez elástica C_ij (6x6) e simulação de anisotropia pós-colapso celular</div></td>
+       <td><span class="tbl-spec">Elasticidade Ortotrópica // Gibson-Ashby</span></td>
+       <td class="mono" style="font-size:11px;opacity:.7">MIT / Open Source</td>
+      </tr>
+      <tr>
+       <td><span class="tbl-code">ARP.06</span></td>
+       <td style="text-align:center"><a class="tbl-action-btn" href="downloads/ARP-06_biochar_hugel_soil_regeneration.csv" download>Baixar ↓</a></td>
+       <td><span class="tbl-category">Dataset (.csv)</span></td>
+       <td><strong>ARP-06_biochar_hugel_soil_regeneration.csv</strong><div class="tbl-sub">Cinética de bioconversão de resíduos orgânicos com Hermetia illucens, balanço negativo de CO2 e CTC de biochar</div></td>
+       <td><span class="tbl-spec">Biochar // Biotecnologia Larval // No-Dig</span></td>
+       <td class="mono" style="font-size:11px;opacity:.7">CC BY 4.0</td>
+      </tr>
+     </tbody>
+    </table>
+   </div>
+  </div>
+ </section>
+
 </main>
 
 <footer>
@@ -222,5 +296,12 @@
 <script src="js/vendor/three.min.js"></script>
 <script src="js/landing.js" defer></script>
 <script src="js/fractal-3d.js" defer></script>
+<script>
+if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch(() => {});
+  });
+}
+</script>
 </body>
 </html>

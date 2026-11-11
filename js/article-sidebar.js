@@ -119,4 +119,11 @@
   }, { passive: true });
   addEventListener('resize', update);
   update();
+
+  // Registro PWA / Service Worker Offline para leitura de artigos
+  if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('../sw.js').catch(() => {});
+    });
+  }
 })();

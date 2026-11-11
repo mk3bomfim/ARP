@@ -1,0 +1,26 @@
+{
+  "name": "Advanced Research Projects",
+  "short_name": "ARP",
+  "description": "Pesquisa aplicada em geometria computacional, materiais avançados e fabricação digital.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0000f2",
+  "theme_color": "#0000f2",
+  "categories": ["education", "research", "engineering"],
+  "icons": [
+    {
+      "src": "arp-favicon.png",
+      "sizes": "64x64",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "arp-logo-branco-transparente.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

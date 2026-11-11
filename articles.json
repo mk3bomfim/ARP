@@ -23,7 +23,11 @@
       "geometria implícita",
       "fabricação aditiva",
       "mesa biônica"
-    ]
+    ],
+    "companionDownload": {
+      "file": "downloads/ARP-01_gyroid_tpms_sdf_generator.py",
+      "label": "Python SDF Generator"
+    }
   },
   {
     "id": "ARP-02",
@@ -50,7 +54,11 @@
       "deslignificação",
       "química prática",
       "alta resistência"
-    ]
+    ],
+    "companionDownload": {
+      "file": "downloads/ARP-02_superwood_densification_kinetics.csv",
+      "label": "Dataset 587 MPa"
+    }
   },
   {
     "id": "ARP-03",
@@ -105,7 +113,11 @@
       "solo in-situ",
       "cerâmica a frio",
       "construção sustentável"
-    ]
+    ],
+    "companionDownload": {
+      "file": "downloads/ARP-04_soil_geopolymer_alkaline_activation.csv",
+      "label": "Matriz Geopolímeros CSV"
+    }
   },
   {
     "id": "ARP-05",
@@ -133,7 +145,11 @@
       "SDF",
       "TPMS",
       "Gyroid"
-    ]
+    ],
+    "companionDownload": {
+      "file": "downloads/ARP-05_micromechanics_picogk_anisotropy.py",
+      "label": "Tensor Elasticidade Python"
+    }
   },
   {
     "id": "ARP-06",
@@ -164,6 +180,10 @@
       "agroecologia",
       "regeneração do solo",
       "no-dig"
-    ]
+    ],
+    "companionDownload": {
+      "file": "downloads/ARP-06_biochar_hugel_soil_regeneration.csv",
+      "label": "Cinética Biochar CSV"
+    }
   }
 ]
