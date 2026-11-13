@@ -58,3 +58,4 @@ if __name__ == "__main__":
     solid, sdf = generate_gyroid_volume(resolution=48, wall_thickness=0.4)
     export_as_raw_voxels(solid, "ARP-01_gyroid_volume.raw")
     print("[ARP.01] Execução com sucesso. Pronto para manufatura aditiva e simulação estrutural.")
+

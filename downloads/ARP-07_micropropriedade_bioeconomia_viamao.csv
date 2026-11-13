@@ -1,0 +1,40 @@
+# ADVANCED RESEARCH PROJECTS (ARP) // REPOSITORIO TECNICO
+# Codigo: ARP.07 // Companion Dataset
+# Titulo: Engenharia de Hiperotimizacao Bioeconomica e Autossuficiencia Integral para Micropropriedade Urbana (Viamao/RS)
+# Metodologia: Modelagem Bioeconomica, Ciclagem Termodinamica Fechada e Dimensionamento Zootecnico/Microbiologico
+# Licenca: CC BY 4.0 // Advanced Research Projects 2026
+
+categoria,item,parametro_unidade,modelo_base_1_0,agroecossistema_2_0,delta_evolucao,observacao_metodologica
+Espacial,Area Total Lote,m2,312.50,312.50,0.00,Testada 10.00m x Profundidade 31.25m
+Espacial,Area Zona 0 (Residencia + Climatizada),m2,65.00,65.00,0.00,Incorporacao de 10m2 para Camara de Fungicultura
+Espacial,Area Zona 1 (Biointensivo + Aquaponia),m2,167.50,167.50,0.00,Inclusao de 8m2 para 3 tanques RAS 1000L
+Espacial,Area Zona 2 (SAF Sintropico + Meliponario),m2,80.00,80.00,0.00,Tutoriamento vertical de Vanilla chamissonis no SAF
+Producao,Cestas Horticolas CSA,cotas/mes,20,20,0.00,Fornecimento semanal estavel a R$ 250.00/cota
+Producao,Cogumelos Frescos e Defumados (Pleurotus/Shiitake),kg/mes,0.00,60.00,+60.00,300 bandejas 200g frescas + 50 packs defumados
+Producao,Fungicultura Funcional (Hericium Seco/Extrato),unidades/mes,0.00,24.00,+24.00,4kg desidratado/moido + 20 frascos extrato 30ml
+Producao,Kits Vivos e Alimentos Funcionais (CoguChips/Risotos),unidades/mes,0.00,55.00,+55.00,25 blocos vivos 1kg + 20 chips + 10 risotos
+Producao,Flores Comestiveis e Microverdes B2B,unidades/mes,0.00,140.00,+140.00,60 packs flores 30un + 80 bandejas microverdes
+Producao,Proteina Aquaponica RAS (Jundia e Tilapia),kg/mes,0.00,25.00,+25.00,15kg consumo familiar + 10kg excedente nobre
+Producao,Folhosas Hidroponicas RAS (NFT),macos/mes,0.00,120.00,+120.00,Alface e chicoria fertirrigadas com efluente RAS
+Producao,Fabrica de Bokashi Solido On-Farm,kg/mes,0.00,40.00,+40.00,Upcycling de SMS exaurido e lodo nitrificado
+Producao,Fabrica de Bokashi Liquido Fermentado,L/mes,0.00,10.00,+10.00,Bioinoculante EM concentrado para venda externa
+Producao,Mel de Abelhas Nativas sem Ferrao (ASF),L/ano,12.00,24.00,+12.00,Mandaçaia, Jatai e Mirim no estrato medio do SAF
+Metabolismo,Agua Pluvial Captada Cisterna,L/mes,4800,9600,+4800,Telhado residencial + telhado estufa Zona 0
+Metabolismo,Biogas para Coccao (Biodigestor),m3/dia,0.00,0.60,+0.60,Equivalente a 1 botijao P13 a cada 25 dias
+Metabolismo,Biofertilizante Efluente Anaerobio,L/mes,0.00,450.00,+450.00,Nutricao completa N-P-K para canteiros sem insumo sintetico
+Metabolismo,Consumo Eletrico Complementar,kWh/mes,120,380,+260,Climatizacao câmara fungica e bombas RAS 24V DC
+Financeiro,Receita Bruta Horticolas CSA,R$/mes,5000.00,5000.00,0.00,20 cotas a R$ 250.00
+Financeiro,Receita Bruta Fungicultura Fresca/Defumada,R$/mes,0.00,6400.00,+6400.00,R$ 18.00/bandeja fresca; R$ 20.00/pack defumado
+Financeiro,Receita Bruta Fungicultura Funcional (Hericium),R$/mes,0.00,4630.00,+4630.00,R$ 715.00/kg seco medio; R$ 89.00/frasco extrato
+Financeiro,Receita Bruta Kits Vivos e Chips/Risotos,R$/mes,0.00,2940.00,+2940.00,Blocos R$ 48.00; Chips R$ 45.00; Risotos R$ 79.00
+Financeiro,Receita Bruta Flores Comestiveis e Microverdes,R$/mes,0.00,2920.00,+2920.00,R$ 22.00/pack flores; R$ 20.00/bandeja microverdes
+Financeiro,Receita Bruta Excedente Aquaponia RAS,R$/mes,0.00,1150.00,+1150.00,Venda excedente jundia/tilapia + folhosas NFT
+Financeiro,Receita Bruta Bokashi Solido/Liquido e Mel,R$/mes,350.00,2525.00,+2175.00,Bokashi R$ 25.90/kg; Liquido R$ 78.90/L; Mel R$ 175.00/L
+Financeiro,Faturamento Bruto Mensal Total,R$/mes,5350.00,25565.00,+20215.00,Crescimento de 377.8% na receita bruta
+Financeiro,Custos Operacionais Mensais (OPEX),R$/mes,1250.00,3430.00,+2180.00,Spawn R$ 1200; Racao R$ 280; Embalagens R$ 850; Energia/Log R$ 1100
+Financeiro,Resultado Operacional Liquido Mensal,R$/mes,4100.00,22135.00,+18035.00,Lucro liquido mensal do agricultor familiar
+Financeiro,Rendimento Especifico por Metro Quadrado,R$/m2/mes,13.12,70.83,+57.71,Rentabilidade liquida unitaria do lote de 312.50 m2
+Credito,Pronaf B (Microcredito Rural),R$ Tomado,0.00,15000.00,+15000.00,Taxa 0.5% a.a.; Bonus adimplencia 40% (Saldo Devedor Real R$ 9000.00)
+Credito,Pronaf Bioeconomia / Mulher / Jovem,R$ Tomado,0.00,50000.00,+50000.00,Taxa 3.0% a.a.; Carencia 3 anos; Amortizacao 7 anos
+Credito,FEAPER/RS (Fundo Estadual Agropecuario),R$ Tomado,0.00,25000.00,+25000.00,Taxa 0.0% a.a.; Bonus adimplencia 80% (Fundo Perdido 80%)
+

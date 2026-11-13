@@ -77,8 +77,11 @@
 
       <div class="stage-3d-box">
         <div class="stage-3d-header">
-          <span class="title-badge" id="viewer-badge">ARP // SIMULADOR DE ENGENHARIA EDÁFICA</span>
-          <span id="viewer-desc" style="font: 10px var(--mono); color: #8da2c4;">Hügelkultur — Corte Transversal Esponja de Lignina</span>
+          <div>
+            <div style="font: 700 20px var(--sans); color: #ffffff; letter-spacing: -0.01em; margin-bottom: 2px;">ARP 3D Make "</div>
+            <div style="font: 400 12px var(--sans); color: rgba(255,255,255,0.92);" id="viewer-desc">Dê vida ao seu projeto // Anatomia Estrutural dos Sistemas Edáficos</div>
+          </div>
+          <span class="title-badge" id="viewer-badge">ARP // ENGENHARIA EDÁFICA</span>
         </div>
         
         <div class="stage-3d-tabs">
@@ -94,16 +97,49 @@
           <canvas id="canvas3d-article"></canvas>
         </div>
 
+        <!-- CONTROLE MANUAL DE CÂMERA XYZ (PADRÃO ARP) -->
+        <div class="stage-3d-cam">
+          <div class="cam-title-group">
+            <span class="cam-tag">CAM // XYZ MANUAL</span>
+            <span class="cam-coords-readout" id="cam-readout">X: 7.0m | Y: 5.5m | Z: 8.5m</span>
+          </div>
+          <div class="cam-axes">
+            <div class="cam-axis-control x">
+              <span class="axis-badge x">X</span>
+              <input type="range" class="cam-slider" id="cam-x" min="-20" max="20" step="0.5" value="7" oninput="onManualCamChange()">
+              <span class="axis-value" id="val-cam-x">7.0m</span>
+            </div>
+            <div class="cam-axis-control y">
+              <span class="axis-badge y">Y</span>
+              <input type="range" class="cam-slider" id="cam-y" min="0.5" max="25" step="0.5" value="5.5" oninput="onManualCamChange()">
+              <span class="axis-value" id="val-cam-y">5.5m</span>
+            </div>
+            <div class="cam-axis-control z">
+              <span class="axis-badge z">Z</span>
+              <input type="range" class="cam-slider" id="cam-z" min="-20" max="20" step="0.5" value="8.5" oninput="onManualCamChange()">
+              <span class="axis-value" id="val-cam-z">8.5m</span>
+            </div>
+          </div>
+        </div>
+
         <div class="stage-3d-footer">
           <div class="slider-control" id="explode-container">
             <span>EXPLOSÃO ESTRATIGRÁFICA:</span>
             <input type="range" id="explode-range" min="0" max="100" value="0" oninput="handleExplode(this.value)">
           </div>
-          <div style="display: flex; gap: 8px;">
+          <div class="stage-3d-controls">
+            <button class="btn-toggle active" id="btn-lights" onclick="toggleLights()">Luzes: ON</button>
             <button class="btn-toggle active" id="btn-rot" onclick="toggleRot()">Auto-Girar</button>
             <button class="btn-toggle" id="btn-wire" onclick="toggleWire()">Wireframe</button>
+            <button class="btn-toggle" onclick="setCamView('top')">Planta</button>
+            <button class="btn-toggle" onclick="setCamView('iso')">Isométrica</button>
+            <button class="btn-toggle" onclick="setCamView('front')">Frontal</button>
             <button class="btn-toggle" onclick="resetCam()">Reset Câmera</button>
           </div>
+        </div>
+        <div class="stage-3d-meta">
+          <span>Modelagem Estrutural: 6 Reatores Biológicos de Engenharia Edáfica</span>
+          <span style="font-weight: 700; letter-spacing: 0.12em; color: #ffffff;">BORN TO BUILD &gt;&gt;&gt;</span>
         </div>
       </div>
 
@@ -245,9 +281,9 @@
   <div class="article-nav-hub">
   <a href="../index.html#artigos">&#9783; Painel de Artigos</a>
 </div>
-  <a class="article-nav-card next" href="artigo-da-matematica-ao-objeto-real.html">
-  <span class="nav-kicker">Pr&oacute;ximo Artigo // ARP.01 &rarr;</span>
-  <span class="nav-title">Da Matemática ao Objeto Real</span>
+  <a class="article-nav-card next" href="artigo-micropropriedade-urbana-autossuficiencia-bioeconomica.html">
+  <span class="nav-kicker">Pr&oacute;ximo Artigo // ARP.07 &rarr;</span>
+  <span class="nav-title">Hiperotimização Bioeconômica e Autossuficiência em Micropropriedades</span>
 </a>
 </nav>
 </article>

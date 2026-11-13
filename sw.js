@@ -1,5 +1,5 @@
 // ARP Service Worker // Cache Offline & Resiliência
-const CACHE_NAME = 'arp-v4.2';
+const CACHE_NAME = 'arp-v4.7';
 
 const CORE_ASSETS = [
   './',
@@ -7,9 +7,14 @@ const CORE_ASSETS = [
   './manifest.json',
   './articles.json',
   './css/landing.css',
+  './css/article.css',
   './css/article-sidebar.css',
   './js/landing.js',
   './js/article-sidebar.js',
+  './js/vendor/three.min.js',
+  './js/vendor/OrbitControls.js',
+  './js/viewer-3d.js',
+  './js/microproperty-3d.js',
   './arp-favicon.png',
   './arp-logo-branco-transparente.png',
   './arp-logo-azul-transparente.png',
@@ -19,11 +24,17 @@ const CORE_ASSETS = [
   './articles/artigo-geopolimeros-solo-ceramica-a-frio.html',
   './articles/artigo-micromecanica-celulose-geometry-kernels.html',
   './articles/artigo-regeneracao-solo-biotecnologia-residuos.html',
+  './articles/artigo-micropropriedade-urbana-autossuficiencia-bioeconomica.html',
+  './media/micropropriedade-urbana/micropropriedade-arquitetura-metabolica.png',
+  './media/micropropriedade-urbana/escalada-valor-agregado.png',
+  './media/micropropriedade-urbana/matriz-credito-subsidiado.png',
+  './media/micropropriedade-urbana/comparativo-rentabilidade-mensal.png',
   './downloads/ARP-01_gyroid_tpms_sdf_generator.py',
   './downloads/ARP-02_superwood_densification_kinetics.csv',
   './downloads/ARP-04_soil_geopolymer_alkaline_activation.csv',
   './downloads/ARP-05_micromechanics_picogk_anisotropy.py',
-  './downloads/ARP-06_biochar_hugel_soil_regeneration.csv'
+  './downloads/ARP-06_biochar_hugel_soil_regeneration.csv',
+  './downloads/ARP-07_micropropriedade_bioeconomia_viamao.csv'
 ];
 
 self.addEventListener('install', event => {

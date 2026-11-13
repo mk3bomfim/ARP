@@ -394,120 +394,490 @@ header {
 }
 
 /* =========================================================================
-   3D SIMULATOR STYLING (ARP BLUEPRINT)
+   3D SIMULATOR STYLING (KIMI 3D MAKE // ARCHITECTURAL BLUEPRINT BLUE & WHITE)
    ========================================================================= */
 .stage-3d-box {
-  margin: 40px 0;
-  border: 1px solid var(--ink);
-  background: #080c16;
-  border-radius: 2px;
+  margin: 36px 0;
+  border: 2px solid rgba(255, 255, 255, 0.85);
+  background: #1953d4;
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.09) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.09) 1px, transparent 1px);
+  background-size: 24px 24px;
+  border-radius: 4px;
   overflow: hidden;
-  box-shadow: 0 12px 36px rgba(0, 0, 242, 0.12);
+  box-shadow: 0 16px 48px rgba(25, 83, 212, 0.32);
 }
 
 .stage-3d-header {
-  background: #0e1628;
-  border-bottom: 1px solid rgba(0, 0, 242, 0.4);
-  padding: 12px 18px;
+  background: rgba(18, 62, 168, 0.85);
+  border-bottom: 1.5px solid rgba(255, 255, 255, 0.45);
+  padding: 14px 20px;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
+  backdrop-filter: blur(10px);
 }
 
 .stage-3d-header .title-badge {
-  font: 600 10.5px var(--mono);
-  letter-spacing: .12em;
+  font: 700 13px var(--sans);
+  letter-spacing: .04em;
   text-transform: uppercase;
-  color: var(--yellow);
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid #ffffff;
+  padding: 4px 10px;
+  border-radius: 2px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.25);
+}
+
+.stage-3d-header #viewer-desc {
+  font: 500 11.5px var(--sans);
+  color: rgba(255, 255, 255, 0.92);
+  letter-spacing: .02em;
 }
 
 .stage-3d-tabs {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
-  background: #070b14;
-  padding: 8px 14px;
-  border-bottom: 1px solid rgba(0, 0, 242, 0.25);
+  gap: 8px;
+  background: rgba(14, 48, 130, 0.75);
+  padding: 9px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .tab-btn {
-  font: 500 10px var(--mono);
-  letter-spacing: .08em;
+  font: 600 10.5px var(--mono);
+  letter-spacing: .06em;
   text-transform: uppercase;
-  color: #8da2c4;
-  background: #121c32;
-  border: 1px solid rgba(0, 0, 242, 0.3);
-  padding: 6px 12px;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  padding: 6px 13px;
   cursor: pointer;
-  transition: all .2s ease;
+  border-radius: 2px;
+  transition: all .18s ease;
 }
 
 .tab-btn:hover {
-  background: #1a2744;
-  color: #fff;
-  border-color: #3b82f6;
+  background: rgba(255, 255, 255, 0.22);
+  border-color: #ffffff;
+  color: #ffffff;
 }
 
 .tab-btn.active {
-  background: var(--blue);
-  color: var(--yellow);
-  border-color: var(--yellow);
-  font-weight: 600;
+  background: #ffffff;
+  color: #1953d4;
+  border-color: #ffffff;
+  font-weight: 700;
+  box-shadow: 0 0 14px rgba(255, 255, 255, 0.6);
 }
 
 .viewport-3d {
   width: 100%;
   height: 480px;
   position: relative;
-  background: radial-gradient(circle at 50% 50%, #111a33 0%, #060911 100%);
+  background: #1953d4;
 }
 
-#canvas3d-article {
+#canvas3d-article,
+#canvas3d-microproperty {
   width: 100%;
   height: 100%;
   display: block;
 }
 
-.stage-3d-footer {
-  background: #0e1628;
-  border-top: 1px solid rgba(0, 0, 242, 0.35);
+/* CONTROLE MANUAL DE CÂMERA XYZ (PADRÃO TÉCNICO BLUEPRINT) */
+.stage-3d-cam {
+  background: rgba(14, 48, 130, 0.85);
+  border-top: 1px dashed rgba(255, 255, 255, 0.45);
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.45);
   padding: 10px 18px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  font: 10.5px var(--mono);
+}
+
+.cam-title-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #ffffff;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.cam-title-group .cam-tag {
+  font-weight: 700;
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cam-coords-readout {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.16);
+  padding: 3px 9px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 2px;
+  letter-spacing: .05em;
+  font-weight: 700;
+  text-shadow: 0 0 6px rgba(255, 255, 255, 0.4);
+}
+
+.cam-axes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+}
+
+.cam-axis-control {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.axis-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  font: 800 10px var(--mono);
+  border-radius: 2px;
+  line-height: 1;
+}
+
+.axis-badge.x {
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  border: 1px solid #ffffff;
+}
+
+.axis-badge.y {
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  border: 1px solid #ffffff;
+}
+
+.axis-badge.z {
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  border: 1px solid #ffffff;
+}
+
+.cam-slider {
+  width: 82px;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 2px;
+  appearance: none;
+  -webkit-appearance: none;
+  outline: none;
+  cursor: pointer;
+  accent-color: #ffffff;
+}
+
+.cam-slider::-webkit-slider-thumb {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 1px;
+  cursor: pointer;
+  background: #ffffff;
+  border: 1px solid #1953d4;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.85);
+}
+
+.axis-value {
+  font: 700 10.5px var(--mono);
+  min-width: 48px;
+  text-align: right;
+  letter-spacing: .02em;
+  color: #ffffff;
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.4);
+}
+
+/* RODAPÉ DO SIMULADOR 3D */
+.stage-3d-footer {
+  background: rgba(18, 62, 168, 0.9);
+  padding: 12px 18px;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
   gap: 10px;
   font: 10px var(--mono);
-  color: #8da2c4;
+  color: #ffffff;
+}
+
+.stage-3d-badge {
+  font: 700 11px var(--mono);
+  letter-spacing: .06em;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  padding: 5px 12px;
+  border-radius: 2px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
+}
+
+.stage-3d-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
 }
 
 .slider-control {
   display: flex;
   align-items: center;
   gap: 10px;
+  color: #ffffff;
+  font-weight: 600;
 }
 
 .slider-control input[type="range"] {
-  accent-color: var(--yellow);
+  accent-color: #ffffff;
   cursor: pointer;
 }
 
 .btn-toggle {
-  background: #141f38;
-  border: 1px solid rgba(0, 0, 242, 0.4);
-  color: #d6d4cc;
-  padding: 4px 10px;
-  font: 500 9.5px var(--mono);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  color: #ffffff;
+  padding: 6px 12px;
+  font: 600 10px var(--mono);
   cursor: pointer;
   text-transform: uppercase;
+  letter-spacing: .06em;
+  border-radius: 2px;
+  transition: all .18s ease;
+}
+
+.btn-toggle:hover {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: #ffffff;
+  color: #ffffff;
 }
 
 .btn-toggle.active {
-  background: var(--yellow);
-  color: #0000f2;
-  font-weight: 600;
+  background: #ffffff;
+  color: #1953d4;
+  border-color: #ffffff;
+  font-weight: 700;
+  box-shadow: 0 0 14px rgba(255, 255, 255, 0.65);
+}
+
+.btn-toggle.btn-fp {
+  background: #ffffff;
+  color: #1953d4;
+  font-weight: 700;
+  border-color: #ffffff;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+  animation: pulseFP 2.4s infinite ease-in-out;
+}
+
+@keyframes pulseFP {
+  0%, 100% { box-shadow: 0 0 6px rgba(255, 255, 255, 0.5); }
+  50% { box-shadow: 0 0 16px rgba(255, 255, 255, 0.95); }
+}
+
+/* =========================================================================
+   OVERLAY HUD DO MODO JOGO PRIMEIRA PESSOA (FP)
+   ========================================================================= */
+.fp-hud {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 14px;
+  z-index: 50;
+  box-sizing: border-box;
+  background: radial-gradient(circle at center, transparent 65%, rgba(25, 83, 212, 0.45) 100%);
+}
+
+.fp-crosshair {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #ffffff;
+  font-size: 26px;
+  font-weight: 300;
+  line-height: 1;
+  text-shadow: 0 0 6px rgba(0, 0, 0, 0.8), 0 0 10px #1953d4;
+  user-select: none;
+  pointer-events: none;
+}
+
+.fp-top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  pointer-events: auto;
+}
+
+.fp-badge-live {
+  font: 700 11px var(--mono);
+  background: #ffffff;
+  color: #1953d4;
+  padding: 4px 10px;
+  border-radius: 2px;
+  letter-spacing: .08em;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.8);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.fp-zone-indicator {
+  font: 600 11px var(--mono);
+  background: rgba(14, 48, 130, 0.88);
+  color: #ffffff;
+  padding: 5px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 2px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.fp-exit-btn {
+  font: 700 10.5px var(--mono);
+  background: rgba(220, 38, 38, 0.9);
+  color: #ffffff;
+  border: 1px solid #ffffff;
+  padding: 6px 14px;
+  border-radius: 2px;
+  cursor: pointer;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  transition: all .18s ease;
+  box-shadow: 0 0 10px rgba(220, 38, 38, 0.6);
+}
+
+.fp-exit-btn:hover {
+  background: #ef4444;
+  box-shadow: 0 0 16px rgba(239, 68, 68, 0.95);
+}
+
+.fp-bottom-instructions {
+  align-self: center;
+  font: 500 11px var(--mono);
+  background: rgba(14, 48, 130, 0.92);
+  color: #ffffff;
+  padding: 7px 18px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 3px;
+  letter-spacing: .05em;
+  pointer-events: auto;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
+  text-align: center;
+}
+
+.fp-key {
+  display: inline-block;
+  background: #ffffff;
+  color: #1953d4;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 2px;
+  margin: 0 2px;
+  font-size: 10px;
+}
+
+/* Controles de Toque para Mobile/Tablet */
+.fp-touch-controls {
+  display: none;
+  justify-content: space-between;
+  align-items: flex-end;
+  pointer-events: auto;
+  width: 100%;
+}
+
+@media (pointer: coarse), (max-width: 768px) {
+  .fp-touch-controls {
+    display: flex;
+  }
+}
+
+.fp-dpad {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.fp-dpad-row {
+  display: flex;
+  gap: 5px;
+}
+
+.fp-touch-btn {
+  width: 44px;
+  height: 44px;
+  background: rgba(255, 255, 255, 0.28);
+  border: 1px solid #ffffff;
+  color: #ffffff;
+  font-size: 16px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+.fp-touch-btn:active {
+  background: #ffffff;
+  color: #1953d4;
+}
+
+.fp-touch-jump {
+  font: 700 12px var(--mono);
+  background: rgba(255, 255, 255, 0.28);
+  border: 1px solid #ffffff;
+  color: #ffffff;
+  padding: 10px 18px;
+  border-radius: 4px;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+.fp-touch-jump:active {
+  background: #ffffff;
+  color: #1953d4;
+}
+
+.stage-3d-meta {
+  padding: 8px 18px;
+  background: rgba(11, 40, 110, 0.95);
+  border-top: 1px dashed rgba(255, 255, 255, 0.35);
+  font: 10px var(--mono);
+  color: rgba(255, 255, 255, 0.88);
+  letter-spacing: .04em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 /* =========================================================================

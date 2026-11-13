@@ -78,3 +78,4 @@ if __name__ == "__main__":
     c_dense = simulate_densification_effect(density_factor=3.14)
     print("\nTensor C_ij (6x6) [GPa]:")
     print(np.round(c_dense, 2))
+

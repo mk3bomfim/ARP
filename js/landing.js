@@ -183,6 +183,40 @@
       "regeneração do solo",
       "no-dig"
     ]
+  },
+  {
+    "id": "ARP-07",
+    "code": "ARP.07",
+    "title": "Hiperotimização Bioeconômica e Autossuficiência em Micropropriedades",
+    "subtitle": "Modelagem espacial 3D, zootecnia aquapônica em recirculação (RAS), fungicultura funcional e economia circular para micropropriedades urbanas",
+    "author": "Advanced Research Projects",
+    "date": "2026-11-12",
+    "dateFormatted": "12 Nov 2026",
+    "time": "14:00 BRT",
+    "timestamp": "2026-11-12T14:00:00-03:00",
+    "readTime": "14 min",
+    "words": 1950,
+    "status": "Modelagem 3D // Validação Econômica",
+    "highlight": "Aquaponia RAS, Hericium e Bokashi On-Farm",
+    "url": "articles/artigo-micropropriedade-urbana-autossuficiencia-bioeconomica.html",
+    "image": "media/micropropriedade-urbana/micropropriedade-arquitetura-metabolica.png",
+    "alt": "Arquitetura Espacial e Metabólica da Micropropriedade 2.0 em Viamão/RS",
+    "category": "Bioeconomia & Agroecologia urbana",
+    "tags": [
+      "agroecologia",
+      "aquaponia",
+      "bioeconomia",
+      "fungicultura",
+      "hericium",
+      "bokashi",
+      "viamao",
+      "autossuficiencia",
+      "micropropriedade"
+    ],
+    "companionDownload": {
+      "file": "downloads/ARP-07_micropropriedade_bioeconomia_viamao.csv",
+      "label": "Matriz Bioeconômica CSV"
+    }
   }
 ];
   let data = [
@@ -371,6 +405,40 @@
     "companionDownload": {
       "file": "downloads/ARP-06_biochar_hugel_soil_regeneration.csv",
       "label": "Cinética Biochar CSV"
+    }
+  },
+  {
+    "id": "ARP-07",
+    "code": "ARP.07",
+    "title": "Hiperotimização Bioeconômica e Autossuficiência em Micropropriedades",
+    "subtitle": "Modelagem espacial 3D, zootecnia aquapônica em recirculação (RAS), fungicultura funcional e economia circular para micropropriedades urbanas",
+    "author": "Advanced Research Projects",
+    "date": "2026-11-12",
+    "dateFormatted": "12 Nov 2026",
+    "time": "14:00 BRT",
+    "timestamp": "2026-11-12T14:00:00-03:00",
+    "readTime": "14 min",
+    "words": 1950,
+    "status": "Modelagem 3D // Validação Econômica",
+    "highlight": "Aquaponia RAS, Hericium e Bokashi On-Farm",
+    "url": "articles/artigo-micropropriedade-urbana-autossuficiencia-bioeconomica.html",
+    "image": "media/micropropriedade-urbana/micropropriedade-arquitetura-metabolica.png",
+    "alt": "Arquitetura Espacial e Metabólica da Micropropriedade 2.0 em Viamão/RS",
+    "category": "Bioeconomia & Agroecologia urbana",
+    "tags": [
+      "agroecologia",
+      "aquaponia",
+      "bioeconomia",
+      "fungicultura",
+      "hericium",
+      "bokashi",
+      "viamao",
+      "autossuficiencia",
+      "micropropriedade"
+    ],
+    "companionDownload": {
+      "file": "downloads/ARP-07_micropropriedade_bioeconomia_viamao.csv",
+      "label": "Matriz Bioeconômica CSV"
     }
   }
 ];
